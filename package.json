@@ -1,0 +1,76 @@
+{
+  "name": "mycode",
+  "version": "0.1.0",
+  "description": "A modern, cross-platform code editor inspired by Elementary Code",
+  "main": "dist/main/main/main.js",
+  "author": "Chuck",
+  "license": "GPL-3.0",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
+    "dev:main": "tsc -p tsconfig.main.json --watch",
+    "dev:renderer": "npm run copy-assets && npm run copy-monaco && esbuild src/renderer/index.ts --bundle --outfile=dist/renderer/index.js --sourcemap --watch --format=esm --loader:.css=css",
+    "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:preload": "esbuild src/main/preload.ts --bundle --platform=node --outfile=dist/main/main/preload.js --external:electron",
+    "build:renderer": "npm run copy-assets && npm run copy-monaco && esbuild src/renderer/index.ts --bundle --outfile=dist/renderer/index.js --minify --format=esm --loader:.css=css",
+    "copy-assets": "mkdir -p dist/renderer && cp src/renderer/index.html src/renderer/styles.css dist/renderer/",
+    "copy-monaco": "mkdir -p dist/renderer/monaco && cp -r node_modules/monaco-editor/min/vs dist/renderer/monaco/",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "chokidar": "^3.5.3",
+    "marked": "^17.0.1",
+    "monaco-editor": "^0.44.0",
+    "node-pty": "^1.1.0",
+    "simple-git": "^3.30.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^6.0.0",
+    "@types/node": "^20.10.0",
+    "concurrently": "^8.2.2",
+    "electron": "^31.7.7",
+    "electron-builder": "^24.9.0",
+    "esbuild": "^0.19.0",
+    "typescript": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.mycode.editor",
+    "productName": "MyCode",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "resources/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "resources/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "resources/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "resources/icons",
+      "category": "Development"
+    }
+  }
+}

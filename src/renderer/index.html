@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:;">
+  <title>MyCode</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Projects</h2>
+        <button id="btn-add-folder" class="icon-btn" title="Add Folder">+</button>
+      </div>
+      <div id="folder-tree" class="folder-tree">
+        <div class="empty-state">
+          <p>No folders open</p>
+          <button id="btn-open-folder">Open Folder</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Resize handle -->
+    <div id="sidebar-resizer" class="resizer"></div>
+
+    <!-- Main content area -->
+    <main id="main-content" class="main-content">
+      <!-- Tab bar -->
+      <div id="tab-bar" class="tab-bar">
+        <div id="tabs" class="tabs"></div>
+        <button id="btn-new-tab" class="icon-btn" title="New Tab (Ctrl+N)">+</button>
+      </div>
+
+      <!-- Search bar (hidden by default) -->
+      <div id="search-bar" class="search-bar hidden">
+        <div class="search-row">
+          <input type="text" id="search-input" placeholder="Find" />
+          <span id="search-count" class="search-count">0 of 0</span>
+          <button id="btn-search-prev" class="icon-btn" title="Previous (Ctrl+Shift+G)">↑</button>
+          <button id="btn-search-next" class="icon-btn" title="Next (Ctrl+G)">↓</button>
+          <button id="btn-search-close" class="icon-btn" title="Close">×</button>
+        </div>
+        <div id="replace-row" class="replace-row hidden">
+          <input type="text" id="replace-input" placeholder="Replace" />
+          <button id="btn-replace" class="text-btn">Replace</button>
+          <button id="btn-replace-all" class="text-btn">Replace All</button>
+        </div>
+        <div class="search-options">
+          <label><input type="checkbox" id="opt-case-sensitive" /> Aa</label>
+          <label><input type="checkbox" id="opt-whole-word" /> Word</label>
+          <label><input type="checkbox" id="opt-regex" /> .*</label>
+        </div>
+      </div>
+
+      <!-- Editor area (for split-view with preview) -->
+      <div id="editor-area" class="editor-area">
+        <!-- Editor container -->
+        <div id="editor-container" class="editor-container">
+          <!-- Monaco editor will be mounted here -->
+        </div>
+      </div>
+
+      <!-- Welcome view (shown when no files open) -->
+      <div id="welcome-view" class="welcome-view">
+        <h1>MyCode</h1>
+        <p>A modern, cross-platform code editor</p>
+        <div class="welcome-actions">
+          <button id="welcome-new-file" class="action-btn">
+            <span class="icon">📄</span>
+            <span>New File</span>
+            <span class="shortcut">Ctrl+N</span>
+          </button>
+          <button id="welcome-open-file" class="action-btn">
+            <span class="icon">📂</span>
+            <span>Open File</span>
+            <span class="shortcut">Ctrl+O</span>
+          </button>
+          <button id="welcome-open-folder" class="action-btn">
+            <span class="icon">📁</span>
+            <span>Open Folder</span>
+            <span class="shortcut">Ctrl+Shift+O</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Git Status Bar -->
+      <div id="git-status-bar" class="git-status-bar"></div>
+    </main>
+  </div>
+
+  <!-- Context menu (hidden by default) -->
+  <div id="context-menu" class="context-menu hidden">
+    <button data-action="new-file">New File</button>
+    <button data-action="new-folder">New Folder</button>
+    <hr />
+    <button data-action="rename">Rename</button>
+    <button data-action="delete">Delete</button>
+  </div>
+
+  <!-- Preferences Dialog -->
+  <div id="preferences-overlay" class="modal-overlay hidden">
+    <div class="modal-dialog preferences-dialog">
+      <div class="modal-header">
+        <h2>Preferences</h2>
+        <button id="prefs-close" class="icon-btn">×</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="appearance">Appearance</button>
+        <button class="tab-btn" data-tab="editor">Editor</button>
+        <button class="tab-btn" data-tab="fonts">Fonts</button>
+        <button class="tab-btn" data-tab="search">Search</button>
+      </div>
+
+      <div class="modal-content">
+        <!-- Appearance Tab -->
+        <div id="tab-appearance" class="tab-panel active">
+          <div class="setting-group">
+            <h3>Editor Theme</h3>
+            <div class="setting-row">
+              <label>Follow system theme</label>
+              <input type="checkbox" id="pref-followSystemStyle" />
+            </div>
+            <div class="setting-row">
+              <label>Theme</label>
+              <select id="pref-editorTheme">
+                <optgroup label="Light Themes">
+                  <option value="vs">VS Light</option>
+                  <option value="github-light">GitHub Light</option>
+                  <option value="solarized-light">Solarized Light</option>
+                </optgroup>
+                <optgroup label="Dark Themes">
+                  <option value="vs-dark">VS Dark</option>
+                  <option value="monokai">Monokai</option>
+                  <option value="dracula">Dracula</option>
+                  <option value="one-dark">One Dark</option>
+                  <option value="solarized-dark">Solarized Dark</option>
+                </optgroup>
+                <optgroup label="High Contrast">
+                  <option value="hc-black">High Contrast</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor Tab -->
+        <div id="tab-editor" class="tab-panel">
+          <div class="setting-row">
+            <label>Auto-save files</label>
+            <input type="checkbox" id="pref-autosave" />
+          </div>
+          <div class="setting-row">
+            <label>Smart Cut/Copy (copy line when no selection)</label>
+            <input type="checkbox" id="pref-smartCutCopy" />
+          </div>
+          <div class="setting-row">
+            <label>Line wrap</label>
+            <input type="checkbox" id="pref-lineWrap" />
+          </div>
+          <div class="setting-row">
+            <label>Highlight matching brackets</label>
+            <input type="checkbox" id="pref-highlightMatchingBrackets" />
+          </div>
+          <div class="setting-row">
+            <label>Show minimap</label>
+            <input type="checkbox" id="pref-showMiniMap" />
+          </div>
+          <div class="setting-row">
+            <label>Use spaces instead of tabs</label>
+            <input type="checkbox" id="pref-spacesInsteadOfTabs" />
+          </div>
+          <div class="setting-row">
+            <label>Auto indent</label>
+            <input type="checkbox" id="pref-autoIndent" />
+          </div>
+          <div class="setting-row">
+            <label>Indent width</label>
+            <input type="number" id="pref-indentWidth" min="2" max="8" value="4" />
+          </div>
+          <div class="setting-row">
+            <label>Show right margin</label>
+            <input type="checkbox" id="pref-showRightMargin" />
+          </div>
+          <div class="setting-row">
+            <label>Right margin position</label>
+            <input type="number" id="pref-rightMarginPosition" min="40" max="200" value="80" />
+          </div>
+          <div class="setting-row">
+            <label>Show whitespace</label>
+            <select id="pref-drawSpaces">
+              <option value="never">Never</option>
+              <option value="selection">In Selection</option>
+              <option value="always">Always</option>
+              <option value="current">Current Line</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Fonts Tab -->
+        <div id="tab-fonts" class="tab-panel">
+          <div class="setting-row">
+            <label>Use system font</label>
+            <input type="checkbox" id="pref-useSystemFont" />
+          </div>
+          <div class="setting-row">
+            <label>Font family</label>
+            <select id="pref-font">
+              <option value="monospace">System Default</option>
+              <option value="JetBrains Mono">JetBrains Mono</option>
+              <option value="Fira Code">Fira Code</option>
+              <option value="Source Code Pro">Source Code Pro</option>
+              <option value="Cascadia Code">Cascadia Code</option>
+              <option value="Consolas">Consolas</option>
+              <option value="Monaco">Monaco</option>
+              <option value="Menlo">Menlo</option>
+              <option value="Ubuntu Mono">Ubuntu Mono</option>
+              <option value="DejaVu Sans Mono">DejaVu Sans Mono</option>
+              <option value="Inconsolata">Inconsolata</option>
+              <option value="Roboto Mono">Roboto Mono</option>
+              <option value="IBM Plex Mono">IBM Plex Mono</option>
+              <option value="Hack">Hack</option>
+              <option value="Courier New">Courier New</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <label>Font size</label>
+            <input type="number" id="pref-fontSize" min="8" max="32" value="14" />
+          </div>
+        </div>
+
+        <!-- Search Tab -->
+        <div id="tab-search" class="tab-panel">
+          <div class="setting-row">
+            <label>Cyclic search (wrap at document end)</label>
+            <input type="checkbox" id="pref-cyclicSearch" />
+          </div>
+          <div class="setting-row">
+            <label>Default whole word search</label>
+            <input type="checkbox" id="pref-wholeWordSearch" />
+          </div>
+          <div class="setting-row">
+            <label>Default regex search</label>
+            <input type="checkbox" id="pref-regexSearch" />
+          </div>
+          <div class="setting-row">
+            <label>Case sensitivity</label>
+            <select id="pref-caseSensitiveSearch">
+              <option value="never">Never</option>
+              <option value="mixed">Smart (when search has uppercase)</option>
+              <option value="always">Always</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="prefs-cancel" class="text-btn">Cancel</button>
+        <button id="prefs-save" class="text-btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monaco Editor AMD loader (local) -->
+  <script src="./monaco/vs/loader.js"></script>
+
+  <!-- App bundle (exports MyCodeApp) -->
+  <script type="module" src="index.js"></script>
+
+  <!-- Initialize after Monaco loads -->
+  <script>
+    require.config({ paths: { vs: './monaco/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      // Wait for module to load, then initialize
+      setTimeout(function () {
+        if (window.MyCodeApp) {
+          var app = new window.MyCodeApp();
+          app.init().catch(function (err) {
+            console.error('App initialization failed:', err);
+          });
+        } else {
+          console.error('MyCodeApp not found - bundle may not have loaded');
+        }
+      }, 100);
+    });
+  </script>
+</body>
+
+</html>

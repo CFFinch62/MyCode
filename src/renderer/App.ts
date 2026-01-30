@@ -1,0 +1,500 @@
+/**
+ * MyCode - Main Application Class
+ * Coordinates all UI components and handles application state
+ */
+
+import { EditorManager } from './editor/EditorManager';
+import { Sidebar } from './sidebar/Sidebar';
+import { SearchBar } from './search/SearchBar';
+import { TabManager } from './editor/TabManager';
+import { PreferencesDialog } from './preferences/PreferencesDialog';
+import { MarkdownPreview } from './preview/MarkdownPreview';
+import { Terminal } from './terminal/Terminal';
+import { GitStatusBar } from './git/GitStatusBar';
+import { GutterDecorations } from './git/GutterDecorations';
+import { CommitDialog } from './git/CommitDialog';
+import { Settings, DocumentTab, TreeNode } from '../shared/types';
+
+declare const monaco: typeof import('monaco-editor');
+
+export class App {
+    private editorManager!: EditorManager;
+    private sidebar!: Sidebar;
+    private searchBar!: SearchBar;
+    private tabManager!: TabManager;
+    private preferencesDialog!: PreferencesDialog;
+    private markdownPreview!: MarkdownPreview;
+    private terminal!: Terminal;
+    private gitStatusBar!: GitStatusBar;
+    private gutterDecorations!: GutterDecorations;
+    private commitDialog!: CommitDialog;
+    private settings!: Settings;
+    private sidebarVisible = true;
+
+    async init(): Promise<void> {
+        // Load settings
+        this.settings = await window.mycode.settings.getAll();
+        this.sidebarVisible = this.settings.sidebarVisible;
+
+        // Initialize components
+        this.editorManager = new EditorManager(this.settings);
+        this.tabManager = new TabManager(this.editorManager);
+        this.sidebar = new Sidebar(
+            this.onFileSelect.bind(this),
+            this.onFolderSelect.bind(this),
+            this.onFolderRemove.bind(this)
+        );
+        this.sidebar.setOnOpenFolder(() => this.openFolder());
+        this.searchBar = new SearchBar(this.editorManager);
+        this.preferencesDialog = new PreferencesDialog(this.applySettings.bind(this));
+        this.markdownPreview = new MarkdownPreview();
+        this.markdownPreview.setEditor(this.editorManager.getEditor());
+        this.terminal = new Terminal();
+        this.gitStatusBar = new GitStatusBar();
+        this.gutterDecorations = new GutterDecorations();
+        this.commitDialog = new CommitDialog();
+
+        // Setup Git callbacks
+        this.gitStatusBar.onCommit = () => this.showCommitDialog();
+        this.commitDialog.onCommitSuccess = () => this.gitStatusBar.refresh();
+        this.gitStatusBar.onStatusChange = (status, repoPath) => {
+            if (status && repoPath) {
+                this.sidebar.updateGitStatus(repoPath, status.files);
+            } else {
+                this.sidebar.clearGitStatus();
+            }
+        };
+        this.gutterDecorations.setEditor(this.editorManager.getEditor());
+
+        // Apply initial theme
+        this.applyTheme();
+
+        // Setup menu event listeners
+        this.setupMenuListeners();
+
+        // Setup UI event listeners
+        this.setupUIListeners();
+
+        // Apply initial state
+        this.updateSidebarVisibility();
+
+        // Restore previous session
+        await this.restoreSession();
+
+        console.log('MyCode initialized');
+    }
+
+    private setupMenuListeners(): void {
+        window.mycode.onMenuEvent.newTab(() => this.newTab());
+        window.mycode.onMenuEvent.openFile(() => this.openFile());
+        window.mycode.onMenuEvent.openFolder(() => this.openFolder());
+        window.mycode.onMenuEvent.newProjectFolder(() => this.createProjectFolder());
+        window.mycode.onMenuEvent.save(() => this.save());
+        window.mycode.onMenuEvent.saveAs(() => this.saveAs());
+        window.mycode.onMenuEvent.closeTab(() => this.closeCurrentTab());
+        window.mycode.onMenuEvent.find(() => this.searchBar.show(false));
+        window.mycode.onMenuEvent.replace(() => this.searchBar.show(true));
+        window.mycode.onMenuEvent.selectAll(() => this.selectAll());
+        window.mycode.onMenuEvent.toggleSidebar(() => this.toggleSidebar());
+        window.mycode.onMenuEvent.togglePreview(() => this.togglePreview());
+        window.mycode.onMenuEvent.toggleTerminal(() => this.toggleTerminal());
+        window.mycode.onMenuEvent.preferences(() => this.showPreferences());
+        window.mycode.onMenuEvent.gitCommit(() => this.showCommitDialog());
+        window.mycode.onMenuEvent.gitPush(() => this.gitPush());
+        window.mycode.onMenuEvent.gitPull(() => this.gitPull());
+    }
+
+    private showCommitDialog(): void {
+        const repoPath = this.gitStatusBar.getRepoPath();
+        if (repoPath) {
+            this.commitDialog.show(repoPath);
+        }
+    }
+
+    private async gitPush(): Promise<void> {
+        const repoPath = this.gitStatusBar.getRepoPath();
+        if (repoPath) {
+            const result = await window.mycode.git.push(repoPath);
+            if (result.success) {
+                this.gitStatusBar.refresh();
+            } else {
+                alert(`Push failed: ${result.error}`);
+            }
+        }
+    }
+
+    private async gitPull(): Promise<void> {
+        const repoPath = this.gitStatusBar.getRepoPath();
+        if (repoPath) {
+            const result = await window.mycode.git.pull(repoPath);
+            if (result.success) {
+                this.gitStatusBar.refresh();
+            } else {
+                alert(`Pull failed: ${result.error}`);
+            }
+        }
+    }
+
+    private toggleTerminal(): void {
+        this.terminal.toggle();
+    }
+
+    private togglePreview(): void {
+        this.markdownPreview.toggle();
+        // Update preview with current content if now visible
+        if (this.markdownPreview.isPreviewVisible()) {
+            this.markdownPreview.onContentChanged(this.editorManager.getContent());
+        }
+    }
+
+    private selectAll(): void {
+        const editor = this.editorManager.getEditor();
+        const model = editor.getModel();
+        if (model) {
+            editor.setSelection(model.getFullModelRange());
+            editor.focus();
+        }
+    }
+
+    private showPreferences(): void {
+        this.preferencesDialog.show();
+    }
+
+    private applySettings(newSettings: Partial<Settings>): void {
+        // Update local settings
+        this.settings = { ...this.settings, ...newSettings };
+
+        // Apply editor settings
+        this.editorManager.updateSettings(newSettings);
+
+        // Apply search settings
+        if (newSettings.cyclicSearch !== undefined) {
+            this.searchBar.setCyclicSearch(newSettings.cyclicSearch);
+        }
+    }
+
+    private applyTheme(): void {
+        const root = document.documentElement;
+        if (this.settings.followSystemStyle) {
+            root.removeAttribute('data-theme');
+        } else if (this.settings.preferDarkStyle) {
+            root.setAttribute('data-theme', 'dark');
+        } else {
+            root.setAttribute('data-theme', 'light');
+        }
+    }
+
+    private setupUIListeners(): void {
+        // Welcome view buttons
+        document.getElementById('welcome-new-file')?.addEventListener('click', () => this.newTab());
+        document.getElementById('welcome-open-file')?.addEventListener('click', () => this.openFile());
+        document.getElementById('welcome-open-folder')?.addEventListener('click', () => this.openFolder());
+        document.getElementById('btn-open-folder')?.addEventListener('click', () => this.openFolder());
+        document.getElementById('btn-add-folder')?.addEventListener('click', () => this.openFolder());
+        document.getElementById('btn-new-tab')?.addEventListener('click', () => this.newTab());
+
+        // Sidebar resizer
+        const resizer = document.getElementById('sidebar-resizer');
+        if (resizer) {
+            let isResizing = false;
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                document.body.style.cursor = 'col-resize';
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.style.width = `${e.clientX}px`;
+                }
+            });
+            document.addEventListener('mouseup', () => {
+                isResizing = false;
+                document.body.style.cursor = '';
+            });
+        }
+
+        // Global keyboard shortcuts
+        document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+
+        // Update markdown preview on editor content change
+        document.addEventListener('editor-content-changed', () => {
+            if (this.markdownPreview.isPreviewVisible()) {
+                this.markdownPreview.onContentChanged(this.editorManager.getContent());
+            }
+        });
+
+        // Handle all tabs closed (from TabManager)
+        document.addEventListener('all-tabs-closed', () => {
+            if (this.markdownPreview.isPreviewVisible()) {
+                this.markdownPreview.hide();
+            }
+            this.showWelcomeView();
+        });
+    }
+
+    private handleKeyDown(e: KeyboardEvent): void {
+        const ctrl = e.ctrlKey || e.metaKey;
+        const shift = e.shiftKey;
+
+        // Ctrl+N - New tab
+        if (ctrl && !shift && e.key === 'n') {
+            e.preventDefault();
+            this.newTab();
+        }
+        // Ctrl+O - Open file
+        else if (ctrl && !shift && e.key === 'o') {
+            e.preventDefault();
+            this.openFile();
+        }
+        // Ctrl+Shift+O - Open folder
+        else if (ctrl && shift && e.key === 'O') {
+            e.preventDefault();
+            this.openFolder();
+        }
+        // Ctrl+S - Save
+        else if (ctrl && !shift && e.key === 's') {
+            e.preventDefault();
+            this.save();
+        }
+        // Ctrl+Shift+S - Save as
+        else if (ctrl && shift && e.key === 'S') {
+            e.preventDefault();
+            this.saveAs();
+        }
+        // Ctrl+W - Close tab
+        else if (ctrl && !shift && e.key === 'w') {
+            e.preventDefault();
+            this.closeCurrentTab();
+        }
+        // Ctrl+F - Find
+        else if (ctrl && !shift && e.key === 'f') {
+            e.preventDefault();
+            this.searchBar.show(false);
+        }
+        // Ctrl+R - Replace
+        else if (ctrl && !shift && e.key === 'r') {
+            e.preventDefault();
+            this.searchBar.show(true);
+        }
+        // F9 - Toggle sidebar
+        else if (e.key === 'F9') {
+            e.preventDefault();
+            this.toggleSidebar();
+        }
+        // Escape - Close search bar
+        else if (e.key === 'Escape') {
+            this.searchBar.hide();
+        }
+        // Ctrl+Q - Quit
+        else if (ctrl && e.key === 'q') {
+            e.preventDefault();
+            window.mycode.app.quit();
+        }
+    }
+
+    private async newTab(): Promise<void> {
+        this.hideWelcomeView();
+        this.tabManager.createTab();
+        this.editorManager.focus();
+    }
+
+    private async openFile(): Promise<void> {
+        const filePaths = await window.mycode.file.openDialog();
+        if (filePaths && filePaths.length > 0) {
+            for (const filePath of filePaths) {
+                await this.openFileByPath(filePath);
+            }
+        }
+    }
+
+    private async openFileByPath(filePath: string): Promise<void> {
+        this.hideWelcomeView();
+
+        // Check if file is already open
+        const existingTab = this.tabManager.findTabByPath(filePath);
+        if (existingTab) {
+            this.tabManager.activateTab(existingTab.id);
+            return;
+        }
+
+        // Read file content
+        const result = await window.mycode.file.read(filePath);
+        if (result.success && result.content !== undefined) {
+            this.tabManager.createTab(filePath, result.content);
+            this.editorManager.focus();
+        } else {
+            console.error('Failed to open file:', result.error);
+        }
+    }
+
+    private async openFolder(): Promise<void> {
+        const folderPath = await window.mycode.folder.openDialog();
+        if (folderPath) {
+            const tree = await window.mycode.folder.read(folderPath);
+            this.sidebar.addFolder(tree);
+
+            // Save to settings
+            this.settings.openedFolders.push(folderPath);
+            await window.mycode.settings.set('openedFolders', this.settings.openedFolders);
+
+            // Watch for changes
+            await window.mycode.folder.watch(folderPath);
+
+            // Initialize Git integration for this folder
+            await this.initGitForFolder(folderPath);
+        }
+    }
+
+    private async createProjectFolder(): Promise<void> {
+        const folderPath = await window.mycode.folder.createProjectDialog();
+        if (folderPath) {
+            const tree = await window.mycode.folder.read(folderPath);
+            this.sidebar.addFolder(tree);
+
+            // Save to settings
+            this.settings.openedFolders.push(folderPath);
+            await window.mycode.settings.set('openedFolders', this.settings.openedFolders);
+
+            // Watch for changes
+            await window.mycode.folder.watch(folderPath);
+
+            // Initialize Git integration for this folder
+            await this.initGitForFolder(folderPath);
+        }
+    }
+
+    private async initGitForFolder(folderPath: string): Promise<void> {
+        const result = await window.mycode.git.isRepo(folderPath);
+        if (result.isRepo) {
+            this.gitStatusBar.setRepository(result.repoRoot);
+            this.gutterDecorations.setRepoPath(result.repoRoot);
+            this.gitStatusBar.startAutoRefresh(10000); // Refresh every 10 seconds
+        }
+    }
+
+    private async save(): Promise<void> {
+        const currentTab = this.tabManager.getCurrentTab();
+        if (!currentTab) return;
+
+        if (currentTab.filePath) {
+            const content = this.editorManager.getContent();
+            const result = await window.mycode.file.save(currentTab.filePath, content);
+            if (result.success) {
+                this.tabManager.markSaved(currentTab.id);
+            }
+        } else {
+            await this.saveAs();
+        }
+    }
+
+    private async saveAs(): Promise<void> {
+        const content = this.editorManager.getContent();
+        const currentTab = this.tabManager.getCurrentTab();
+        const filePath = await window.mycode.file.saveAs(content, currentTab?.filePath || undefined);
+        if (filePath) {
+            this.tabManager.updateTabPath(currentTab!.id, filePath);
+            this.tabManager.markSaved(currentTab!.id);
+        }
+    }
+
+    private closeCurrentTab(): void {
+        const currentTab = this.tabManager.getCurrentTab();
+        if (currentTab) {
+            this.tabManager.closeTab(currentTab.id);
+            if (this.tabManager.getTabCount() === 0) {
+                // Close markdown preview when no tabs open
+                if (this.markdownPreview.isPreviewVisible()) {
+                    this.markdownPreview.hide();
+                }
+                this.showWelcomeView();
+            }
+        }
+    }
+
+    private toggleSidebar(): void {
+        this.sidebarVisible = !this.sidebarVisible;
+        this.updateSidebarVisibility();
+        window.mycode.settings.set('sidebarVisible', this.sidebarVisible);
+    }
+
+    private updateSidebarVisibility(): void {
+        const sidebar = document.getElementById('sidebar');
+        const resizer = document.getElementById('sidebar-resizer');
+        if (sidebar) {
+            sidebar.style.display = this.sidebarVisible ? 'flex' : 'none';
+        }
+        if (resizer) {
+            resizer.style.display = this.sidebarVisible ? 'block' : 'none';
+        }
+    }
+
+    private onFileSelect(node: TreeNode): void {
+        if (node.type === 'file') {
+            this.openFileByPath(node.path);
+        }
+    }
+
+    private onFolderSelect(node: TreeNode): void {
+        // Toggle folder expansion
+        this.sidebar.toggleFolder(node);
+    }
+
+    private async onFolderRemove(path: string): Promise<void> {
+        // Remove from settings and save
+        this.settings.openedFolders = this.settings.openedFolders.filter(f => f !== path);
+        await window.mycode.settings.set('openedFolders', this.settings.openedFolders);
+        await window.mycode.folder.unwatch(path);
+    }
+
+    private showWelcomeView(): void {
+        const welcomeView = document.getElementById('welcome-view');
+        const editorArea = document.getElementById('editor-area');
+        if (welcomeView) welcomeView.style.display = 'flex';
+        if (editorArea) editorArea.style.display = 'none';
+    }
+
+    private hideWelcomeView(): void {
+        const welcomeView = document.getElementById('welcome-view');
+        const editorArea = document.getElementById('editor-area');
+        if (welcomeView) welcomeView.style.display = 'none';
+        if (editorArea) editorArea.style.display = 'flex';
+    }
+
+    private async restoreSession(): Promise<void> {
+        // Restore folders
+        for (const folderPath of this.settings.openedFolders) {
+            try {
+                const tree = await window.mycode.folder.read(folderPath);
+                this.sidebar.addFolder(tree);
+                await window.mycode.folder.watch(folderPath);
+                // Initialize Git integration for this folder
+                await this.initGitForFolder(folderPath);
+            } catch (e) {
+                console.warn('Failed to restore folder:', folderPath);
+            }
+        }
+
+        // Restore files
+        for (const file of this.settings.openedFiles) {
+            try {
+                await this.openFileByPath(file.uri);
+            } catch (e) {
+                console.warn('Failed to restore file:', file.uri);
+            }
+        }
+
+        // Focus last document
+        if (this.settings.focusedDocument) {
+            const tab = this.tabManager.findTabByPath(this.settings.focusedDocument);
+            if (tab) {
+                this.tabManager.activateTab(tab.id);
+            }
+        }
+
+        // Show welcome if no files open
+        if (this.tabManager.getTabCount() === 0) {
+            this.showWelcomeView();
+        }
+    }
+}
