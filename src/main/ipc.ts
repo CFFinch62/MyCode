@@ -32,10 +32,6 @@ export function setupIpcHandlers(
     ipcMain.handle(IPC_CHANNELS.FILE_OPEN_DIALOG, async () => {
         const result = await dialog.showOpenDialog(mainWindow, {
             properties: ['openFile', 'multiSelections'],
-            filters: [
-                { name: 'All Files', extensions: ['*'] },
-                { name: 'Text Files', extensions: ['txt', 'md', 'json', 'js', 'ts', 'html', 'css'] },
-            ],
         });
         return result.canceled ? null : result.filePaths;
     });
@@ -195,6 +191,10 @@ export function setupIpcHandlers(
 
     ipcMain.handle(IPC_CHANNELS.GIT_GET_FILE_DIFF, async (_event, repoPath: string, filePath: string) => {
         return await gitService.getFileDiff(repoPath, filePath);
+    });
+
+    ipcMain.handle(IPC_CHANNELS.GIT_GET_FILE_FROM_HEAD, async (_event, repoPath: string, filePath: string) => {
+        return await gitService.getFileFromHead(repoPath, filePath);
     });
 
     ipcMain.handle(IPC_CHANNELS.GIT_STAGE_FILE, async (_event, repoPath: string, filePath: string) => {

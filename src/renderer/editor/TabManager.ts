@@ -7,12 +7,18 @@ import { EditorManager } from './EditorManager';
 import { DocumentTab } from '../../shared/types';
 import * as path from 'path';
 
+declare const monaco: typeof import('monaco-editor');
+
 export class TabManager {
     private tabs: Map<string, DocumentTab> = new Map();
     private activeTabId: string | null = null;
     private editorManager: EditorManager;
     private tabContainer: HTMLElement;
     private untitledCounter = 1;
+    // Diff editor support
+    private diffEditor: any = null;
+    private diffContainer: HTMLElement | null = null;
+    private diffModels: Map<string, { original: any; modified: any }> = new Map();
 
     constructor(editorManager: EditorManager) {
         this.editorManager = editorManager;
@@ -21,9 +27,39 @@ export class TabManager {
         // Listen for content changes to mark tab dirty
         document.addEventListener('editor-content-changed', () => {
             if (this.activeTabId) {
-                this.markDirty(this.activeTabId);
+                const tab = this.tabs.get(this.activeTabId);
+                // Only mark dirty for normal tabs
+                if (tab && tab.type !== 'diff') {
+                    this.markDirty(this.activeTabId);
+                }
             }
         });
+
+        // Initialize diff editor container
+        this.initDiffEditor();
+    }
+
+    private initDiffEditor(): void {
+        const editorArea = document.getElementById('editor-area');
+        if (!editorArea) return;
+
+        // Create diff container (hidden by default)
+        this.diffContainer = document.createElement('div');
+        this.diffContainer.id = 'diff-editor-container';
+        this.diffContainer.className = 'editor-container';
+        this.diffContainer.style.display = 'none';
+        editorArea.appendChild(this.diffContainer);
+
+        // Create the diff editor
+        if (typeof monaco !== 'undefined') {
+            this.diffEditor = monaco.editor.createDiffEditor(this.diffContainer, {
+                automaticLayout: true,
+                readOnly: true,
+                renderSideBySide: true,
+                minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+            });
+        }
     }
 
     createTab(filePath?: string, content: string = ''): DocumentTab {
@@ -37,8 +73,9 @@ export class TabManager {
             title,
             content,
             isDirty: false,
-            cursorPosition: 0,
+            cursorPosition: { line: 1, column: 1 },
             language,
+            type: 'normal',
         };
 
         this.tabs.set(id, tab);
@@ -48,20 +85,95 @@ export class TabManager {
         return tab;
     }
 
+    /**
+     * Create a diff tab to compare two pieces of content
+     */
+    createDiffTab(original: string, modified: string, options: { title: string; language?: string }): DocumentTab {
+        const id = this.generateId();
+
+        const tab: DocumentTab = {
+            id,
+            filePath: null,
+            title: `⇄ ${options.title}`,
+            content: '',
+            isDirty: false,
+            cursorPosition: { line: 1, column: 1 },
+            language: options.language || 'plaintext',
+            type: 'diff',
+            diffData: {
+                original,
+                modified,
+                language: options.language || 'plaintext',
+            },
+        };
+
+        // Hide welcome view and show editor area (in case no tabs were open)
+        const welcomeView = document.getElementById('welcome-view');
+        const editorArea = document.getElementById('editor-area');
+        if (welcomeView) welcomeView.style.display = 'none';
+        if (editorArea) editorArea.style.display = 'flex';
+
+        this.tabs.set(id, tab);
+        this.renderTab(tab);
+        this.activateTab(id);
+
+        return tab;
+    }
+
     activateTab(id: string): void {
-        // Save current tab state
+        const editorContainer = document.getElementById('editor-container');
+
+        // Save current tab state (only for normal tabs)
         if (this.activeTabId && this.tabs.has(this.activeTabId)) {
             const currentTab = this.tabs.get(this.activeTabId)!;
-            currentTab.content = this.editorManager.getContent();
-            currentTab.cursorPosition = this.editorManager.getCursorPosition();
+            if (currentTab.type !== 'diff') {
+                currentTab.content = this.editorManager.getContent();
+                currentTab.cursorPosition = this.editorManager.getCursorPosition();
+            }
         }
 
         // Update active tab
         this.activeTabId = id;
         const tab = this.tabs.get(id);
+
         if (tab) {
-            this.editorManager.setContent(tab.content, tab.language);
-            this.editorManager.setCursorPosition(tab.cursorPosition);
+            if (tab.type === 'diff' && tab.diffData) {
+                // Show diff editor, hide normal editor
+                if (editorContainer) editorContainer.style.display = 'none';
+                if (this.diffContainer) this.diffContainer.style.display = 'block';
+
+                // Set diff models
+                if (this.diffEditor && tab.diffData) {
+                    // Get or create models for this diff tab
+                    let models = this.diffModels.get(id);
+                    if (!models) {
+                        models = {
+                            original: monaco.editor.createModel(tab.diffData.original, tab.diffData.language),
+                            modified: monaco.editor.createModel(tab.diffData.modified, tab.diffData.language)
+                        };
+                        this.diffModels.set(id, models);
+                    }
+                    this.diffEditor.setModel({
+                        original: models.original,
+                        modified: models.modified
+                    });
+
+                    // Force layout refresh after container becomes visible
+                    // Use requestAnimationFrame to ensure DOM has updated
+                    requestAnimationFrame(() => {
+                        if (this.diffEditor) {
+                            this.diffEditor.layout();
+                        }
+                    });
+                }
+            } else {
+                // Show normal editor, hide diff editor
+                if (editorContainer) editorContainer.style.display = 'block';
+                if (this.diffContainer) this.diffContainer.style.display = 'none';
+
+                this.editorManager.setContent(tab.content, tab.language);
+                this.editorManager.setCursorPosition(tab.cursorPosition);
+            }
         }
 
         // Update tab UI
@@ -71,6 +183,16 @@ export class TabManager {
     closeTab(id: string): void {
         const tab = this.tabs.get(id);
         if (!tab) return;
+
+        // Clean up diff models if this is a diff tab
+        if (tab.type === 'diff') {
+            const models = this.diffModels.get(id);
+            if (models) {
+                models.original.dispose();
+                models.modified.dispose();
+                this.diffModels.delete(id);
+            }
+        }
 
         // TODO: Check for unsaved changes and prompt
 
@@ -84,6 +206,10 @@ export class TabManager {
                 this.activateTab(remainingTabs[remainingTabs.length - 1]);
             } else {
                 this.activeTabId = null;
+                // Hide diff editor, show normal editor
+                const editorContainer = document.getElementById('editor-container');
+                if (editorContainer) editorContainer.style.display = 'block';
+                if (this.diffContainer) this.diffContainer.style.display = 'none';
                 this.editorManager.setContent('');
                 // Dispatch event so App can handle showing welcome view and closing preview
                 document.dispatchEvent(new CustomEvent('all-tabs-closed'));
@@ -248,5 +374,80 @@ export class TabManager {
         };
 
         return languageMap[ext] || 'plaintext';
+    }
+
+    // ===== Plugin API Methods =====
+
+    /**
+     * Get the file path of the active tab
+     */
+    getActiveFilePath(): string | null {
+        const tab = this.getCurrentTab();
+        return tab?.filePath || null;
+    }
+
+    /**
+     * Get list of all open file paths
+     */
+    getOpenFiles(): string[] {
+        const files: string[] = [];
+        for (const tab of this.tabs.values()) {
+            if (tab.filePath) {
+                files.push(tab.filePath);
+            }
+        }
+        return files;
+    }
+
+    /**
+     * Get all open tabs with their info
+     */
+    getAllTabs(): Array<{ id: string; filePath: string | null; title: string; isDirty: boolean; language: string }> {
+        return Array.from(this.tabs.values()).map(tab => ({
+            id: tab.id,
+            filePath: tab.filePath,
+            title: tab.title,
+            isDirty: tab.isDirty,
+            language: tab.language
+        }));
+    }
+
+    /**
+     * Get the active tab ID
+     */
+    getActiveTabId(): string | null {
+        return this.activeTabId;
+    }
+
+    /**
+     * Open a file in a new or existing tab (returns the tab)
+     * Note: This doesn't load the file content - that's handled by App.ts
+     * This is a synchronous method that returns an existing tab if found
+     */
+    openFile(filePath: string): DocumentTab | null {
+        // Check if already open
+        const existingTab = this.findTabByPath(filePath);
+        if (existingTab) {
+            this.activateTab(existingTab.id);
+            return existingTab;
+        }
+        return null; // App.ts handles loading new files
+    }
+
+    /**
+     * Check if a file is already open
+     */
+    isFileOpen(filePath: string): boolean {
+        return this.findTabByPath(filePath) !== null;
+    }
+
+    /**
+     * Get current content and sync it with the active tab
+     */
+    syncActiveTabContent(): void {
+        if (this.activeTabId && this.tabs.has(this.activeTabId)) {
+            const currentTab = this.tabs.get(this.activeTabId)!;
+            currentTab.content = this.editorManager.getContent();
+        }
     }
 }

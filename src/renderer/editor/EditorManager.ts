@@ -336,21 +336,100 @@ export class EditorManager {
         }
     }
 
+    getLanguage(): string {
+        const model = this.editor.getModel();
+        return model?.getLanguageId() || 'plaintext';
+    }
+
     focus(): void {
         this.editor.focus();
     }
 
-    getCursorPosition(): number {
-        return this.editor.getModel()?.getOffsetAt(this.editor.getPosition()) || 0;
+    getCursorPosition(): { line: number; column: number } {
+        const pos = this.editor.getPosition();
+        return pos ? { line: pos.lineNumber, column: pos.column } : { line: 1, column: 1 };
     }
 
-    setCursorPosition(offset: number): void {
-        const model = this.editor.getModel();
-        if (model) {
-            const position = model.getPositionAt(offset);
-            this.editor.setPosition(position);
-            this.editor.revealPositionInCenter(position);
+    setCursorPosition(position: { line: number; column: number }): void {
+        this.editor.setPosition({ lineNumber: position.line, column: position.column });
+        this.editor.revealPositionInCenter({ lineNumber: position.line, column: position.column });
+    }
+
+    getSelection(): { start: { line: number; column: number }; end: { line: number; column: number } } {
+        const sel = this.editor.getSelection();
+        if (!sel) {
+            return { start: { line: 1, column: 1 }, end: { line: 1, column: 1 } };
         }
+        return {
+            start: { line: sel.startLineNumber, column: sel.startColumn },
+            end: { line: sel.endLineNumber, column: sel.endColumn }
+        };
+    }
+
+    setSelection(selection: { start: { line: number; column: number }; end: { line: number; column: number } }): void {
+        this.editor.setSelection({
+            startLineNumber: selection.start.line,
+            startColumn: selection.start.column,
+            endLineNumber: selection.end.line,
+            endColumn: selection.end.column
+        });
+    }
+
+    getSelectedText(): string {
+        const model = this.editor.getModel();
+        const selection = this.editor.getSelection();
+        if (!model || !selection) return '';
+        return model.getValueInRange(selection);
+    }
+
+    replaceSelection(text: string): void {
+        const selection = this.editor.getSelection();
+        if (selection) {
+            this.editor.executeEdits('plugin', [{
+                range: selection,
+                text: text
+            }]);
+        }
+    }
+
+    addDecoration(options: {
+        range: { startLine: number; startColumn: number; endLine: number; endColumn: number };
+        className?: string;
+        hoverMessage?: string;
+        glyphMarginClassName?: string;
+        isWholeLine?: boolean;
+        inlineClassName?: string;
+    }): string {
+        const decorations = this.editor.deltaDecorations([], [{
+            range: new monaco.Range(
+                options.range.startLine,
+                options.range.startColumn,
+                options.range.endLine,
+                options.range.endColumn
+            ),
+            options: {
+                className: options.className,
+                hoverMessage: options.hoverMessage ? { value: options.hoverMessage } : undefined,
+                glyphMarginClassName: options.glyphMarginClassName,
+                isWholeLine: options.isWholeLine,
+                inlineClassName: options.inlineClassName
+            }
+        }]);
+        return decorations[0];
+    }
+
+    removeDecoration(decorationId: string): void {
+        if (decorationId) {
+            this.editor.deltaDecorations([decorationId], []);
+        }
+    }
+
+    revealLine(line: number): void {
+        this.editor.revealLineInCenter(line);
+    }
+
+    getMonacoEditor(): any {
+        return this.editor;
     }
 
     getEditor(): any {

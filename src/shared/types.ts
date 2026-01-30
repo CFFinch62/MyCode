@@ -25,6 +25,7 @@ export interface Settings {
     useSystemFont: boolean;
     font: string;
     fontSize: number;
+    formatOnSave: boolean;
 
     // Search settings
     cyclicSearch: boolean;
@@ -69,6 +70,7 @@ export const DEFAULT_SETTINGS: Settings = {
     useSystemFont: true,
     font: 'monospace',
     fontSize: 14,
+    formatOnSave: true,
 
     cyclicSearch: false,
     wholeWordSearch: false,
@@ -100,8 +102,15 @@ export interface DocumentTab {
     title: string;
     content: string;
     isDirty: boolean;
-    cursorPosition: number;
+    cursorPosition: { line: number; column: number };
     language: string;
+    // Diff tab support
+    type?: 'normal' | 'diff';
+    diffData?: {
+        original: string;
+        modified: string;
+        language: string;
+    };
 }
 
 // Navigation mark for jumping between code locations

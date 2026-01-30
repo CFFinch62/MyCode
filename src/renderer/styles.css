@@ -92,7 +92,7 @@ body {
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .sidebar-header {
@@ -826,6 +826,148 @@ body {
   border-color: var(--accent-hover);
 }
 
+/* ===== Plugin Manager Dialog ===== */
+.plugin-manager-dialog {
+  min-width: 550px;
+  max-width: 650px;
+  max-height: 70vh;
+}
+
+.plugin-manager-content {
+  padding: 0;
+}
+
+.plugin-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.plugin-loading {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.plugin-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.plugin-item:last-child {
+  border-bottom: none;
+}
+
+.plugin-icon {
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.plugin-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.plugin-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.plugin-version {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: 8px;
+}
+
+.plugin-description {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.plugin-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.plugin-status-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.plugin-status-badge.active {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.plugin-status-badge.enabled {
+  background: rgba(0, 123, 255, 0.2);
+  color: #007bff;
+}
+
+.plugin-status-badge.disabled {
+  background: rgba(108, 117, 125, 0.2);
+  color: #6c757d;
+}
+
+.plugin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plugin-toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  background: var(--text-muted);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.plugin-toggle.enabled {
+  background: var(--accent-color);
+}
+
+.plugin-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.plugin-toggle.enabled::after {
+  transform: translateX(18px);
+}
+
+.no-plugins {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
 /* ===== Markdown Preview ===== */
 #editor-area.split-view {
   display: flex;
@@ -1398,4 +1540,362 @@ body {
 
 .branch-create-new:hover {
   background: var(--bg-tertiary);
+}
+
+/* ===== Plugin UI Components ===== */
+
+/* Sidebar Tabs */
+.sidebar-tabs {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-tertiary);
+  border-right: 1px solid var(--border-color);
+  padding: 4px 0;
+}
+
+.sidebar-tab-btn {
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.sidebar-tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.sidebar-tab-btn.active {
+  color: var(--accent-color);
+  border-left-color: var(--accent-color);
+  background: var(--bg-secondary);
+}
+
+.sidebar-panels {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-panel {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar-panel.active {
+  display: flex;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 8px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  min-height: 24px;
+}
+
+.status-bar-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-bar-left {
+  justify-content: flex-start;
+}
+
+.status-bar-right {
+  justify-content: flex-end;
+}
+
+.status-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: default;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.status-bar-item.clickable {
+  cursor: pointer;
+}
+
+.status-bar-item.clickable:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.status-bar-item .icon {
+  font-size: 12px;
+}
+
+/* Git status inline (moved from git-status-bar) */
+.git-status-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Bottom Panel Area */
+.bottom-panel-area {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  min-height: 150px;
+  max-height: 50vh;
+  height: 200px;
+  position: relative;
+}
+
+.bottom-panel-area.hidden {
+  display: none;
+}
+
+.bottom-panel-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 8px;
+}
+
+.bottom-tab-btn {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.bottom-tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.bottom-tab-btn.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+.bottom-panel-content {
+  flex: 1;
+  overflow: auto;
+  padding: 8px;
+}
+
+.bottom-resizer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  cursor: ns-resize;
+  background: transparent;
+}
+
+.bottom-resizer:hover {
+  background: var(--accent-color);
+}
+
+/* Plugin Notifications */
+.plugin-notification {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  z-index: 10000;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: notificationSlideIn 0.3s ease;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+@keyframes notificationSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes notificationSlideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.plugin-notification-info {
+  background: var(--accent-color);
+  color: white;
+}
+
+.plugin-notification-success {
+  background: var(--success-color);
+  color: white;
+}
+
+.plugin-notification-warning {
+  background: #f57c00;
+  color: white;
+}
+
+.plugin-notification-error {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* Plugin Input Box Dialog */
+.plugin-input-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+  z-index: 10000;
+}
+
+.plugin-input-dialog {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  width: 500px;
+  max-width: 90vw;
+}
+
+.plugin-input-header {
+  padding: 16px 20px 8px;
+}
+
+.plugin-input-header h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.plugin-input-header p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.plugin-input-content {
+  padding: 8px 20px 16px;
+}
+
+.plugin-input-content input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+}
+
+.plugin-input-content input:focus {
+  border-color: var(--accent-color);
+}
+
+.plugin-input-content .validation-error {
+  color: var(--danger-color);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.plugin-input-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Diff Viewer */
+.plugin-diff-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9000;
+}
+
+.plugin-diff-dialog {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  width: 90vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.plugin-diff-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.plugin-diff-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.plugin-diff-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.plugin-diff-content .monaco-diff-editor {
+  height: 100%;
 }

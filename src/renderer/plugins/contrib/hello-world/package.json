@@ -1,0 +1,36 @@
+{
+    "name": "mycode-hello-world",
+    "version": "2.0.0",
+    "displayName": "Hello World",
+    "description": "A test plugin demonstrating MyCode plugin UI features",
+    "author": "MyCode Team",
+    "mycode": {
+        "activationEvents": ["onStartup"],
+        "renderer": "renderer.js",
+        "contributes": {
+            "commands": [
+                {
+                    "id": "hello-world.sayHello",
+                    "title": "Say Hello",
+                    "category": "Hello World"
+                },
+                {
+                    "id": "hello-world.showInfo",
+                    "title": "Show Editor Info",
+                    "category": "Hello World"
+                },
+                {
+                    "id": "hello-world.showInputBox",
+                    "title": "Show Input Box Demo",
+                    "category": "Hello World"
+                },
+                {
+                    "id": "hello-world.showDiff",
+                    "title": "Show Diff Demo",
+                    "category": "Hello World"
+                }
+            ]
+        }
+    }
+}
+

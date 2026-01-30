@@ -71,6 +71,7 @@ export const IPC_CHANNELS = {
     GIT_INIT: 'git:init',
     GIT_GET_STATUS: 'git:get-status',
     GIT_GET_FILE_DIFF: 'git:get-file-diff',
+    GIT_GET_FILE_FROM_HEAD: 'git:get-file-from-head',
     GIT_STAGE_FILE: 'git:stage-file',
     GIT_UNSTAGE_FILE: 'git:unstage-file',
     GIT_STAGE_ALL: 'git:stage-all',
@@ -86,6 +87,25 @@ export const IPC_CHANNELS = {
     MENU_GIT_COMMIT: 'menu:git-commit',
     MENU_GIT_PUSH: 'menu:git-push',
     MENU_GIT_PULL: 'menu:git-pull',
+
+    // Menu actions for Plugins
+    MENU_PLUGIN_MANAGER: 'menu:plugin-manager',
+
+    // Plugin operations
+    PLUGIN_LIST: 'plugin:list',
+    PLUGIN_GET_INFO: 'plugin:get-info',
+    PLUGIN_LOAD: 'plugin:load',
+    PLUGIN_UNLOAD: 'plugin:unload',
+    PLUGIN_ENABLE: 'plugin:enable',
+    PLUGIN_DISABLE: 'plugin:disable',
+    PLUGIN_RELOAD: 'plugin:reload',
+    PLUGIN_GET_SETTINGS: 'plugin:get-settings',
+    PLUGIN_SET_SETTINGS: 'plugin:set-settings',
+    PLUGIN_INVOKE_MAIN: 'plugin:invoke-main',
+    PLUGIN_INVOKE_RENDERER: 'plugin:invoke-renderer',
+    PLUGIN_EVENT: 'plugin:event',
+    PLUGIN_READY: 'plugin:ready',
+    PLUGIN_ERROR: 'plugin:error',
 } as const;
 
 export type IpcChannel = typeof IPC_CHANNELS[keyof typeof IPC_CHANNELS];

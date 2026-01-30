@@ -14,15 +14,25 @@
   <div id="app">
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        <h2>Projects</h2>
-        <button id="btn-add-folder" class="icon-btn" title="Add Folder">+</button>
+      <div class="sidebar-tabs">
+        <button class="sidebar-tab-btn active" data-panel="files" title="Files">📁</button>
+        <!-- Plugin sidebar tabs will be added here -->
       </div>
-      <div id="folder-tree" class="folder-tree">
-        <div class="empty-state">
-          <p>No folders open</p>
-          <button id="btn-open-folder">Open Folder</button>
+      <div class="sidebar-panels">
+        <!-- Files Panel (default) -->
+        <div id="sidebar-panel-files" class="sidebar-panel active">
+          <div class="sidebar-header">
+            <h2>Projects</h2>
+            <button id="btn-add-folder" class="icon-btn" title="Add Folder">+</button>
+          </div>
+          <div id="folder-tree" class="folder-tree">
+            <div class="empty-state">
+              <p>No folders open</p>
+              <button id="btn-open-folder">Open Folder</button>
+            </div>
+          </div>
         </div>
+        <!-- Plugin sidebar panels will be added here -->
       </div>
     </aside>
 
@@ -89,8 +99,28 @@
         </div>
       </div>
 
-      <!-- Git Status Bar -->
-      <div id="git-status-bar" class="git-status-bar"></div>
+      <!-- Bottom Panel Area (for terminal, plugin panels) -->
+      <div id="bottom-panel-area" class="bottom-panel-area hidden">
+        <div class="bottom-panel-tabs">
+          <button class="bottom-tab-btn active" data-panel="terminal">Terminal</button>
+          <!-- Plugin bottom tabs will be added here -->
+        </div>
+        <div id="bottom-panel-content" class="bottom-panel-content">
+          <!-- Bottom panel content will be rendered here -->
+        </div>
+        <div id="bottom-panel-resizer" class="bottom-resizer"></div>
+      </div>
+
+      <!-- Status Bar -->
+      <div id="status-bar" class="status-bar">
+        <div id="status-bar-left" class="status-bar-section status-bar-left">
+          <!-- Git status bar items -->
+          <div id="git-status-bar" class="git-status-inline"></div>
+        </div>
+        <div id="status-bar-right" class="status-bar-section status-bar-right">
+          <!-- Plugin status bar items will be added here -->
+        </div>
+      </div>
     </main>
   </div>
 
@@ -265,6 +295,32 @@
         <button id="prefs-save" class="text-btn primary">Save</button>
       </div>
     </div>
+  </div>
+
+  <!-- Plugin Manager Dialog -->
+  <div id="plugin-manager-overlay" class="modal-overlay hidden">
+    <div class="modal-dialog plugin-manager-dialog">
+      <div class="modal-header">
+        <h2>Plugin Manager</h2>
+        <button id="plugin-manager-close" class="icon-btn">×</button>
+      </div>
+
+      <div class="modal-content plugin-manager-content">
+        <div id="plugin-list" class="plugin-list">
+          <!-- Plugins will be populated dynamically -->
+          <div class="plugin-loading">Loading plugins...</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="plugin-manager-done" class="text-btn primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plugin Context Menu -->
+  <div id="plugin-context-menu" class="context-menu hidden">
+    <button data-action="disable-plugin">Disable Plugin</button>
   </div>
 
   <!-- Monaco Editor AMD loader (local) -->

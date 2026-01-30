@@ -11,12 +11,16 @@ import { GitService } from './services/gitService';
 import { createMenu } from './menu';
 import { setupIpcHandlers } from './ipc';
 import { Settings } from '../shared/types';
+import { PluginManager, PluginLoader, PluginIPC } from './plugins';
 
 // Keep a global reference of the window object
 let mainWindow: BrowserWindow | null = null;
 let fileService: FileService;
 let settingsService: SettingsService;
 let gitService: GitService;
+let pluginManager: PluginManager;
+let pluginLoader: PluginLoader;
+let pluginIPC: PluginIPC;
 
 async function createWindow(): Promise<void> {
     // Initialize services
@@ -24,6 +28,14 @@ async function createWindow(): Promise<void> {
     await settingsService.load();
     fileService = new FileService();
     gitService = new GitService();
+
+    // Initialize plugin system
+    pluginManager = new PluginManager();
+    pluginLoader = new PluginLoader();
+    pluginIPC = new PluginIPC(pluginManager, pluginLoader);
+
+    await pluginManager.initialize();
+    pluginIPC.setup();
 
     // Initialize PTY service
     const { ptyService } = require('./services/ptyService');
@@ -123,4 +135,4 @@ process.on('uncaughtException', (error) => {
     console.error('Uncaught exception:', error);
 });
 
-export { mainWindow, fileService, settingsService, gitService };
+export { mainWindow, fileService, settingsService, gitService, pluginManager, pluginLoader };

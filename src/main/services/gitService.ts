@@ -168,6 +168,22 @@ export class GitService {
     }
 
     /**
+     * Get file content from HEAD (last committed version)
+     */
+    async getFileFromHead(repoPath: string, filePath: string): Promise<{ success: boolean; content?: string; error?: string }> {
+        try {
+            const git = this.getGit(repoPath);
+            const relativePath = path.relative(repoPath, filePath);
+
+            // Use git show to get file content from HEAD
+            const content = await git.show([`HEAD:${relativePath}`]);
+            return { success: true, content };
+        } catch (error: any) {
+            return { success: false, error: error.message };
+        }
+    }
+
+    /**
      * Parse diff output to extract line change information
      */
     private parseDiffForLines(diffOutput: string): GitLineDiff[] {

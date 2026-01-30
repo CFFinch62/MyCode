@@ -140,6 +140,12 @@ export function createMenu(mainWindow: BrowserWindow): Menu {
                     click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_TOGGLE_TERMINAL),
                 },
                 { type: 'separator' },
+                {
+                    label: 'Plugin Manager',
+                    accelerator: 'CmdOrCtrl+Shift+P',
+                    click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_PLUGIN_MANAGER),
+                },
+                { type: 'separator' },
                 { role: 'resetZoom', accelerator: 'CmdOrCtrl+0' },
                 { role: 'zoomIn', accelerator: 'CmdOrCtrl+Plus' },
                 { role: 'zoomOut', accelerator: 'CmdOrCtrl+-' },

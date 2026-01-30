@@ -14,6 +14,8 @@ import { GitStatusBar } from './git/GitStatusBar';
 import { GutterDecorations } from './git/GutterDecorations';
 import { CommitDialog } from './git/CommitDialog';
 import { Settings, DocumentTab, TreeNode } from '../shared/types';
+import { PluginLoader, PluginRegistry, triggerHook, triggerAsyncHook, formatDocument, runLinters } from './plugins';
+import { PluginManagerDialog } from './plugins/PluginManagerDialog';
 
 declare const monaco: typeof import('monaco-editor');
 
@@ -30,6 +32,11 @@ export class App {
     private commitDialog!: CommitDialog;
     private settings!: Settings;
     private sidebarVisible = true;
+
+    // Plugin system
+    private pluginRegistry!: PluginRegistry;
+    private pluginLoader!: PluginLoader;
+    private pluginManagerDialog!: PluginManagerDialog;
 
     async init(): Promise<void> {
         // Load settings
@@ -66,6 +73,14 @@ export class App {
         };
         this.gutterDecorations.setEditor(this.editorManager.getEditor());
 
+        // Initialize plugin system
+        this.pluginRegistry = new PluginRegistry();
+        this.pluginLoader = new PluginLoader(this.pluginRegistry);
+        this.pluginLoader.initialize(this.editorManager, this.tabManager);
+        this.pluginManagerDialog = new PluginManagerDialog((pluginId, enabled) => {
+            this.handlePluginStateChange(pluginId, enabled);
+        });
+
         // Apply initial theme
         this.applyTheme();
 
@@ -80,6 +95,9 @@ export class App {
 
         // Restore previous session
         await this.restoreSession();
+
+        // Load startup plugins
+        await this.pluginLoader.loadStartupPlugins();
 
         console.log('MyCode initialized');
     }
@@ -102,6 +120,7 @@ export class App {
         window.mycode.onMenuEvent.gitCommit(() => this.showCommitDialog());
         window.mycode.onMenuEvent.gitPush(() => this.gitPush());
         window.mycode.onMenuEvent.gitPull(() => this.gitPull());
+        window.mycode.onMenuEvent.pluginManager(() => this.showPluginManager());
     }
 
     private showCommitDialog(): void {
@@ -160,6 +179,57 @@ export class App {
         this.preferencesDialog.show();
     }
 
+    private showPluginManager(): void {
+        this.pluginManagerDialog.show();
+    }
+
+    private async handlePluginStateChange(pluginId: string, enabled: boolean): Promise<void> {
+        if (!enabled) {
+            // Unregister the plugin from the registry (removes UI contributions)
+            this.pluginRegistry.unregister(pluginId);
+
+            // Remove sidebar tab for this plugin if exists
+            const sidebarTab = document.querySelector(`.sidebar-tab-btn[data-plugin="${pluginId}"]`);
+            if (sidebarTab) {
+                sidebarTab.remove();
+            }
+            const sidebarPanel = document.querySelector(`.sidebar-panel[data-plugin="${pluginId}"]`);
+            if (sidebarPanel) {
+                sidebarPanel.remove();
+            }
+
+            // Remove status bar items for this plugin
+            document.querySelectorAll(`.status-bar-item[data-plugin="${pluginId}"]`).forEach(item => {
+                item.remove();
+            });
+
+            // Switch back to files panel
+            this.switchToFilesPanel();
+        } else {
+            // Plugin was enabled - activate it immediately
+            try {
+                const plugins = await window.mycode.plugins.list();
+                const plugin = plugins.find(p => p.id === pluginId);
+                if (plugin && plugin.enabled && !this.pluginRegistry.isActive(pluginId)) {
+                    await this.pluginLoader.loadPlugin(plugin);
+                }
+            } catch (error) {
+                console.error(`[App] Failed to activate plugin ${pluginId}:`, error);
+            }
+        }
+    }
+
+    private switchToFilesPanel(): void {
+        // Switch to files panel in sidebar
+        document.querySelectorAll('.sidebar-tab-btn').forEach(btn => {
+            const isFilesTab = (btn as HTMLElement).dataset.panel === 'files';
+            btn.classList.toggle('active', isFilesTab);
+        });
+        document.querySelectorAll('.sidebar-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.id === 'sidebar-panel-files');
+        });
+    }
+
     private applySettings(newSettings: Partial<Settings>): void {
         // Update local settings
         this.settings = { ...this.settings, ...newSettings };
@@ -193,6 +263,9 @@ export class App {
         document.getElementById('btn-add-folder')?.addEventListener('click', () => this.openFolder());
         document.getElementById('btn-new-tab')?.addEventListener('click', () => this.newTab());
 
+        // Sidebar tab switching
+        this.setupSidebarTabs();
+
         // Sidebar resizer
         const resizer = document.getElementById('sidebar-resizer');
         if (resizer) {
@@ -217,10 +290,19 @@ export class App {
         // Global keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
 
-        // Update markdown preview on editor content change
+        // Update markdown preview and trigger plugin hooks on editor content change
         document.addEventListener('editor-content-changed', () => {
             if (this.markdownPreview.isPreviewVisible()) {
                 this.markdownPreview.onContentChanged(this.editorManager.getContent());
+            }
+
+            // Trigger content change hook for plugins
+            const currentTab = this.tabManager.getCurrentTab();
+            if (currentTab) {
+                triggerHook('editor:contentChange', {
+                    path: currentTab.filePath,
+                    language: this.editorManager.getLanguage()
+                });
             }
         });
 
@@ -230,6 +312,82 @@ export class App {
                 this.markdownPreview.hide();
             }
             this.showWelcomeView();
+        });
+    }
+
+    private setupSidebarTabs(): void {
+        // Setup click handlers for all sidebar tabs (including the built-in Files tab)
+        const sidebarTabs = document.querySelector('.sidebar-tabs');
+        if (!sidebarTabs) return;
+
+        sidebarTabs.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            if (!target.classList.contains('sidebar-tab-btn')) return;
+
+            const panelId = target.dataset.panel;
+            if (!panelId) return;
+
+            // Deactivate all tabs and panels
+            document.querySelectorAll('.sidebar-tab-btn').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sidebar-panel').forEach(p => p.classList.remove('active'));
+
+            // Activate clicked tab and corresponding panel
+            target.classList.add('active');
+            const panel = document.getElementById(`sidebar-panel-${panelId}`);
+            if (panel) {
+                panel.classList.add('active');
+            }
+        });
+
+        // Add context menu for plugin tabs
+        this.setupPluginContextMenu();
+    }
+
+    private setupPluginContextMenu(): void {
+        const contextMenu = document.getElementById('plugin-context-menu');
+        if (!contextMenu) return;
+
+        let currentPluginId: string | null = null;
+
+        // Handle right-click on sidebar tabs
+        document.querySelector('.sidebar-tabs')?.addEventListener('contextmenu', (e) => {
+            const target = (e.target as HTMLElement).closest('.sidebar-tab-btn') as HTMLElement;
+            if (!target) return;
+
+            // Only show context menu for plugin tabs (those with data-plugin attribute)
+            const pluginId = target.dataset.plugin;
+            if (!pluginId) return;
+
+            e.preventDefault();
+            currentPluginId = pluginId;
+
+            // Position and show context menu
+            contextMenu.style.left = `${(e as MouseEvent).clientX}px`;
+            contextMenu.style.top = `${(e as MouseEvent).clientY}px`;
+            contextMenu.classList.remove('hidden');
+        });
+
+        // Hide context menu on click elsewhere (but not on the menu itself)
+        document.addEventListener('click', (e) => {
+            // Don't hide if clicking inside the context menu
+            if (contextMenu.contains(e.target as Node)) {
+                return;
+            }
+            contextMenu.classList.add('hidden');
+            currentPluginId = null;
+        });
+
+        // Handle context menu action
+        contextMenu.querySelector('[data-action="disable-plugin"]')?.addEventListener('click', async (e) => {
+            e.stopPropagation(); // Prevent document click handler from running
+            const pluginIdToDisable = currentPluginId; // Capture before clearing
+            contextMenu.classList.add('hidden');
+            currentPluginId = null;
+
+            if (pluginIdToDisable) {
+                await window.mycode.plugins.disable(pluginIdToDisable);
+                await this.handlePluginStateChange(pluginIdToDisable, false);
+            }
         });
     }
 
@@ -323,6 +481,17 @@ export class App {
         if (result.success && result.content !== undefined) {
             this.tabManager.createTab(filePath, result.content);
             this.editorManager.focus();
+
+            // Trigger plugin hooks
+            triggerHook('workspace:fileOpen', {
+                path: filePath,
+                language: this.editorManager.getLanguage()
+            });
+
+            // Load plugins that activate on this file type
+            const language = this.editorManager.getLanguage();
+            this.pluginLoader.loadPluginsForEvent(`onLanguage:${language}`);
+            this.pluginLoader.loadPluginsForEvent(`onFileOpen:*`);
         } else {
             console.error('Failed to open file:', result.error);
         }
@@ -378,29 +547,143 @@ export class App {
         if (!currentTab) return;
 
         if (currentTab.filePath) {
-            const content = this.editorManager.getContent();
+            let content = this.editorManager.getContent();
+            const language = this.editorManager.getLanguage();
+
+            // Format on save if enabled
+            if (this.settings.formatOnSave) {
+                const formattingOptions = {
+                    tabSize: this.settings.indentWidth,
+                    insertSpaces: this.settings.spacesInsteadOfTabs
+                };
+                const formatResult = await formatDocument(content, language, formattingOptions);
+                if (formatResult && formatResult.edits.length > 0) {
+                    content = formatResult.formatted;
+                    // Update editor content with formatted version
+                    this.editorManager.setContent(content);
+                }
+            }
+
+            // Trigger willSave hook - allows plugins to transform content
+            content = await triggerAsyncHook('workspace:willSave', content, {
+                path: currentTab.filePath,
+                language: language
+            });
+
             const result = await window.mycode.file.save(currentTab.filePath, content);
             if (result.success) {
                 this.tabManager.markSaved(currentTab.id);
+
+                // Trigger didSave hook
+                triggerHook('workspace:didSave', {
+                    path: currentTab.filePath,
+                    language: language
+                });
+
+                // Run linters after save
+                this.runLinterOnCurrentFile();
             }
         } else {
             await this.saveAs();
         }
     }
 
-    private async saveAs(): Promise<void> {
-        const content = this.editorManager.getContent();
+    private async runLinterOnCurrentFile(): Promise<void> {
         const currentTab = this.tabManager.getCurrentTab();
+        if (!currentTab || !currentTab.filePath) return;
+
+        const language = this.editorManager.getLanguage();
+        const content = this.editorManager.getContent();
+        const diagnostics = await runLinters(content, language, currentTab.filePath);
+
+        // Convert diagnostics to Monaco markers
+        const monaco = (window as any).monaco;
+        if (!monaco) return;
+
+        const model = this.editorManager.getMonacoEditor()?.getModel();
+        if (!model) return;
+
+        const markers = diagnostics.map(d => ({
+            severity: this.toMonacoSeverity(d.severity),
+            startLineNumber: d.range.start.line,
+            startColumn: d.range.start.column,
+            endLineNumber: d.range.end.line,
+            endColumn: d.range.end.column,
+            message: d.message,
+            source: d.source || 'plugin'
+        }));
+
+        monaco.editor.setModelMarkers(model, 'linter', markers);
+    }
+
+    private toMonacoSeverity(severity: number): number {
+        // DiagnosticSeverity: Error=1, Warning=2, Info=3, Hint=4
+        // Monaco MarkerSeverity: Hint=1, Info=2, Warning=4, Error=8
+        const monaco = (window as any).monaco;
+        if (!monaco) return 4; // Warning as default
+        switch (severity) {
+            case 1: return monaco.MarkerSeverity.Error;
+            case 2: return monaco.MarkerSeverity.Warning;
+            case 3: return monaco.MarkerSeverity.Info;
+            case 4: return monaco.MarkerSeverity.Hint;
+            default: return monaco.MarkerSeverity.Warning;
+        }
+    }
+
+    private async saveAs(): Promise<void> {
+        let content = this.editorManager.getContent();
+        const currentTab = this.tabManager.getCurrentTab();
+        const language = this.editorManager.getLanguage();
+
         const filePath = await window.mycode.file.saveAs(content, currentTab?.filePath || undefined);
         if (filePath) {
+            // Format on save if enabled
+            if (this.settings.formatOnSave) {
+                const formattingOptions = {
+                    tabSize: this.settings.indentWidth,
+                    insertSpaces: this.settings.spacesInsteadOfTabs
+                };
+                const formatResult = await formatDocument(content, language, formattingOptions);
+                if (formatResult && formatResult.edits.length > 0) {
+                    content = formatResult.formatted;
+                    this.editorManager.setContent(content);
+                }
+            }
+
+            // Trigger willSave hook for new file
+            content = await triggerAsyncHook('workspace:willSave', content, {
+                path: filePath,
+                language: language
+            });
+
+            // Re-save with potentially transformed content
+            await window.mycode.file.save(filePath, content);
+
             this.tabManager.updateTabPath(currentTab!.id, filePath);
             this.tabManager.markSaved(currentTab!.id);
+
+            // Trigger didSave hook
+            triggerHook('workspace:didSave', {
+                path: filePath,
+                language: language
+            });
+
+            // Run linters after save
+            this.runLinterOnCurrentFile();
         }
     }
 
     private closeCurrentTab(): void {
         const currentTab = this.tabManager.getCurrentTab();
         if (currentTab) {
+            // Trigger fileClose hook before closing
+            if (currentTab.filePath) {
+                triggerHook('workspace:fileClose', {
+                    path: currentTab.filePath,
+                    language: currentTab.language
+                });
+            }
+
             this.tabManager.closeTab(currentTab.id);
             if (this.tabManager.getTabCount() === 0) {
                 // Close markdown preview when no tabs open

@@ -320,33 +320,45 @@ interface SearchSettings {
 
 ---
 
-## Future Phases (Post-MVP)
+## Post-MVP Phases (All Complete ✅)
 
-### Phase 9: Markdown Preview
-- Side-by-side live preview for `.md` files
-- Manual toggle via View menu
-- Sync scroll between editor and preview
-- Style preview to match editor theme
+### Phase 4: Git Integration ✅
+- Branch display in status bar
+- Gutter diff indicators (added/modified/deleted lines)
+- Commit dialog with staged changes
+- File status in sidebar
+- Compare with git HEAD via Diff Viewer plugin
 
-### Phase 4: Git Integration
-- Branch display in sidebar
-- Gutter diff indicators
-- Commit/push/pull functionality
-- Branch creation/switching
+### Phase 6: Symbol Outline ✅
+- Implemented as built-in plugin (`symbol-outline`)
+- Regex-based parsing for 15+ languages
+- Sidebar panel with clickable symbol list
+- Auto-updates on content change
 
-### Phase 6: Symbol Outline
-- Parse symbols using Monaco API
-- Collapsible tree view in right sidebar
-- Click to navigate
-- Filter by type
-
-### Phase 7: Integrated Terminal
+### Phase 7: Integrated Terminal ✅
 - xterm.js for terminal emulation
 - node-pty for shell process
-- Per-project working directory
+- Toggle with `Ctrl+``
+- Project-aware working directory
 
-### Phase 8: Plugin System
-- Plugin discovery and loading
-- Plugin API definition
-- Built-in plugins (brackets, indent detection, etc.)
+### Phase 8: Plugin System ✅
+- Full plugin discovery and lifecycle management
+- Comprehensive Plugin API (Editor, Workspace, UI, Commands, Hooks, Languages)
+- Built-in plugins: Symbol Outline, Diff Viewer, JSON Formatter, Hello World
+- Plugin Manager UI for enable/disable
+- Plugin state persistence
 
+### Phase 9: Markdown Preview ✅
+- Side-by-side live preview for `.md` files
+- Toggle via View menu or `Ctrl+Shift+P`
+- Scroll synchronization between editor and preview
+- Theme-aware styling
+
+---
+
+## Additional Documentation
+
+For detailed information, see:
+- **[User Guide](./USER_GUIDE.md)** - Complete user documentation
+- **[Plugin Development Guide](./PLUGIN_DEVELOPMENT_GUIDE.md)** - How to create plugins
+- **[Plugin System Plan](./PLUGIN_SYSTEM_PLAN.md)** - Technical plugin architecture

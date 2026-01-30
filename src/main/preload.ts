@@ -72,6 +72,7 @@ contextBridge.exposeInMainWorld('mycode', {
         gitCommit: (callback: () => void) => ipcRenderer.on(IPC_CHANNELS.MENU_GIT_COMMIT, callback),
         gitPush: (callback: () => void) => ipcRenderer.on(IPC_CHANNELS.MENU_GIT_PUSH, callback),
         gitPull: (callback: () => void) => ipcRenderer.on(IPC_CHANNELS.MENU_GIT_PULL, callback),
+        pluginManager: (callback: () => void) => ipcRenderer.on(IPC_CHANNELS.MENU_PLUGIN_MANAGER, callback),
     },
 
     // Terminal operations
@@ -94,6 +95,7 @@ contextBridge.exposeInMainWorld('mycode', {
         init: (folderPath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_INIT, folderPath),
         getStatus: (repoPath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_GET_STATUS, repoPath),
         getFileDiff: (repoPath: string, filePath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_GET_FILE_DIFF, repoPath, filePath),
+        getFileFromHead: (repoPath: string, filePath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_GET_FILE_FROM_HEAD, repoPath, filePath),
         stageFile: (repoPath: string, filePath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_STAGE_FILE, repoPath, filePath),
         unstageFile: (repoPath: string, filePath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_UNSTAGE_FILE, repoPath, filePath),
         stageAll: (repoPath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_STAGE_ALL, repoPath),
@@ -103,6 +105,24 @@ contextBridge.exposeInMainWorld('mycode', {
         listBranches: (repoPath: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_LIST_BRANCHES, repoPath),
         createBranch: (repoPath: string, branchName: string, checkout?: boolean) => ipcRenderer.invoke(IPC_CHANNELS.GIT_CREATE_BRANCH, repoPath, branchName, checkout),
         checkout: (repoPath: string, branchName: string) => ipcRenderer.invoke(IPC_CHANNELS.GIT_CHECKOUT, repoPath, branchName),
+    },
+
+    // Plugin operations
+    plugins: {
+        list: () => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_LIST),
+        getInfo: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_GET_INFO, pluginId),
+        load: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_LOAD, pluginId),
+        unload: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_UNLOAD, pluginId),
+        enable: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_ENABLE, pluginId),
+        disable: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_DISABLE, pluginId),
+        reload: (pluginId: string) => ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_RELOAD, pluginId),
+        invokeMain: (pluginId: string, method: string, args: any[]) =>
+            ipcRenderer.invoke(IPC_CHANNELS.PLUGIN_INVOKE_MAIN, pluginId, method, args),
+        reportReady: (pluginId: string) => ipcRenderer.send(IPC_CHANNELS.PLUGIN_READY, pluginId),
+        reportError: (pluginId: string, error: string) => ipcRenderer.send(IPC_CHANNELS.PLUGIN_ERROR, pluginId, error),
+        onEvent: (callback: (pluginId: string, event: string, data: any) => void) => {
+            ipcRenderer.on(IPC_CHANNELS.PLUGIN_EVENT, (_event, pluginId, eventName, data) => callback(pluginId, eventName, data));
+        },
     },
 });
 
@@ -161,6 +181,7 @@ declare global {
                 gitCommit: (callback: () => void) => void;
                 gitPush: (callback: () => void) => void;
                 gitPull: (callback: () => void) => void;
+                pluginManager: (callback: () => void) => void;
             };
             terminal: {
                 create: (cwd?: string, cols?: number, rows?: number) => Promise<string>;
@@ -175,6 +196,7 @@ declare global {
                 init: (folderPath: string) => Promise<{ success: boolean; message?: string; error?: string }>;
                 getStatus: (repoPath: string) => Promise<any>;
                 getFileDiff: (repoPath: string, filePath: string) => Promise<any[]>;
+                getFileFromHead: (repoPath: string, filePath: string) => Promise<{ success: boolean; content?: string; error?: string }>;
                 stageFile: (repoPath: string, filePath: string) => Promise<{ success: boolean; error?: string }>;
                 unstageFile: (repoPath: string, filePath: string) => Promise<{ success: boolean; error?: string }>;
                 stageAll: (repoPath: string) => Promise<{ success: boolean; error?: string }>;
@@ -184,6 +206,19 @@ declare global {
                 listBranches: (repoPath: string) => Promise<{ success: boolean; branches?: { name: string; current: boolean; isRemote: boolean }[]; error?: string }>;
                 createBranch: (repoPath: string, branchName: string, checkout?: boolean) => Promise<{ success: boolean; message?: string; error?: string }>;
                 checkout: (repoPath: string, branchName: string) => Promise<{ success: boolean; message?: string; error?: string }>;
+            };
+            plugins: {
+                list: () => Promise<import('../shared/plugin-types').PluginInfo[]>;
+                getInfo: (pluginId: string) => Promise<import('../shared/plugin-types').PluginInfo | undefined>;
+                load: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                unload: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                enable: (pluginId: string) => Promise<boolean>;
+                disable: (pluginId: string) => Promise<boolean>;
+                reload: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                invokeMain: (pluginId: string, method: string, args: any[]) => Promise<any>;
+                reportReady: (pluginId: string) => void;
+                reportError: (pluginId: string, error: string) => void;
+                onEvent: (callback: (pluginId: string, event: string, data: any) => void) => void;
             };
         };
     }
