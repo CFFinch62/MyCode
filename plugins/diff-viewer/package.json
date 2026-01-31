@@ -1,0 +1,26 @@
+{
+    "name": "mycode-diff-viewer",
+    "version": "1.0.0",
+    "displayName": "Diff Viewer",
+    "description": "Compare files side-by-side with syntax highlighting",
+    "author": "MyCode Team",
+    "mycode": {
+        "activationEvents": ["onStartup"],
+        "renderer": "renderer.js",
+        "contributes": {
+            "commands": [
+                {
+                    "id": "diff-viewer.compareAnyFiles",
+                    "title": "Compare Any Two Files",
+                    "category": "Diff"
+                },
+                {
+                    "id": "diff-viewer.compareWithHead",
+                    "title": "Compare with Git HEAD",
+                    "category": "Diff"
+                }
+            ]
+        }
+    }
+}
+

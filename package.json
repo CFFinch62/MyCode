@@ -3,18 +3,27 @@
   "version": "0.1.0",
   "description": "A modern, cross-platform code editor inspired by Elementary Code",
   "main": "dist/main/main/main.js",
-  "author": "Chuck",
+  "author": {
+    "name": "Chuck",
+    "email": "chuck@mycode.dev"
+  },
+  "homepage": "https://github.com/chuck/mycode",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chuck/mycode.git"
+  },
   "license": "GPL-3.0",
   "scripts": {
     "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
     "dev:main": "tsc -p tsconfig.main.json --watch",
     "dev:renderer": "npm run copy-assets && npm run copy-monaco && esbuild src/renderer/index.ts --bundle --outfile=dist/renderer/index.js --sourcemap --watch --format=esm --loader:.css=css",
-    "build": "npm run build:main && npm run build:preload && npm run build:renderer",
+    "build": "npm run build:main && npm run build:preload && npm run build:renderer && npm run copy-plugins",
     "build:main": "tsc -p tsconfig.main.json",
     "build:preload": "esbuild src/main/preload.ts --bundle --platform=node --outfile=dist/main/main/preload.js --external:electron",
     "build:renderer": "npm run copy-assets && npm run copy-monaco && esbuild src/renderer/index.ts --bundle --outfile=dist/renderer/index.js --minify --format=esm --loader:.css=css",
     "copy-assets": "mkdir -p dist/renderer && cp src/renderer/index.html src/renderer/styles.css dist/renderer/",
     "copy-monaco": "mkdir -p dist/renderer/monaco && cp -r node_modules/monaco-editor/min/vs dist/renderer/monaco/",
+    "copy-plugins": "mkdir -p plugins && cp -r src/renderer/plugins/contrib/* plugins/",
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
@@ -48,29 +57,47 @@
     },
     "files": [
       "dist/**/*",
-      "resources/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "plugins/**/*",
+      "!node_modules/*/{CHANGELOG.md,README.md,readme.md,README,readme}",
+      "!node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!node_modules/.bin",
+      "!**/*.{ts,tsx,map,md}"
+    ],
+    "extraResources": [
+      {
+        "from": "plugins",
+        "to": "plugins",
+        "filter": ["**/*"]
+      }
+    ],
+    "asarUnpack": [
+      "node_modules/node-pty/**/*"
     ],
     "win": {
       "target": [
         "nsis",
         "portable"
-      ],
-      "icon": "resources/icon.ico"
+      ]
     },
     "mac": {
       "target": [
-        "dmg"
+        "dmg",
+        "zip"
       ],
-      "icon": "resources/icon.icns"
+      "category": "public.app-category.developer-tools"
     },
     "linux": {
       "target": [
         "AppImage",
-        "deb"
+        "deb",
+        "tar.gz"
       ],
-      "icon": "resources/icons",
       "category": "Development"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
   }
 }

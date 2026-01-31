@@ -1,0 +1,38 @@
+{
+    "name": "mycode-json-formatter",
+    "version": "1.0.0",
+    "displayName": "JSON Formatter",
+    "description": "Formats JSON files with proper indentation and validates syntax",
+    "author": "MyCode Team",
+    "mycode": {
+        "activationEvents": ["onLanguage:json"],
+        "renderer": "renderer.js",
+        "contributes": {
+            "commands": [
+                {
+                    "id": "json-formatter.format",
+                    "title": "Format JSON",
+                    "category": "JSON"
+                },
+                {
+                    "id": "json-formatter.validate",
+                    "title": "Validate JSON",
+                    "category": "JSON"
+                }
+            ],
+            "formatters": [
+                {
+                    "languages": ["json"],
+                    "command": "json-formatter.format"
+                }
+            ],
+            "linters": [
+                {
+                    "languages": ["json"],
+                    "command": "json-formatter.validate"
+                }
+            ]
+        }
+    }
+}
+

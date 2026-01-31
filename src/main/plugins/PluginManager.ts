@@ -70,19 +70,27 @@ export class PluginManager extends EventEmitter {
      */
     private setupPluginPaths(): void {
         const userDataPath = app.getPath('userData');
-        
-        // User plugins directory
+
+        // User plugins directory (highest priority - user can override built-in)
         this.pluginPaths.push(path.join(userDataPath, 'plugins'));
-        
-        // Built-in plugins (in app resources)
+
+        // Built-in plugins location depends on whether app is packaged
         const appPath = app.getAppPath();
-        this.pluginPaths.push(path.join(appPath, 'plugins'));
-        
-        // Development: local contrib plugins
-        if (!app.isPackaged) {
+
+        if (app.isPackaged) {
+            // In packaged app, extraResources are in resources/plugins (outside asar)
+            // process.resourcesPath points to the resources directory
+            const resourcesPluginPath = path.join(process.resourcesPath, 'plugins');
+            this.pluginPaths.push(resourcesPluginPath);
+
+            // Also check inside the asar (in case plugins are bundled there)
+            this.pluginPaths.push(path.join(appPath, 'plugins'));
+        } else {
+            // Development: check root plugins folder and contrib plugins
+            this.pluginPaths.push(path.join(appPath, 'plugins'));
             this.pluginPaths.push(path.join(appPath, 'src', 'renderer', 'plugins', 'contrib'));
         }
-        
+
         // Ensure user plugins directory exists
         const userPluginsDir = path.join(userDataPath, 'plugins');
         if (!fs.existsSync(userPluginsDir)) {

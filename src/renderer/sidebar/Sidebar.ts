@@ -155,7 +155,7 @@ export class Sidebar {
         }
     }
 
-    private async refreshFolder(folderPath: string): Promise<void> {
+    async refreshFolder(folderPath: string): Promise<void> {
         // Find the root folder this path belongs to
         for (const [rootPath, tree] of this.folders) {
             if (folderPath.startsWith(rootPath)) {

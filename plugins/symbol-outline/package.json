@@ -1,0 +1,26 @@
+{
+    "name": "mycode-symbol-outline",
+    "version": "1.0.0",
+    "displayName": "Symbol Outline",
+    "description": "Shows document symbols (functions, classes, etc.) in a sidebar panel for easy navigation",
+    "author": "MyCode Team",
+    "mycode": {
+        "activationEvents": ["onStartup"],
+        "renderer": "renderer.js",
+        "contributes": {
+            "commands": [
+                {
+                    "id": "symbol-outline.refresh",
+                    "title": "Refresh Symbol Outline",
+                    "category": "Outline"
+                },
+                {
+                    "id": "symbol-outline.goToSymbol",
+                    "title": "Go to Symbol",
+                    "category": "Outline"
+                }
+            ]
+        }
+    }
+}
+

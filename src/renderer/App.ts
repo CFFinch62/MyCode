@@ -155,7 +155,33 @@ export class App {
     }
 
     private toggleTerminal(): void {
-        this.terminal.toggle();
+        // Get the current working directory based on the current file or project
+        const cwd = this.getTerminalWorkingDirectory();
+        this.terminal.toggle(cwd);
+    }
+
+    /**
+     * Get the working directory for the terminal
+     * Priority: current file's directory > first opened folder > undefined (home)
+     */
+    private getTerminalWorkingDirectory(): string | undefined {
+        // First, try to get the directory of the currently open file
+        const currentTab = this.tabManager.getCurrentTab();
+        if (currentTab?.filePath) {
+            // Get the directory containing the current file
+            const lastSlash = currentTab.filePath.lastIndexOf('/');
+            if (lastSlash > 0) {
+                return currentTab.filePath.substring(0, lastSlash);
+            }
+        }
+
+        // Fall back to the first opened folder in the sidebar
+        if (this.settings.openedFolders.length > 0) {
+            return this.settings.openedFolders[0];
+        }
+
+        // Return undefined to use the default (home directory)
+        return undefined;
     }
 
     private togglePreview(): void {
@@ -289,6 +315,12 @@ export class App {
 
         // Global keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+
+        // Listen for folder changes from file system watcher
+        window.mycode.folder.onChanged((data) => {
+            // Refresh the sidebar when files/folders are added, removed, or changed externally
+            this.sidebar.refreshFolder(data.folderPath);
+        });
 
         // Update markdown preview and trigger plugin hooks on editor content change
         document.addEventListener('editor-content-changed', () => {
