@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/chuck/mycode.git"
   },
-  "license": "GPL-3.0",
+  "license": "MIT",
   "scripts": {
     "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
     "dev:main": "tsc -p tsconfig.main.json --watch",
