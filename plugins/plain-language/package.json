@@ -1,0 +1,28 @@
+{
+    "name": "mycode-plain-language",
+    "version": "1.0.0",
+    "displayName": "PLAIN Language Support",
+    "description": "Syntax highlighting for PLAIN programming language (.plain files)",
+    "author": "Chuck Finch",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:plain",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "plain",
+                    "aliases": [
+                        "PLAIN",
+                        "Plain"
+                    ],
+                    "extensions": [
+                        ".plain"
+                    ]
+                }
+            ]
+        }
+    }
+}

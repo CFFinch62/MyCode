@@ -1,0 +1,30 @@
+{
+    "name": "mycode-steps-language",
+    "version": "1.0.0",
+    "displayName": "Steps Language Support",
+    "description": "Syntax highlighting for Steps programming language (.building, .floor, .step files)",
+    "author": "Chuck Finch",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:steps",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "steps",
+                    "aliases": [
+                        "Steps",
+                        "STEPS"
+                    ],
+                    "extensions": [
+                        ".building",
+                        ".floor",
+                        ".step"
+                    ]
+                }
+            ]
+        }
+    }
+}
