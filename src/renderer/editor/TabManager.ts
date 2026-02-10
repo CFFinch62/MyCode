@@ -371,6 +371,12 @@ export class TabManager {
             'lua': 'lua',
             'r': 'r',
             'vala': 'vala',
+            // Steps language
+            'building': 'steps',
+            'floor': 'steps',
+            'step': 'steps',
+            // PLAIN language
+            'plain': 'plain',
         };
 
         return languageMap[ext] || 'plaintext';
