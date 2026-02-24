@@ -243,4 +243,4 @@ MyCode/
 
 ## License
 
-GPL-3.0 (matching Elementary Code license)
+MIT License
