@@ -44,6 +44,17 @@ async function createWindow(): Promise<void> {
 
     const settings = settingsService.getAll();
 
+    // Determine icon path (different for dev vs production)
+    const getIconPath = () => {
+        if (app.isPackaged) {
+            // In production, icon is in resources
+            return path.join(process.resourcesPath, 'icon.png');
+        } else {
+            // In development, icon is in build folder
+            return path.join(__dirname, '../../build/icon.png');
+        }
+    };
+
     // Create the browser window
     mainWindow = new BrowserWindow({
         width: settings.windowSize.width,
@@ -58,7 +69,7 @@ async function createWindow(): Promise<void> {
         show: false, // Don't show until ready
         backgroundColor: settings.preferDarkStyle ? '#1e1e1e' : '#ffffff',
         titleBarStyle: 'default',
-        icon: path.join(__dirname, '../../resources/icons/icon.png'),
+        icon: getIconPath(),
     });
 
     // Load the index.html

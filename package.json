@@ -29,7 +29,8 @@
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac",
-    "dist:linux": "electron-builder --linux"
+    "dist:linux": "electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",
@@ -41,6 +42,7 @@
     "simple-git": "^3.30.0"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.7.2",
     "@types/marked": "^6.0.0",
     "@types/node": "^20.10.0",
     "concurrently": "^8.2.2",
@@ -74,6 +76,10 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
       }
     ],
     "asarUnpack": [
