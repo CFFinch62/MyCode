@@ -1,5 +1,7 @@
 # MyCode - Cross-Platform Code Editor
 
+![MyCode IDE Screenshot](images/MyCode.png)
+
 A modern, cross-platform code editor inspired by Elementary Code, built with Electron and Monaco Editor. Features a powerful plugin system for extensibility.
 
 ## Features
