@@ -1,0 +1,84 @@
+rem: Comprehensive PLAIN Example
+rem: Demonstrates various language features
+
+task Main()
+    rem: Variables and constants
+    var greeting = "Hello"
+    var name = "Chuck"
+    fxd MAX_COUNT as int = 10
+
+    rem: String concatenation
+    var message = greeting & ", " & name & "!"
+    display(message)
+
+    rem: Arithmetic
+    var x = 5
+    var y = 10
+    var sum = x + y
+    var product = x * y
+    var power = 2 ** 8
+
+    display("Sum: " & sum)
+    display("Product: " & product)
+    display("Power: " & power)
+
+    rem: Conditional
+    if sum > 10
+        display("Sum is greater than 10")
+    else
+        display("Sum is 10 or less")
+
+    rem: Loop
+    loop i from 1 to 5
+        display("Count: " & i)
+
+    rem: List
+    var numbers = [1, 2, 3, 4, 5]
+    loop num in numbers
+        display("Number: " & num)
+
+    rem: Table (dictionary)
+    var person = {"name": "Chuck", "age": 63, "language": "PLAIN"}
+
+    display("Person: " & person["name"])
+    display("Age: " & person.age)
+
+    rem: Call another task
+    Greet("Chuck")
+
+task Greet with (name)
+    display("Greetings, " & name & "!")
+
+rem: Record definition
+record Person:
+    name as string
+    age as int = 0
+    email as string = ""
+
+task CreatePerson using (name, age, email)
+    var chuck = Person(name: name, age: age, email: email)
+    deliver chuck
+
+rem: Error handling
+task SafeDivide using (a, b)
+    attempt
+        var result = a / b
+        deliver result
+    handle
+        display("Error: Division failed")
+        deliver null
+    ensure
+        display("Division operation completed")
+
+rem: Choose statement (switch/case)
+task CheckGrade with (score)
+    choose score
+        choice 90
+            display("Grade: A")
+        choice 80
+            display("Grade: B")
+        choice 70
+            display("Grade: C")
+        default
+            display("Grade: F")
+

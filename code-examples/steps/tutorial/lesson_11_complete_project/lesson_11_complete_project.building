@@ -1,0 +1,33 @@
+building: lesson_11_complete_project
+    note: Lesson 11 - Complete Contact Manager Project
+    note: A full application demonstrating all Steps concepts
+    
+    set contacts to []
+    set choice to 0
+    set running to true
+    
+    call show_welcome
+    
+    repeat while running is equal to true
+        call show_menu storing result in choice
+        
+        if choice is equal to 1
+            call add_contact with contacts
+        otherwise if choice is equal to 2
+            call list_contacts with contacts
+        otherwise if choice is equal to 3
+            call search_contact with contacts
+        otherwise if choice is equal to 4
+            call count_contacts with contacts storing result in count
+            display ""
+            display "Total contacts: " added to (count as text)
+        otherwise if choice is equal to 5
+            display ""
+            display "Goodbye!"
+            set running to false
+        otherwise
+            display ""
+            display "Invalid choice. Please try again."
+    
+    exit
+

@@ -1,0 +1,61 @@
+rem: Lesson 4 - Making Decisions
+rem: Using if/else and choose to control program flow
+
+task Main()
+    rem: Simple if/else
+    var intTemperature = 75
+
+    if intTemperature > 80
+        display("It's hot outside!")
+    else
+        display("The weather is pleasant.")
+
+    rem: Comparison operators
+	rem: Better choice is seen below using 'Choose/Choice'
+    var intScore = 85
+
+    if intScore >= 90
+        display("Grade: A - Excellent!")
+    else
+        if intScore >= 80
+            display("Grade: B - Good job!")
+        else
+            if intScore >= 70
+                display("Grade: C - Keep trying!")
+            else
+                display("Grade: F - Study harder!")
+
+    rem: Logical operators: and, or, not
+    var intAge = 16
+    var blnHasPermission = true
+
+    if intAge >= 16 and blnHasPermission
+        display("You can drive!")
+    else
+        display("You cannot drive yet.")
+
+    if intAge < 13 or intAge > 65
+        display("Discount ticket available!")
+
+    if not blnHasPermission
+        display("Permission denied.")
+
+    rem: Choose statement for multiple options
+    var strDay = "Monday"
+
+    choose strDay
+        choice "Monday"
+            display("Start of the work week!")
+        choice "Friday"
+            display("Almost the weekend!")
+        choice "Saturday"
+            display("Weekend fun!")
+        choice "Sunday"
+            display("Rest day!")
+        default
+            display("Just a regular day.")
+
+    rem: Simple condition
+    var intX = 10
+    if intX > 5
+        display("X is greater than 5")

@@ -1,0 +1,57 @@
+building: lesson_10_floors
+    note: Lesson 10 - Organizing with Floors
+    note: Learn how to organize related steps into floors
+    
+    display "=== Math Floor ==="
+    call add_together with 15, 25 storing result in sum
+    call subtract with 50, 20 storing result in difference
+    call multiply with 6, 7 storing result in product
+    call divide with 63, 3 storing result in quotient
+    
+    display "15 + 25 = " added to (sum as text)
+    display "50 - 20 = " added to (difference as text)
+    display "6 * 7 = " added to (product as text)
+    display "63 / 3 = " added to (quotient as text)
+    display ""
+    
+    display "=== Text Floor ==="
+    call uppercase with "hello world" storing result in upper
+    call lowercase with "GOODBYE WORLD" storing result in lower
+    call reverse with "Steps" storing result in reversed
+    
+    display "Uppercase: " added to upper
+    display "Lowercase: " added to lower
+    display "Reversed: " added to reversed
+    display ""
+    
+    display "=== Validation Floor ==="
+    call is_positive with 42 storing result in result1
+    call is_positive with -5 storing result in result2
+    call is_even with 10 storing result in result3
+    call is_even with 7 storing result in result4
+    
+    display "Is 42 positive? " added to (result1 as text)
+    display "Is -5 positive? " added to (result2 as text)
+    display "Is 10 even? " added to (result3 as text)
+    display "Is 7 even? " added to (result4 as text)
+    display ""
+    
+    display "=== Using Multiple Floors Together ==="
+    display "Enter a number: "
+    set num to input as number
+    
+    call is_positive with num storing result in is_pos
+    call is_even with num storing result in is_ev
+    
+    if is_pos is equal to true
+        display "The number is positive."
+    otherwise
+        display "The number is negative or zero."
+    
+    if is_ev is equal to true
+        display "The number is even."
+    otherwise
+        display "The number is odd."
+    
+    exit
+

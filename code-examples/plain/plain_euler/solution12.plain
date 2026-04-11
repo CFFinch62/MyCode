@@ -1,0 +1,53 @@
+note:
+    ####################################
+	Project Euler Probelm # ?
+ 	####################################
+	What is the value of the first triangle 
+	number to have over five hundred divisors?
+	####################################
+
+rem: HELPERS
+task NumberOfDivisors using (n)
+    var end = to_int(sqrt(n))
+    var result = 0
+    loop i from 1 to end
+        if n % i == 0
+            rem: count both i and n/i as divisors
+            result += 2
+    rem: if n is a perfect square        
+    if (end * end) == n
+        rem: square root was counted twice so we remove one
+        result -= 1
+    deliver result
+
+task ComputeTriangleNumbers using (max)
+    var triangle = 0
+    var i = 0
+    loop true
+        i += 1
+        triangle += i
+        if NumberOfDivisors(triangle) > max
+            deliver triangle
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	display("Working...")    
+	var answer = ComputeTriangleNumbers(500)
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM  12")
+	display("###################################")
+	display()
+	display("What is the value of the first triangle ")
+	display("number to have over five hundred divisors?")
+	display()  
+	display("The number is:") 
+    display(answer)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 76576500 

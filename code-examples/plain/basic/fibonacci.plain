@@ -1,0 +1,17 @@
+rem: Calculate Fibonacci numbers
+
+task Fibonacci using (intN)
+    if intN <= 1
+        deliver intN
+    
+    var a = Fibonacci(intN - 1)
+    var b = Fibonacci(intN - 2)
+    deliver a + b
+
+task Main()
+    var intCount = 10
+    
+    loop i from 0 to intCount
+        var result = Fibonacci(i)
+        display(v"Fibonacci({i}) = {result}")
+

@@ -1,0 +1,13 @@
+rem: helpers.plain - Root-level module (no assembly)
+rem: Tests that a module in the project root can be imported directly.
+
+var moduleLoaded = true
+
+task Greet using (name)
+    deliver "Hello, " & name & "!"
+
+task AddNumbers using (a, b)
+    deliver a + b
+
+task GetModuleStatus using ()
+    deliver "helpers module loaded"

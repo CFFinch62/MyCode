@@ -1,0 +1,9 @@
+step: subtract_numbers
+    belongs to: math
+    expects: a, b
+    returns: result
+    
+    do:
+        set result to a - b
+        return result
+

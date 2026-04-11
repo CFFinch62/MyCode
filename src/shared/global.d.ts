@@ -17,6 +17,7 @@ declare global {
             };
             folder: {
                 openDialog: () => Promise<string | null>;
+                createProjectDialog: () => Promise<string | null>;
                 read: (folderPath: string) => Promise<TreeNode>;
                 watch: (folderPath: string) => Promise<boolean>;
                 unwatch: (folderPath: string) => Promise<boolean>;
@@ -44,6 +45,7 @@ declare global {
                 newTab: (callback: () => void) => void;
                 openFile: (callback: () => void) => void;
                 openFolder: (callback: () => void) => void;
+                newProjectFolder: (callback: () => void) => void;
                 save: (callback: () => void) => void;
                 saveAs: (callback: () => void) => void;
                 closeTab: (callback: () => void) => void;
@@ -57,9 +59,11 @@ declare global {
                 gitCommit: (callback: () => void) => void;
                 gitPush: (callback: () => void) => void;
                 gitPull: (callback: () => void) => void;
+                pluginManager: (callback: () => void) => void;
             };
             terminal: {
                 create: (cwd?: string, cols?: number, rows?: number) => Promise<string>;
+                createProcess: (cmd: string, args: string[], cwd?: string, cols?: number, rows?: number) => Promise<string>;
                 write: (id: string, data: string) => void;
                 resize: (id: string, cols: number, rows: number) => void;
                 destroy: (id: string) => Promise<void>;
@@ -68,14 +72,32 @@ declare global {
             };
             git: {
                 isRepo: (filePath: string) => Promise<{ isRepo: boolean; repoRoot: string }>;
+                init: (folderPath: string) => Promise<{ success: boolean; message?: string; error?: string }>;
                 getStatus: (repoPath: string) => Promise<GitStatus>;
                 getFileDiff: (repoPath: string, filePath: string) => Promise<GitLineDiff[]>;
+                getFileFromHead: (repoPath: string, filePath: string) => Promise<{ success: boolean; content?: string; error?: string }>;
                 stageFile: (repoPath: string, filePath: string) => Promise<GitOperationResult>;
                 unstageFile: (repoPath: string, filePath: string) => Promise<GitOperationResult>;
                 stageAll: (repoPath: string) => Promise<GitOperationResult>;
                 commit: (repoPath: string, message: string) => Promise<GitOperationResult>;
                 push: (repoPath: string) => Promise<GitOperationResult>;
                 pull: (repoPath: string) => Promise<GitOperationResult>;
+                listBranches: (repoPath: string) => Promise<{ success: boolean; branches?: { name: string; current: boolean; isRemote: boolean }[]; error?: string }>;
+                createBranch: (repoPath: string, branchName: string, checkout?: boolean) => Promise<{ success: boolean; message?: string; error?: string }>;
+                checkout: (repoPath: string, branchName: string) => Promise<{ success: boolean; message?: string; error?: string }>;
+            };
+            plugins: {
+                list: () => Promise<import('./plugin-types').PluginInfo[]>;
+                getInfo: (pluginId: string) => Promise<import('./plugin-types').PluginInfo | undefined>;
+                load: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                unload: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                enable: (pluginId: string) => Promise<boolean>;
+                disable: (pluginId: string) => Promise<boolean>;
+                reload: (pluginId: string) => Promise<{ success: boolean; error?: string }>;
+                invokeMain: (pluginId: string, method: string, args: any[]) => Promise<any>;
+                reportReady: (pluginId: string) => void;
+                reportError: (pluginId: string, error: string) => void;
+                onEvent: (callback: (pluginId: string, event: string, data: any) => void) => void;
             };
         };
     }

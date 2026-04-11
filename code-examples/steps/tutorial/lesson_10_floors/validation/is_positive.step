@@ -1,0 +1,13 @@
+step: is_positive
+    belongs to: validation
+    expects: num
+    returns: result
+    
+    do:
+        if num is greater than 0
+            set result to true
+        otherwise
+            set result to false
+        
+        return result
+

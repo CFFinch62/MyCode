@@ -1,0 +1,151 @@
+rem: NMEA GPS Reader Example
+rem: Demonstrates serial port I/O for reading NMEA 0183 GPS sentences
+rem: 
+rem: NMEA 0183 is a standard protocol used by GPS receivers and marine electronics.
+rem: Sentences are ASCII text lines terminated with CR+LF, starting with $.
+rem:
+rem: Common NMEA sentences:
+rem:   $GPGGA - Global Positioning System Fix Data (position, altitude, fix quality)
+rem:   $GPRMC - Recommended Minimum Navigation Information (position, speed, course)
+rem:   $GPGSA - GPS DOP and Active Satellites
+rem:   $GPGSV - GPS Satellites in View
+
+task ParseGPGGA using (sentence)
+    rem: Parse GPGGA sentence for position data
+    rem: Format: $GPGGA,time,lat,N/S,lon,E/W,quality,sats,hdop,alt,M,geoid,M,age,station*checksum
+    
+    var fields = split(sentence, ",")
+    
+    if len(fields) < 10
+        deliver null
+    
+    rem: Extract key fields
+    var time = fields[1]
+    var latitude = fields[2]
+    var lat_dir = fields[3]
+    var longitude = fields[4]
+    var lon_dir = fields[5]
+    var quality = fields[6]
+    var satellites = fields[7]
+    var altitude = fields[9]
+    
+    rem: Create result table
+    var position = {
+        "time": time,
+        "latitude": latitude & lat_dir,
+        "longitude": longitude & lon_dir,
+        "quality": quality,
+        "satellites": satellites,
+        "altitude": altitude
+    }
+    
+    deliver position
+
+task ParseGPRMC using (sentence)
+    rem: Parse GPRMC sentence for navigation data
+    rem: Format: $GPRMC,time,status,lat,N/S,lon,E/W,speed,course,date,mag_var,var_dir*checksum
+    
+    var fields = split(sentence, ",")
+    
+    if len(fields) < 10
+        deliver null
+    
+    var time = fields[1]
+    var status = fields[2]
+    var latitude = fields[3]
+    var lat_dir = fields[4]
+    var longitude = fields[5]
+    var lon_dir = fields[6]
+    var speed = fields[7]
+    var course = fields[8]
+    var date = fields[9]
+    
+    var nav_data = {
+        "time": time,
+        "status": status,
+        "latitude": latitude & lat_dir,
+        "longitude": longitude & lon_dir,
+        "speed_knots": speed,
+        "course": course,
+        "date": date
+    }
+    
+    deliver nav_data
+
+task Main()
+    display("NMEA GPS Reader")
+    display("=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=" & "=")
+    display("")
+    
+    rem: List available serial ports
+    display("Available serial ports:")
+    var ports = serial_ports()
+    
+    if len(ports) = 0
+        display("  No serial ports found.")
+        display("")
+        display("To use this example:")
+        display("  1. Connect a GPS receiver to a serial port")
+        display("  2. Or use a virtual serial port for testing")
+        display("  3. Linux: typically /dev/ttyUSB0 or /dev/ttyACM0")
+        display("  4. macOS: typically /dev/cu.usbserial-*")
+        display("  5. Windows: typically COM3, COM4, etc.")
+        deliver null
+    
+    loop port in ports
+        display("  " & port)
+    
+    display("")
+    
+    rem: Open the first available port
+    rem: Most GPS receivers use 4800 baud for NMEA 0183
+    var port_name = ports[0]
+    display(v"Opening {port_name} at 4800 baud...")
+    
+    var gps = serial_open(port_name, 4800)
+    serial_set_timeout(gps, 5000)    rem: 5-second timeout
+    
+    display("Reading NMEA sentences... (press Ctrl+C to stop)")
+    display("")
+    
+    var sentence_count = 0
+    
+    rem: Read and parse sentences
+    loop forever
+        var sentence = serial_read_line(gps)
+        sentence_count += 1
+        
+        rem: Parse GPGGA sentences (position)
+        if starts_with(sentence, "$GPGGA")
+            var position = ParseGPGGA(sentence)
+            if not is_null(position)
+                display(v"[{sentence_count}] Position Fix:")
+                display(v"  Time: {position[\"time\"]}")
+                display(v"  Lat:  {position[\"latitude\"]}")
+                display(v"  Lon:  {position[\"longitude\"]}")
+                display(v"  Alt:  {position[\"altitude\"]}m")
+                display(v"  Sats: {position[\"satellites\"]}")
+                display("")
+        
+        rem: Parse GPRMC sentences (navigation)
+        else if starts_with(sentence, "$GPRMC")
+            var nav = ParseGPRMC(sentence)
+            if not is_null(nav)
+                display(v"[{sentence_count}] Navigation Data:")
+                display(v"  Status: {nav[\"status\"]}")
+                display(v"  Speed:  {nav[\"speed_knots\"]} knots")
+                display(v"  Course: {nav[\"course\"]}°")
+                display("")
+        
+        rem: Display other sentences as-is
+        otherwise
+            display(v"[{sentence_count}] {sentence}")
+        
+        rem: Stop after 50 sentences for demo purposes
+        if sentence_count >= 50
+            exit
+    
+    serial_close(gps)
+    display("")
+    display("Done. Read " & to_string(sentence_count) & " sentences.")
+

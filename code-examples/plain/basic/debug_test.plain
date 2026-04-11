@@ -1,0 +1,24 @@
+rem: Test file to demonstrate debugger stepping issues
+
+task Helper using (x)
+    display(v"  Helper called with: {x}")
+    var result = x * 2
+    display(v"  Helper returning: {result}")
+    deliver result
+
+task Main()
+    display("=== Debugger Test ===")
+    display("")
+    
+    rem: Test loop stepping
+    display("Loop test:")
+    loop i from 1 to 3
+        display(v"  Loop iteration: {i}")
+    
+    display("")
+    
+    rem: Test helper function stepping
+    display("Helper function test:")
+    var value = Helper(5)
+    display(v"Result from helper: {value}")
+

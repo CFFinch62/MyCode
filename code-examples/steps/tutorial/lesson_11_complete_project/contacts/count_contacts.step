@@ -1,0 +1,9 @@
+step: count_contacts
+    belongs to: contacts
+    expects: contact_list
+    returns: count
+    
+    do:
+        set count to length of contact_list
+        return count
+

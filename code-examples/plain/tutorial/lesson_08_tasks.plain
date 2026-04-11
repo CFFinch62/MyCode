@@ -1,0 +1,34 @@
+rem: Lesson 8 - Creating Tasks
+rem: Organizing your code with procedures
+
+task Main()
+    rem: Calling simple tasks (no parameters)
+    SayHello()
+    DrawLine()
+    SayGoodbye()
+
+    rem: Tasks help organize your code
+    DrawLine()
+    ShowMenu()
+    DrawLine()
+
+rem: A simple task with no parameters
+task SayHello()
+    display("Hello there!")
+    display("Welcome to the program!")
+
+rem: Another simple task
+task SayGoodbye()
+    display("Thanks for using the program!")
+    display("Goodbye!")
+
+rem: A task that draws a separator line
+task DrawLine()
+    display("========================")
+
+rem: A task that shows a menu
+task ShowMenu()
+    display("1. Start Game")
+    display("2. View Scores")
+    display("3. Settings")
+    display("4. Quit")

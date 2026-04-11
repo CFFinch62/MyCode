@@ -1,0 +1,39 @@
+note:
+    ============================================
+    prog_bar_table.plain - Progress Bar (Table Version)
+    ============================================
+    Alternate version that passes state via a table
+    instead of relying on module-level variables.
+    Use this if module-level state does not persist
+    between calls.
+
+    Usage:
+        var bar = prog_bar_table.Init(intTotal)
+        prog_bar_table.Update(bar, intCurrent)
+        prog_bar_table.Finish(bar)
+    ===========================================
+
+task Init using (intLimit)
+    var tblBar = {        \
+        "stdout": open("/dev/stdout", "a"), \
+        "total": intLimit, \
+        "width": 20        \
+    }
+    deliver tblBar
+
+task Update with (tblBar, intCurrent)
+    var intPercent = (intCurrent * 100) / tblBar["total"]
+    var intFilled = (intCurrent * tblBar["width"]) / tblBar["total"]
+    var strBar = chr(13) & "Progress: ["
+    loop j from 0 to to_int(intFilled)
+        strBar = strBar & "#"
+    loop j from to_int(intFilled) to tblBar["width"]
+        strBar = strBar & " "
+    strBar = strBar & v"] {intPercent}%"
+    write(tblBar["stdout"], strBar)
+
+task Finish with (tblBar)
+    rem: Fill bar to 100% on completion
+    Update(tblBar, tblBar["total"])
+    write(tblBar["stdout"], "\n")
+    close(tblBar["stdout"])

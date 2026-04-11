@@ -1,0 +1,11 @@
+step: show_contact
+    belongs to: console_output
+    expects: contact
+    returns: nothing
+    
+    do:
+        display "  Name: " added to contact["name"]
+        display "  Email: " added to contact["email"]
+        display "  Phone: " added to contact["phone"]
+        display "  City: " added to contact["city"]
+

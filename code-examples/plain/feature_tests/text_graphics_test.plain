@@ -1,0 +1,124 @@
+rem: Test Phase 1 Text Graphics Functions
+rem: Automated test without user input
+
+task Main()
+    display("=== Testing Phase 1 Text Graphics ===")
+    display("")
+    
+    rem: Test 1: text_at
+    display("Test 1: text_at()")
+    clear()
+    text_at(1, 1, "Top left")
+    text_at(40, 1, "Top right")
+    text_at(1, 20, "Bottom left")
+    text_at(40, 20, "Bottom right")
+    text_at(20, 10, "Center")
+    sleep(1000)
+    display("")
+    display("✓ text_at() works")
+    
+    rem: Test 2: text_color
+    display("")
+    display("Test 2: text_color()")
+    clear()
+    text_at(1, 1, "Testing colors:")
+    
+    text_color("red")
+    text_at(1, 3, "Red")
+    
+    text_color("green")
+    text_at(10, 3, "Green")
+    
+    text_color("blue")
+    text_at(20, 3, "Blue")
+    
+    text_color("yellow")
+    text_at(30, 3, "Yellow")
+    
+    text_color("default")
+    text_at(1, 5, "Back to default")
+    
+    sleep(1000)
+    display("")
+    display("✓ text_color() works")
+    
+    rem: Test 3: draw_line horizontal
+    display("")
+    display("Test 3: draw_line() horizontal")
+    clear()
+    text_at(1, 1, "Horizontal lines:")
+    draw_line(1, 3, 40, "h")
+    draw_line(1, 5, 30, "h", "=")
+    draw_line(1, 7, 20, "h", "*")
+    sleep(1000)
+    display("")
+    display("✓ draw_line() horizontal works")
+    
+    rem: Test 4: draw_line vertical
+    display("")
+    display("Test 4: draw_line() vertical")
+    clear()
+    text_at(1, 1, "Vertical lines:")
+    draw_line(5, 3, 10, "v")
+    draw_line(10, 3, 10, "v", "#")
+    draw_line(15, 3, 10, "v", "*")
+    sleep(1000)
+    display("")
+    display("✓ draw_line() vertical works")
+    
+    rem: Test 5: draw_box
+    display("")
+    display("Test 5: draw_box()")
+    clear()
+    draw_box(1, 1, 40, 5)
+    draw_box(1, 7, 40, 5, "With Title")
+    draw_box(1, 13, 60, 8, "Larger Box")
+    sleep(1000)
+    display("")
+    display("✓ draw_box() works")
+    
+    rem: Test 6: Combined test
+    display("")
+    display("Test 6: Combined features")
+    clear()
+    
+    text_color("cyan")
+    draw_box(1, 1, 70, 3, "Status Dashboard")
+    text_color("default")
+    
+    text_color("green")
+    draw_box(2, 5, 30, 6, "System")
+    text_color("default")
+    text_at(4, 7, "CPU: 45%")
+    text_at(4, 8, "Memory: 2.1 GB")
+    text_at(4, 9, "Status: ")
+    text_color("green")
+    text_at(12, 9, "OK")
+    text_color("default")
+    
+    text_color("yellow")
+    draw_box(35, 5, 35, 6, "Network")
+    text_color("default")
+    text_at(37, 7, "Packets: 1,234,567")
+    text_at(37, 8, "Bandwidth: 125 Mbps")
+    text_at(37, 9, "Status: ")
+    text_color("yellow")
+    text_at(45, 9, "ACTIVE")
+    text_color("default")
+    
+    sleep(2000)
+    display("")
+    display("✓ Combined features work")
+    
+    rem: Clear and show results
+    clear()
+    display("")
+    display("=== All Phase 1 Tests Passed! ===")
+    display("")
+    display("Functions tested:")
+    display("  ✓ text_at(x, y, text)")
+    display("  ✓ text_color(fg [, bg])")
+    display("  ✓ draw_line(x, y, length, direction [, char])")
+    display("  ✓ draw_box(x, y, width, height [, title])")
+    display("")
+

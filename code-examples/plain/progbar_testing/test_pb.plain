@@ -1,0 +1,52 @@
+rem: ============================================
+rem: test_pb.plain - File Reading with Progress Bar
+rem: ============================================
+rem: Reads a text file line by line and shows
+rem: progress as each line is processed.
+rem: ============================================
+
+rem: IMPORTS
+use:
+    assemblies:
+        rem: progress bar library folder
+        pb_lib
+    modules:
+        rem: progress bar library file
+        pb_lib.prog_bar 
+
+rem: MAIN PROGRAM
+task Main()
+    var strPath = "sample_data.txt"
+
+    rem: Check if the sample file exists, create one if not
+    if not file_exists(strPath)
+        display("Creating sample data file...")
+        var lstData = []
+        loop i from 0 to 100
+            append(lstData, v"Record {i}: This is sample data line number {i}")
+        write_lines(strPath, lstData)
+        display(v"Created {strPath} with 100 lines.")
+        display("")
+
+    rem: Read all lines and process them with a progress bar
+    var lstLines = read_lines(strPath)
+    var intTotal = len(lstLines) - 1
+    display(v"Reading {intTotal} lines from {strPath}...")
+    display("")
+
+    pb_lib.prog_bar.Init(intTotal)
+
+    var intWordCount = 0
+    loop i from 1 to intTotal
+        rem: Simulate processing each line (count words)
+        var lstWords = split(lstLines[i], " ")
+        intWordCount = intWordCount + len(lstWords)
+
+        pb_lib.prog_bar.Update(i)
+
+        rem: Small delay so the bar is visible
+        sleep(50)
+
+    pb_lib.prog_bar.Finish()
+    display("")
+    display(v"Done! Processed {intTotal} lines containing {intWordCount} words.")

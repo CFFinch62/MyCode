@@ -1,0 +1,359 @@
+
+task Phi using (n)
+    var result = n
+    var p = 2
+    loop p * p <= n
+        if n % p == 0
+            loop n % p == 0
+                n = to_int(n / p)
+            result = result - to_int(result / p)
+        p = p + 1
+    if n > 1
+        result = result - to_int(result / n)
+    deliver result
+
+task HammingWeight using (x)
+    deliver count(to_bin(x), "1")
+
+task Gcd using (n1, n2)
+    loop n2 > 0
+        rem: MANUAL FIX: tuple unpacking
+        rem: n1, n2 = [n2, n1 % n2]
+    deliver n1
+
+task Lcm using (n1, n2)
+    deliver n1 * n2 / Gcd(n1, n2)
+
+task Gpf using (n)
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0 and IsPrime(i)
+            var largest = i
+    deliver largest
+
+task AllFactors using (n)
+    var factors = []
+    loop i from 1 to n
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+rem: Returns a set of unique prime factors of n
+task GetPrimeFactors using (n)
+    var i = 2
+    var factors = Set()
+    loop i * i <= n
+        if n % i
+            i = i + 1
+        else
+            n = n // i
+            add(factors, i)
+    if n > 1
+        add(factors, n)
+    deliver List(factors)
+
+rem: Returns the number of unique prime factors of n
+task NumPrimeFactors using (n)
+    deliver length(GetPrimeFactors(n))
+
+task ProperFactors using (n)
+    var factors = []
+    loop i from 2 to n - 1
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+task ProperDivisors using (n)
+    var factors = []
+    loop i from 1 to n - 1
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+task Coprime using (n1, n2)
+    loop i from 2 to n1 - 1
+        if n1 % i == 0 and n2 % i == 0
+            deliver false
+    deliver true
+
+task IsSquare using (x)
+    if x < 0
+        deliver false
+    var y = x ** 0.5
+    deliver y * y == x
+
+task IsPrime using (n)
+    if n < 2
+        deliver false
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0
+            deliver false
+    deliver true
+
+task IsOdd using (n)
+    if n % 2 == 0
+        deliver false
+    else
+        deliver true
+
+task IsPerfect using (n)
+    var tmp = []
+    var total = 0
+    tmp = ProperDivisors(n)
+    loop i from 0 to length(tmp) - 1
+        total = total + tmp[i]
+    if total == n
+        deliver true
+    else
+        deliver false
+
+task IsAbundant using (n)
+    var tmp = []
+    var total = 0
+    tmp = ProperDivisors(n)
+    loop i from 0 to length(tmp) - 1
+        total = total + tmp[i]
+    if total > n
+        deliver true
+    else
+        deliver false
+
+task IsDeficient using (n)
+    var tmp = []
+    var total = 0
+    tmp = ProperDivisors(n)
+    loop i from 0 to length(tmp) - 1
+        total = total + tmp[i]
+    if total < n
+        deliver true
+    else
+        deliver false
+
+task IsTriangular using (n)
+    if -1 + 1 + 8 * n ** 0.5 / 2 % 1 == 0
+        deliver true
+    deliver false
+
+task IsPerfectSquare using (n)
+    if isqrt(math, n) % n == 0
+        deliver true
+    deliver false
+
+task IsPentagonal using (n)
+    if 1 + 24 * n + 1 ** 0.5 % 6 == 0
+        deliver true
+    deliver false
+
+task IsHexagonal using (n)
+    if 1 + 8 * n + 1 ** 0.5 % 4 == 0
+        deliver true
+    deliver false
+
+task IsPandigital using (n, b, z)
+    var digits = List(Set(to_string(n)))
+    if z
+        var a = 0
+    else
+        a = 1
+    if b > 0
+        var base = b
+    else
+        base = length(digits)
+    loop i from a to base
+        if count(digits, to_string(i)) < 1 or count(digits, to_string(i)) > 1
+            deliver false
+    deliver true
+
+task IsLychrel using (n)
+    var rn = to_int(to_string(n)[/* UNSUPPORTED: Slice */])
+    var nn = n
+    var i = 0
+    loop i < 51
+        nn = nn + rn
+        if IsPalindrome(to_string(nn))
+            deliver false
+        i = i + 1
+        rn = to_int(to_string(nn)[/* UNSUPPORTED: Slice */])
+    deliver true
+
+task IsCurzon using (num)
+    var elv = 2 ** num + 1
+    var mul = 2 * num + 1
+    var res = elv % mul
+    if res == 0
+        deliver true
+    deliver false
+
+task SumDigits using (n)
+    var idx = 0
+    var sum = 0
+    var snum = to_string(n)
+    loop idx < length(snum)
+        sum = sum + to_int(snum[idx])
+        idx = idx + 1
+    deliver sum
+
+task PrimeSieve using (n)
+    var primes = /* UNSUPPORTED: ListComp */
+    var k = to_int(n ** 0.5)
+    loop p from 2 to k - 1 step 1
+        if primes[p] == true
+            loop i from p * 2 to n - 1 step p
+                primes[i] = false
+    deliver primes
+
+task GeneratePrimes using (limit)
+    var sieve = [true] * limit + 1
+    sieve[0] = false
+    sieve[1] = false
+    loop i from 2 to to_int(limit ** 0.5)
+        if sieve[i]
+            sieve[/* UNSUPPORTED: Slice */] = [false] * length(sieve[/* UNSUPPORTED: Slice */])
+    deliver /* UNSUPPORTED: ListComp */
+
+task GetPrimesUpTo using (n)
+    var sieve = [true] * n + 1
+    sieve[0] = false
+    sieve[1] = false
+    loop i from 2 to to_int(n ** 0.5)
+        if sieve[i]
+            sieve[/* UNSUPPORTED: Slice */] = [false] * length(sieve[/* UNSUPPORTED: Slice */])
+    deliver /* UNSUPPORTED: ListComp */
+
+task CollatzChain using (n)
+    var tmp = 0
+    var chain = []
+    append(chain, n)
+    if n % 2 == 0
+        tmp = n // 2
+        append(chain, tmp)
+        loop tmp != 1
+            if tmp % 2 == 0
+                tmp = tmp // 2
+                append(chain, tmp)
+            else
+                tmp = 3 * tmp + 1
+                append(chain, tmp)
+    else
+        tmp = 3 * n + 1
+        append(chain, tmp)
+        loop tmp != 1
+            if tmp % 2 == 0
+                tmp = tmp // 2
+                append(chain, tmp)
+            else
+                tmp = 3 * tmp + 1
+                append(chain, tmp)
+    deliver chain
+
+task Choose using (r, d)
+    deliver factorial(math, r) / factorial(math, d) * factorial(math, r - d)
+
+task Get2dRow using (r, a)
+    deliver /* UNSUPPORTED: ListComp */
+
+task Get2dCol using (c, a)
+    deliver /* UNSUPPORTED: ListComp */
+
+task DecimalToBinary using (n)
+    deliver replace(to_bin(n), "0b", "")
+
+task GenRandomBinaryString using (n)
+    var bin_str = ""
+    var cnt = 0
+    loop cnt <= n
+        bin_str = bin_str + to_string(random_int(0, 1))
+        cnt = cnt + 1
+    deliver bin_str
+
+task IsPalindrome using (s)
+    deliver s == s[/* UNSUPPORTED: Slice */]
+
+task LtrToInt using (ltr)
+    var l = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5, "F": 6, "G": 7, "H": 8, "I": 9, "J": 10, "K": 11, "L": 12, "M": 13, "N": 14, "O": 15, "P": 16, "Q": 17, "R": 18, "S": 19, "T": 20, "U": 21, "V": 22, "W": 23, "X": 24, "Y": 25, "Z": 26}
+    deliver l[ltr]
+
+task IntToLtr using (num)
+    var i = {1: "A", 2: "B", 3: "C", 4: "D", 5: "E", 6: "F", 7: "G", 8: "H", 9: "I", 10: "J", 11: "K", 12: "L", 13: "M", 14: "N", 15: "O", 16: "P", 17: "Q", 18: "R", 19: "S", 20: "T", 21: "U", 22: "V", 23: "W", 24: "X", 25: "Y", 26: "Z"}
+    deliver i[num]
+
+task WordScore using (w)
+    var score = 0
+    loop i from 0 to length(w) - 1
+        score = score + LtrToInt(w[i])
+    deliver score
+
+task BubbleSort using (arr, d)
+    var sorted = false
+    loop not sorted
+        sorted = true
+        loop i from 0 to length(arr) - 2
+            if d
+                if arr[i] > arr[i + 1]
+                    rem: MANUAL FIX: tuple unpacking
+                    rem: arr[i], arr[i + 1] = [arr[i + 1], arr[i]]
+                    sorted = false
+            else if arr[i] < arr[i + 1]
+                rem: MANUAL FIX: tuple unpacking
+                rem: arr[i + 1], arr[i] = [arr[i], arr[i + 1]]
+                sorted = false
+    deliver arr
+
+task CaesarCipherDecoder using (message, offset)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", ".", "!", "?"]
+    var decoded_message = ""
+    loop char in message
+        if contains(punctuation, char)
+            decoded_message = decoded_message + char
+        else
+            decoded_message = decoded_message + alphabet[find(alphabet, char) + offset % length(alphabet)]
+    deliver decoded_message
+
+task CaesarCipherEncoder using (message, offset)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", ".", "!", "?"]
+    var coded_message = ""
+    loop char in message
+        if contains(punctuation, char)
+            coded_message = coded_message + char
+        else
+            coded_message = coded_message + alphabet[find(alphabet, char) + offset % length(alphabet)]
+    deliver coded_message
+
+task VigenereCipherDecoder using (message, key)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", "'", ".", "!", "?"]
+    var decoded_message = ""
+    var offset = 0
+    var location = 0
+    var ki = 0
+    loop i from 0 to length(message) - 1
+        if ki > 6
+            ki = 0
+        if contains(punctuation, message[i])
+            decoded_message = decoded_message + message[i]
+        else
+            offset = find(alphabet, key[ki])
+            location = find(alphabet, message[i]) - offset % 26
+            decoded_message = decoded_message + alphabet[location]
+            ki = ki + 1
+    deliver decoded_message
+
+task VigenereCipherEncoder using (message, key)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", "'", ".", "!", "?"]
+    var encoded_message = ""
+    var offset = 0
+    var location = 0
+    var ki = 0
+    loop i from 0 to length(message) - 1
+        if ki > 6
+            ki = 0
+        if contains(punctuation, message[i])
+            encoded_message = encoded_message + message[i]
+        else
+            offset = find(alphabet, key[ki])
+            location = find(alphabet, message[i]) + offset % 26
+            encoded_message = encoded_message + alphabet[location]
+            ki = ki + 1
+    deliver encoded_message

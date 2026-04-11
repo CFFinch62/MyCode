@@ -1,0 +1,29 @@
+step: list_contacts
+    belongs to: contacts
+    expects: contact_list
+    returns: nothing
+    
+    declare:
+        count as number
+        index as number
+        contact as table
+    
+    do:
+        set count to length of contact_list
+        
+        display ""
+        display "=== All Contacts ==="
+        
+        if count is equal to 0
+            display "No contacts found."
+        otherwise
+            display "Total: " added to (count as text) added to " contact(s)"
+            display ""
+            
+            set index to 0
+            repeat for each contact in contact_list
+                set index to index + 1
+                display "Contact #" added to (index as text) added to ":"
+                call show_contact with contact
+                display ""
+

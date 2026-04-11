@@ -1,0 +1,76 @@
+step: problem_10
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+
+    note: PROJECT EULER - PROBLEM 10
+    note: Find the sum of all the primes below two million.
+    note: Expected answer: 142,913,828,922
+    note:
+    note: ALGORITHM: Sieve of Eratosthenes
+    note:   1. create_list(n+1, true)  -- native builtin, allocates at C speed
+    note:   2. Mark 0 and 1 as not prime
+    note:   3. For each i from 2 to sqrt(n): mark all multiples of i as false
+    note:   4. Collect surviving indices into a primes list
+    note:   5. Sum the primes list
+    note:
+    note: WHY THIS IS FASTER THAN THE ORIGINAL TRIAL DIVISION:
+    note:   Trial division tested every odd candidate up to 2,000,000 with an
+    note:   inner loop running up to sqrt(candidate) for each one -- roughly
+    note:   94 million inner iterations through the interpreter.
+    note:   The sieve outer marking loop only runs to sqrt(2,000,000) = ~1,414
+    note:   with total marking work of ~3-4 million iterations (O(n log log n)).
+    note:   That is roughly a 25x reduction in interpreted loop iterations.
+    note:
+    note: LANGUAGE LIMITATION NOTE FOR STUDENTS:
+    note:   Even with the most efficient algorithm, the final collection and
+    note:   summation loops must visit all 2,000,000 sieve entries through the
+    note:   Steps interpreter. Every index access involves scope lookup, type
+    note:   dispatch, and object allocation inside Python. Python itself solves
+    note:   this entire problem in milliseconds using native C data structures.
+    note:   This illustrates a real ceiling of tree-walking interpreted languages:
+    note:   for problems requiring millions of simple operations, a compiled or
+    note:   natively-optimised language will always win by orders of magnitude.
+    note:   Steps is excellent for learning logic and problem-solving; for raw
+    note:   numeric throughput at this scale, reach for Python, Go, or Rust.
+
+    declare:
+        max as number
+        primes as list
+        total as number
+        i as number
+        start as number
+        finish as number
+        elapsed as number
+
+    do:
+        call time storing result in start
+
+        set max to 2000000
+
+        display "Calculation in progress - building sieve to " added to max as text added to "..."
+        call gen_primes_to_n with max storing result in primes
+
+        display "Sieve complete. Summing primes..."
+        set total to 0
+        set i to 0
+        repeat while i is less than (length of primes)
+            set total to total + primes[i]
+            set i to i + 1
+
+        call time storing result in finish
+        set elapsed to finish - start
+
+        display "###################################"
+        display "PROJECT EULER PROBLEM 10"
+        display "###################################"
+        display ""
+        display "Find the sum of all the primes below"
+        display "two million."
+        display ""
+        display "The sum is: " added to total as text
+        display ""
+        display "Processing time: " added to elapsed as text added to " seconds."
+        display "###################################"
+
+rem: EXPECTED ANSWER: 142913828922

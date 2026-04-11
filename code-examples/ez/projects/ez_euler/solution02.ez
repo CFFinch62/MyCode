@@ -1,0 +1,54 @@
+// Project Euler Solution
+//
+// Problem 02 — Even Fibonacci Numbers
+
+import @std, @time
+
+// GLOBALS
+const LIMIT int = 4000000
+
+
+//HELPERS
+do fib_even_sum(max int) -> int {
+    
+    temp fsum int = 0
+    temp first int = 1
+    temp second int = 2
+    temp even_total int = 2  
+    
+    as_long_as fsum < max {
+        fsum = first + second
+        if fsum % 2 == 0 {
+			even_total += fsum
+		}
+        first = second
+        second = fsum
+    }
+    
+    return even_total
+}
+
+
+// MAIN PROGRAM
+do main(){
+
+    temp begin = time.now_ms()
+    
+	temp answer int = fib_even_sum(LIMIT)
+        
+	std.println("###################################")
+	std.println("PROJECT EULER PROBLEM 2")
+	std.println("###################################")
+	std.println()
+	std.println("Find sum of even Fibonacci sequence")
+	std.println("values not to exceed 4,000,000")
+	std.println()  
+    std.println("Sum is: ${answer}")
+	std.println("###################################")
+	
+	temp end = time.now_ms()
+	std.println("Prosessing time: ${(end - begin) / 1000} seconds")
+
+}
+
+// EXPECTED ANSWER: 4613732

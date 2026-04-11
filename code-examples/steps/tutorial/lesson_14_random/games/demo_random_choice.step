@@ -1,0 +1,21 @@
+step: demo_random_choice
+    belongs to: games
+
+    note: Demonstrate random choice from a list
+
+    do:
+        display "--- Random Choice Demo ---"
+        display ""
+        display "random_choice picks a random item from a list."
+        display ""
+        
+        set colors to ["red", "blue", "green", "yellow", "purple"]
+        display "Colors: red, blue, green, yellow, purple"
+        display ""
+        display "Picking 3 random colors:"
+        
+        repeat 3 times
+            call random_choice with colors storing result in picked
+            display "  Picked: " added to picked
+        
+        display ""

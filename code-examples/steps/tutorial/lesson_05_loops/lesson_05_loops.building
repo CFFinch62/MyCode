@@ -1,0 +1,59 @@
+building: lesson_05_loops
+    note: Lesson 5 - Loops and Repetition
+    note: Learn about repeat, while, and for each
+    
+    display "=== Repeat Loop ==="
+    display "Counting to 5:"
+    set counter to 1
+    repeat 5 times
+        display (counter as text)
+        set counter to counter + 1
+    
+    display ""
+    display "=== While Loop ==="
+    display "Countdown from 5:"
+    set countdown to 5
+    repeat while countdown is greater than 0
+        display (countdown as text)
+        set countdown to countdown - 1
+    display "Blast off!"
+    
+    display ""
+    display "=== For Each Loop with List ==="
+    set fruits to ["apple", "banana", "cherry", "date"]
+    display "Fruits in the basket:"
+    repeat for each fruit in fruits
+        display "- " added to fruit
+    
+    display ""
+    display "=== Multiplication Table ==="
+    display "Enter a number for the multiplication table: "
+    set num to input as number
+    display ""
+    display "Multiplication table for " added to (num as text) added to ":"
+    set i to 1
+    repeat 10 times
+        set result to num * i
+        display (num as text) added to " x " added to (i as text) added to " = " added to (result as text)
+        set i to i + 1
+    
+    display ""
+    display "=== Sum of Numbers ==="
+    display "How many numbers to add? "
+    set count to input as number
+    set sum to 0
+    set current to 1
+    
+    repeat count times
+        display "Enter number " added to (current as text) added to ": "
+        set num to input as number
+        set sum to sum + num
+        set current to current + 1
+    
+    display ""
+    display "The sum is: " added to (sum as text)
+    set average to sum / count
+    display "The average is: " added to (average as text)
+    
+    exit
+

@@ -1,0 +1,23 @@
+step: get_input_prompt
+    belongs to: user_interaction
+    expects: choice as number
+    returns: prompt as text
+
+    declare:
+        prompt as text
+
+    do:
+        if choice equals 1
+            set prompt to "Enter Price: $"
+        otherwise if choice equals 2
+            set prompt to "Enter Margin: %"
+        otherwise if choice equals 3
+            set prompt to "Enter Profit: $"
+        otherwise if choice equals 4
+            set prompt to "Enter Markup: %"
+        otherwise if choice equals 5
+            set prompt to "Enter Cost: $"
+        otherwise
+            set prompt to "Enter value: "
+
+        return prompt

@@ -1,0 +1,31 @@
+step: calc_from_profit_and_cost
+    belongs to: calculations
+    expects: nothing
+    returns: results as table
+
+    declare:
+        profit as number fixed
+        cost as number fixed
+        price as number
+        margin as number
+        markup as number
+        results as table
+
+    do:
+        call get_number_input with "Enter Profit: " storing result in profit
+        call get_number_input with "Enter Cost: " storing result in cost
+
+        set price to cost + profit
+        set margin to (profit / price) * 100
+        set markup to (profit / cost) * 100
+
+        set results to ["_":""]
+        set results["price"] to price
+        set results["margin"] to margin
+        set results["profit"] to profit
+        set results["markup"] to markup
+        set results["cost"] to cost
+
+        return results
+
+

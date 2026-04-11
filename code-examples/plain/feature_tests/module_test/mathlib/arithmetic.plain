@@ -1,0 +1,19 @@
+rem: mathlib/arithmetic.plain - Module inside 'mathlib' assembly
+rem: Tests that a module inside an assembly (subdirectory) works correctly.
+
+task Add using (a, b)
+    deliver a + b
+
+task Subtract using (a, b)
+    deliver a - b
+
+task Multiply using (a, b)
+    deliver a * b
+
+task Divide using (a, b)
+    if b == 0
+        abort "Division by zero"
+    deliver a / b
+
+task Square using (n)
+    deliver n * n

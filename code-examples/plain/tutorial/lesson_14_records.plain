@@ -1,0 +1,46 @@
+rem: Lesson 14 - Records and Custom Types
+rem: Creating your own data types with records
+
+rem: Define a record type
+record Student:
+    name as string
+    age as integer = 18
+    grade as string = "A"
+
+rem: Record with more fields
+record Course:
+    title as string
+    instructor as string = "TBD"
+    credits as integer = 3
+
+task Main()
+    rem: Creating record instances
+    var student1 = Student(name: "Alice", age: 20, grade: "A")
+    var student2 = Student(name: "Bob", age: 19)
+    var student3 = Student(name: "Charlie")
+
+    rem: Accessing fields with dot notation
+    display("Student: " & student1.name & ", Age: " & student1.age & ", Grade: " & student1.grade)
+    display("Student: " & student2.name & ", Age: " & student2.age & ", Grade: " & student2.grade)
+    display("Student: " & student3.name & ", Age: " & student3.age & ", Grade: " & student3.grade)
+
+    rem: Modifying fields
+    student2.grade = "B"
+    display("Updated: " & student2.name & " now has grade " & student2.grade)
+
+    rem: Creating course records
+    var course = Course(title: "Introduction to Programming", instructor: "Dr. Smith", credits: 4)
+    display("")
+    DisplayCourse(course)
+
+    rem: Records in a list
+    display("")
+    display("=== Class Roster ===")
+    var students = [student1, student2, student3]
+    loop s in students
+        display("  " & s.name & " (Age: " & s.age & ") - Grade: " & s.grade)
+
+task DisplayCourse with (course)
+    display("Course: " & course.title)
+    display("  Instructor: " & course.instructor)
+    display("  Credits: " & course.credits)

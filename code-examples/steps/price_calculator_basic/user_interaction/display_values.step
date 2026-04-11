@@ -1,0 +1,13 @@
+step: display_values
+    belongs to: user_interaction
+    expects: results as table
+    returns: nothing
+
+    do:
+        display " Price($): " added to (results["price"] as text)
+        display "Margin(%): " added to (results["margin"] as text)
+        display "Profit($): " added to (results["profit"] as text)
+        display "Markup(%): " added to (results["markup"] as text)
+        display "  Cost($): " added to (results["cost"] as text)
+
+        call ask_repeat

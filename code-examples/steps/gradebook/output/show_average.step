@@ -1,0 +1,13 @@
+step: show_average
+    belongs to: output
+    expects: average, count
+
+    note: Display the class average
+
+    do:
+        if count is equal to 0
+            display "No grades recorded yet!"
+        otherwise
+            display "Class average: " added to (average as decimal(2)) added to "%"
+            display "Based on " added to (count as text) added to " student(s) with grades."
+        display ""

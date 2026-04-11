@@ -1,0 +1,75 @@
+building: lesson_06_lists
+    note: Lesson 6 - Working with Lists
+    note: Learn how to create and manipulate lists
+    
+    display "=== Creating Lists ==="
+    set empty_list to []
+    set numbers to [10, 20, 30, 40, 50]
+    set names to ["Alice", "Bob", "Charlie"]
+    
+    display "Empty list: " added to (empty_list as text)
+    display "Numbers: " added to (numbers as text)
+    display "Names: " added to (names as text)
+    
+    display ""
+    display "=== Accessing List Items ==="
+    display "First number: " added to (numbers[0] as text)
+    display "Second number: " added to (numbers[1] as text)
+    display "Last number: " added to (numbers[4] as text)
+    
+    display ""
+    display "First name: " added to names[0]
+    display "Second name: " added to names[1]
+    display "Third name: " added to names[2]
+    
+    display ""
+    display "=== Adding to Lists ==="
+    set shopping_list to []
+    display "Shopping list is empty: " added to (shopping_list as text)
+    
+    add "milk" to shopping_list
+    add "bread" to shopping_list
+    add "eggs" to shopping_list
+    add "butter" to shopping_list
+    
+    display "Shopping list now: " added to (shopping_list as text)
+    
+    display ""
+    display "=== Removing from Lists ==="
+    display "Removing 'bread' from the list..."
+    remove "bread" from shopping_list
+    display "Shopping list now: " added to (shopping_list as text)
+    
+    display ""
+    display "=== List Length ==="
+    set list_size to length of shopping_list
+    display "The shopping list has " added to (list_size as text) added to " items."
+    
+    display ""
+    display "=== Iterating Over Lists ==="
+    display "Items in shopping list:"
+    set item_number to 1
+    repeat for each item in shopping_list
+        display (item_number as text) added to ". " added to item
+        set item_number to item_number + 1
+    
+    display ""
+    display "=== Building a List from Input ==="
+    display "How many favorite foods do you have? "
+    set count to input as number
+    set favorites to []
+    set current to 1
+    
+    repeat count times
+        display "Enter favorite food #" added to (current as text) added to ": "
+        set food to input as text
+        add food to favorites
+        set current to current + 1
+    
+    display ""
+    display "Your favorite foods:"
+    repeat for each food in favorites
+        display "- " added to food
+    
+    exit
+

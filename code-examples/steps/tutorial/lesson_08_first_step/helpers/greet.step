@@ -1,0 +1,9 @@
+step: greet
+    belongs to: helpers
+    expects: nothing
+    returns: nothing
+    
+    do:
+        display "Hello from the greet step!"
+        display "I have received nothing and return nothing to do my job"
+

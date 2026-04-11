@@ -1,0 +1,35 @@
+step: problem_03
+
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        max as number
+        answer as number
+        start as number
+        finish as number
+        elapsed as number
+        
+    do:
+        set max to 600851475143
+        
+        call time storing result in start
+        
+        call gpf with max storing result in answer
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 3")
+        display("###################################") 
+        display("")
+        display("What is the largest prime factor of ")
+        display("the number 600851475143?")
+        display("")  
+        display("The GPF is: " added to answer)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+rem: EXPECTED ANSWER: 6857

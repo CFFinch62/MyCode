@@ -1,0 +1,99 @@
+rem: Menu Demo - Interactive Menu System
+rem: Shows how to create a simple menu using Phase 1 TUI features
+
+task DrawMenu(title, options, selected)
+    clear()
+    
+    rem: Calculate box dimensions
+    var maxLen = len(title)
+    loop option in options
+        if len(option) > maxLen
+            maxLen = len(option)
+    
+    var boxWidth = maxLen + 8
+    var boxHeight = len(options) + 6
+    
+    rem: Draw title box
+    text_color("cyan")
+    draw_box(10, 2, boxWidth, 3, title)
+    text_color("default")
+    
+    rem: Draw menu box
+    text_color("white")
+    draw_box(10, 6, boxWidth, boxHeight)
+    text_color("default")
+    
+    rem: Draw menu items
+    var row = 8
+    var index = 1
+    loop option in options
+        text_at(12, row, v"{index}. {option}")
+        
+        rem: Highlight selected item
+        if index == selected
+            text_color("yellow")
+            text_at(boxWidth + 8, row, " <--")
+            text_color("default")
+        
+        row = row + 1
+        index = index + 1
+    
+    rem: Draw separator
+    text_color("white")
+    draw_line(11, row + 1, boxWidth - 2, "h")
+    text_color("default")
+    
+    rem: Draw prompt
+    text_at(12, row + 3, "Enter choice (1-" & len(options) & ") or 0 to exit: ")
+
+task ShowMessage(title, message)
+    clear()
+    
+    var boxWidth = len(message) + 8
+    if len(title) + 8 > boxWidth
+        boxWidth = len(title) + 8
+    
+    text_color("green")
+    draw_box(10, 8, boxWidth, 6, title)
+    text_color("default")
+    
+    text_at(12, 10, message)
+    text_at(12, 12, "Press Enter to continue...")
+    var dummy = get("")
+
+task Main()
+    var options = ["View Data", "Configure Settings", "Run Analysis", "Export Results", "Help"]
+    var running = true
+    var selected = 1
+    
+    loop while running
+        DrawMenu("Main Menu", options, selected)
+        
+        var input = get("")
+        var choice = to_int(input)
+        
+        if choice == 0
+            running = false
+        else if choice >= 1 and choice <= len(options)
+            selected = choice
+            
+            rem: Handle menu selection
+            if choice == 1
+                ShowMessage("View Data", "Displaying data visualization...")
+            else if choice == 2
+                ShowMessage("Configure", "Opening configuration panel...")
+            else if choice == 3
+                ShowMessage("Analysis", "Running data analysis...")
+            else if choice == 4
+                ShowMessage("Export", "Exporting results to file...")
+            else if choice == 5
+                ShowMessage("Help", "PLAIN Text Graphics Menu System v1.0")
+    
+    rem: Exit message
+    clear()
+    text_color("cyan")
+    draw_box(10, 10, 40, 5, "Goodbye!")
+    text_color("default")
+    text_at(12, 12, "Thank you for using PLAIN!")
+    text_at(1, 16, "")
+

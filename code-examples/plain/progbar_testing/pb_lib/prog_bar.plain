@@ -1,0 +1,38 @@
+rem: ============================================
+rem: prog_bar.plain - Reusable Progress Bar Module
+rem: ============================================
+rem: A library module that displays a text-based
+rem: progress bar in the console.
+rem:
+rem: Usage:
+rem:   prog_bar.Init(intTotal)     - Set up the bar
+rem:   prog_bar.Update(intCurrent) - Redraw at position
+rem:   prog_bar.Finish()           - Complete and close
+rem: ============================================
+
+rem: Module-level state (persists between calls)
+var stdout = null
+var intTotal = 0
+var intWidth = 20
+
+task Init with (intLimit)
+    intTotal = intLimit
+    stdout = open("/dev/stdout", "a")
+
+task Update with (intCurrent)
+    var intPercent = to_int((intCurrent * 100) / intTotal)
+    var intFilled = to_int((intCurrent * intWidth) / intTotal)
+    var strBar = chr(13) & "Progress: ["
+    loop i from 0 to intFilled
+        strBar = strBar & chr(9608)
+    loop j from intFilled to intWidth - 1
+        strBar = strBar & chr(9617)
+    strBar = strBar & v"] {intPercent}%"
+    write(stdout, strBar)
+
+task Finish()
+    rem: Fill bar to 100% on completion
+    Update(intTotal)
+    write(stdout, "\n")
+    close(stdout)
+    stdout = null

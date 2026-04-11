@@ -1,0 +1,65 @@
+note:
+    ####################################
+	Project Euler Probelm # 4
+ 	####################################
+	Find the largest palindrome made from
+	the product of two 3-digit numbers.
+	####################################
+ 
+rem: HELPERS
+task IsPalindrome with (value)
+    var strText = ""
+    
+    rem: Determine the string representation based on type
+	if is_int(value) or is_float(value)
+    		strText = to_string(value)
+	else
+    		if is_string(value)
+        		strText = value
+    		else
+        		deliver false
+          
+    rem: Now begin to check if strText is a palindrome
+    var intLen = len(strText)
+    
+    rem: Handle edge case
+    if intLen <= 1
+        deliver true
+    
+    rem: Compare characters from both ends
+    loop i from 0 to (intLen // 2) - 1
+        var charLeft = substring(strText, i, i + 1)
+        var charRight = substring(strText, intLen - 1 - i, intLen - i)
+        
+        if charLeft != charRight
+            deliver false
+    
+    deliver true
+ 
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var intPal = 0
+    loop i from 100 to 999
+        loop j from 100 to 999
+            var intNum = i * j
+            if IsPalindrome(intNum)
+                if intNum > intPal
+                    intPal = intNum
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 4")
+	display("###################################")
+	display()
+	display("Find the largest palindrome made from")
+	display("the product of two 3-digit numbers.")
+	display()  
+	display("The largest palindrome is:") 
+    display(intPal)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 906609

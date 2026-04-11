@@ -1,0 +1,40 @@
+step: problem_05
+
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        c as number
+        i as number
+        answer as number
+        
+    do: 
+        call time storing result in start
+        
+        set c to 1
+        set i to 1
+        set answer to 0
+
+        repeat while i is less than or equal to 21
+            call lcm with c, i storing result in c
+            set i to i + 1
+
+        call round with c storing result in answer
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 5")
+        display("###################################") 
+        display("")
+        display("What is the smallest positive number") 
+        display("that is evenly divisible by all of")
+        display("the numbers from 1 to 20?")
+        display("")  
+        display("The number is: " added to answer)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+note: EXPECTED ANSWER: 

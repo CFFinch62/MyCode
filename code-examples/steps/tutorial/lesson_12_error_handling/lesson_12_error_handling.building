@@ -1,0 +1,41 @@
+building: lesson_12_error_handling
+    note: Learn how to handle errors gracefully in Steps!
+    
+    display "========================================"
+    display "   Lesson 12: Error Handling in Steps"
+    display "========================================"
+    display ""
+    
+    display "--- Part 1: What Happens Without Error Handling ---"
+    display ""
+    display "Sometimes things go wrong in programs:"
+    display "  - User enters text when we expect a number"
+    display "  - We try to divide by zero"
+    display "  - We try to access something that doesn't exist"
+    display ""
+    
+    display "Steps uses 'attempt' to handle errors safely."
+    display ""
+    
+    note: Demonstrate basic error handling
+    call demo_basic_error
+    
+    note: Demonstrate safe input pattern
+    call demo_safe_input storing result in user_age
+    
+    note: Demonstrate cleanup
+    call demo_cleanup
+    
+    display "========================================"
+    display "   Key Takeaways"
+    display "========================================"
+    display ""
+    display "1. Use 'attempt:' around code that might fail"
+    display "2. Use 'if unsuccessful:' to handle the error"
+    display "3. Use 'problem_message' to see what went wrong"
+    display "4. Use 'then continue:' for cleanup that always runs"
+    display "5. Combine with loops for input validation!"
+    display ""
+    display "Great job completing the error handling lesson!"
+    
+    exit

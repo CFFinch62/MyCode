@@ -1,0 +1,40 @@
+building: lesson_08_first_step
+    note: Lesson 8 - Creating Your First Step
+    note: Learn how to create and call reusable steps
+    display ""
+    
+    display "=== Calling Steps with no Return Values ==="
+    display ""
+    display "Some steps do something but do not return any data."
+    display "Some of these types of steps can receive data even if they do not return data"
+    display "These procedures are often called 'subroutines'."
+    display ""
+    
+    call greet
+    display ""
+    
+    set todays_date to "December 22, 2025"
+    call show_date with todays_date
+    display ""
+
+    display "=== Calling Steps with Return Values ==="
+    display ""
+    display "Some steps do something and return data."
+    display "Most of these types of step recevie data, although they do not have to, as well as return data."
+    display "These procedures are often called 'funcitons'."
+    display ""
+    
+    call get_lucky_number storing result in lucky
+    display "Your lucky number is: " added to (lucky as text)   
+    display ""
+    
+    display "what is your name: "
+    set name to input as text
+    display ""
+    
+    call get_greeting with name storing result in message
+    display message
+    display ""
+    
+    exit
+

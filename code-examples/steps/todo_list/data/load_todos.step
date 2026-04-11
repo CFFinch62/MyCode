@@ -1,0 +1,16 @@
+step: load_todos
+    belongs to: data
+    expects: filename
+    returns: todos
+
+    note: Load todos from CSV file, or return empty list if not found
+
+    do:
+        call file_exists with filename storing result in has_file
+        
+        if has_file
+            call read_csv with filename storing result in todos
+        otherwise
+            set todos to []
+        
+        return todos

@@ -1,0 +1,43 @@
+note:
+    ####################################
+	Project Euler Probelm # 2
+ 	####################################
+  	Find sum of even Fibonacci sequence 
+	values not to exceed 4,000,000
+	####################################
+
+rem: GLOBALS
+fxd LIMIT as Integer = 4000000
+
+rem: HELPERS
+task FibEvenSum using (max)
+    var fsum as Integer = 0
+    var first as Integer = 1
+    var second as Integer = 2
+    var even_total = 2  
+    loop fsum < max
+        fsum = first + second
+        if fsum % 2 == 0
+			even_total += fsum
+        first = second
+        second = fsum
+    deliver even_total
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 2")
+	display("###################################")
+	display()
+	display("Find sum of even Fibonacci sequence")
+	display("values not to exceed 4,000,000")
+	display()  
+    display("Sum is: " & to_string(FibEvenSum(LIMIT)))
+	display("###################################")
+ 
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 4613732

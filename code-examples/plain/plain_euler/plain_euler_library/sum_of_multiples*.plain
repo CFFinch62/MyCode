@@ -1,0 +1,16 @@
+use:
+    tasks:
+        helpers.gcd_lcm.Gcd
+
+
+task SumOfMultiples using (n, limit)
+    limit = limit - 1
+    var count = limit // n
+    deliver n * count * count + 1 // 2
+
+task SumOfTwoMultiples using (m1, m2, limit)
+    var sum1 = SumOfMultiples(m1, limit)
+    var sum2 = SumOfMultiples(m2, limit)
+    var lcm = m1 * m2 // Gcd(m1, m2)
+    var sum_lcm = SumOfMultiples(lcm, limit)
+    deliver sum1 + sum2 - sum_lcm

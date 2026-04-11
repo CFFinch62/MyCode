@@ -1,0 +1,17 @@
+step: ask_repeat
+    belongs to: user_interaction
+    expects: nothing
+    returns: nothing
+
+    declare:
+        answer as text
+
+    do:
+        display "Enter 'yes' for another calculation. Any other key to exit: "
+        set answer to input
+
+        if answer equals "yes"
+            call display_menu storing result in choice
+            call route_calculation with choice
+        otherwise
+            exit

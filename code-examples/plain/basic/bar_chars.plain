@@ -1,0 +1,133 @@
+rem: Progress Bar Character Tester
+rem: Run this to see which characters render on your terminal.
+rem: Pick the one that looks best for your progress bar!
+
+task Main()
+    var intWidth = 20
+
+    display("=== Progress Bar Character Candidates ===")
+    display("")
+
+    rem: ── ASCII candidates (guaranteed to work) ──
+    display("--- ASCII (should always work) ---")
+    display("")
+
+    var asciiChars = ["#", "=", "*", "+", "|", ">", "-"]
+    var asciiNames = ["Hash #       ", "Equals =     ", "Asterisk *   ", "Plus +       ", "Pipe |       ", "Arrow >      ", "Dash -       "]
+
+    loop i from 0 to len(asciiChars) - 1
+        var bar = "  " & asciiNames[i] & " ["
+        loop j from 1 to intWidth
+            bar = bar & asciiChars[i]
+        bar = bar & "] 100%"
+        display(bar)
+
+    display("")
+
+    rem: ── Unicode Block Elements ──
+    display("--- Unicode Block Elements (may or may not render) ---")
+    display("")
+
+    rem: Full block U+2588 = 9608
+    var fullBlock = chr(9608)
+    rem: Dark shade U+2593 = 9619
+    var darkShade = chr(9619)
+    rem: Medium shade U+2592 = 9618
+    var medShade = chr(9618)
+    rem: Light shade U+2591 = 9617
+    var lightShade = chr(9617)
+
+    var uniChars = [fullBlock, darkShade, medShade, lightShade]
+    var uniCodes = [9608, 9619, 9618, 9617]
+    var uniNames = ["Full Block   ", "Dark Shade   ", "Medium Shade ", "Light Shade  "]
+
+    loop i from 0 to len(uniChars) - 1
+        var bar = "  " & uniNames[i] & " ["
+        loop j from 1 to intWidth
+            bar = bar & uniChars[i]
+        bar = bar & "] 100%"
+        display(bar)
+
+    display("")
+
+    rem: ── Partial blocks for smooth progress ──
+    display("--- Partial Blocks (smooth fill effect) ---")
+    display("")
+
+    rem: These go from thin to full:
+    rem: U+258F (9615) = 1/8 block
+    rem: U+258E (9614) = 1/4 block
+    rem: U+258D (9613) = 3/8 block
+    rem: U+258C (9612) = 1/2 block
+    rem: U+258B (9611) = 5/8 block
+    rem: U+258A (9610) = 3/4 block
+    rem: U+2589 (9609) = 7/8 block
+    rem: U+2588 (9608) = full block
+
+    var partCodes = [9615, 9614, 9613, 9612, 9611, 9610, 9609, 9608]
+    var partNames = ["1/8", "2/8", "3/8", "4/8", "5/8", "6/8", "7/8", "8/8"]
+
+    var gradBar = "  Gradient: ["
+    loop i from 0 to len(partCodes) - 1
+        var ch = chr(partCodes[i])
+        gradBar = gradBar & ch & ch
+    gradBar = gradBar & "]"
+    display(gradBar)
+
+    display("")
+
+    rem: ── Combo styles (filled + empty using different chars) ──
+    display("--- Combo Styles (filled vs empty) ---")
+    display("")
+
+    var intFilled = 14
+
+    rem: Style 1: block + light shade
+    var bar1 = "  Block/Shade  ["
+    loop j from 1 to intFilled
+        bar1 = bar1 & fullBlock
+    loop j from 1 to intWidth - intFilled
+        bar1 = bar1 & lightShade
+    bar1 = bar1 & "] 70%"
+    display(bar1)
+
+    rem: Style 2: dark shade + light shade
+    var bar2 = "  Dark/Light   ["
+    loop j from 1 to intFilled
+        bar2 = bar2 & darkShade
+    loop j from 1 to intWidth - intFilled
+        bar2 = bar2 & lightShade
+    bar2 = bar2 & "] 70%"
+    display(bar2)
+
+    rem: Style 3: hash + dash (pure ASCII)
+    var bar3 = "  Hash/Dash    ["
+    loop j from 1 to intFilled
+        bar3 = bar3 & "#"
+    loop j from 1 to intWidth - intFilled
+        bar3 = bar3 & "-"
+    bar3 = bar3 & "] 70%"
+    display(bar3)
+
+    rem: Style 4: equals + space (pure ASCII)
+    var bar4 = "  Equals/Space ["
+    loop j from 1 to intFilled
+        bar4 = bar4 & "="
+    loop j from 1 to intWidth - intFilled
+        bar4 = bar4 & " "
+    bar4 = bar4 & "] 70%"
+    display(bar4)
+
+    rem: Style 5: equals with arrow tip (pure ASCII)
+    var bar5 = "  Arrow Style  ["
+    loop j from 1 to intFilled - 1
+        bar5 = bar5 & "="
+    bar5 = bar5 & ">"
+    loop j from 1 to intWidth - intFilled
+        bar5 = bar5 & " "
+    bar5 = bar5 & "] 70%"
+    display(bar5)
+
+    display("")
+    display("If the Unicode blocks show as ? or boxes, stick with ASCII styles.")
+    display("The block/shade combos look best if your terminal supports them.")

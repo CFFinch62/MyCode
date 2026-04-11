@@ -1,0 +1,12 @@
+var num_list as List = []
+var limit as Integer = 9
+
+loop i from 0 to limit
+    append(num_list, i)
+    
+display(len(num_list))
+display()
+    
+loop j from 0 to len(num_list) - 1
+    display(num_list[j])
+    

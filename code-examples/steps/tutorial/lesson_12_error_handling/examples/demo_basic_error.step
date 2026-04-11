@@ -1,0 +1,31 @@
+step: demo_basic_error
+    belongs to: examples
+
+    note: Demonstrate basic error handling with attempt block
+
+    do:
+        display "--- Basic Error Handling Demo ---"
+        display ""
+        display "Enter something (try typing a word instead of a number): "
+        
+        attempt:
+            set user_input to input as number
+            display "You entered the number: " added to (user_input as text)
+        if unsuccessful:
+            display "Oops! That wasn't a valid number."
+            display "The error was: " added to problem_message
+            set user_input to 0
+        then continue:
+            display "Moving on with user_input = " added to (user_input as text)
+        
+        display ""
+        display "Now trying division by zero..."
+        display ""
+        
+        attempt:
+            set result to 100 / 0
+            display "Result: " added to (result as text)
+        if unsuccessful:
+            display "Caught an error: " added to problem_message
+        
+        display ""

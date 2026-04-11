@@ -1720,6 +1720,24 @@ body {
   background: var(--accent-color);
 }
 
+.bottom-panel-close {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 16px;
+  line-height: 1;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.bottom-panel-close:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
 /* Plugin Notifications */
 .plugin-notification {
   position: fixed;

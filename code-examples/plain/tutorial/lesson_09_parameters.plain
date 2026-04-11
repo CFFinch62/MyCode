@@ -1,0 +1,49 @@
+rem: Lesson 9 - Tasks with Parameters
+rem: Passing data into tasks with 'with'
+
+task Main()
+    rem: Calling tasks with arguments
+    Greet("Alice")
+    Greet("Bob")
+
+    DrawBox("Welcome to PLAIN!", 30)
+
+    rem: Passing multiple parameters
+    DisplayScore("Alice", 95)
+    DisplayScore("Bob", 87)
+    DisplayScore("Charlie", 92)
+
+    rem: Tasks can call other tasks
+    ShowReport()
+
+rem: Task with one parameter
+task Greet with (strName)
+    display(v"Hello, {strName}! Nice to meet you!")
+
+rem: Task with two parameters
+task DisplayScore with (strName, intScore)
+    var strGrade = "F"
+    if intScore >= 90
+        strGrade = "A"
+    else
+        if intScore >= 80
+            strGrade = "B"
+
+    display(v"  {strName}: {intScore}/100 (Grade: {strGrade})")
+
+rem: Task that draws a box around text
+task DrawBox with (strText, intWidth)
+    var strBorder = ""
+    loop i from 1 to intWidth
+        strBorder = strBorder & "="
+    display(strBorder)
+    display(v"  {strText}")
+    display(strBorder)
+
+rem: Task that calls other tasks
+task ShowReport()
+    display("")
+    DrawBox("Student Report", 30)
+    DisplayScore("Diana", 98)
+    DisplayScore("Eve", 76)
+    display("")

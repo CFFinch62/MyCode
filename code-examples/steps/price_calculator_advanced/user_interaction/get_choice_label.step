@@ -1,0 +1,23 @@
+step: get_choice_label
+    belongs to: user_interaction
+    expects: choice as number
+    returns: label as text
+
+    declare:
+        label as text
+
+    do:
+        if choice equals 1
+            set label to "Price ($)"
+        otherwise if choice equals 2
+            set label to "Margin (%)"
+        otherwise if choice equals 3
+            set label to "Profit ($)"
+        otherwise if choice equals 4
+            set label to "Markup (%)"
+        otherwise if choice equals 5
+            set label to "Cost ($)"
+        otherwise
+            set label to "Unknown"
+
+        return label

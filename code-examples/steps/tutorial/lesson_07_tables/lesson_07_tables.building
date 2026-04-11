@@ -1,0 +1,75 @@
+building: lesson_07_tables
+    note: Lesson 7 - Working with Tables
+    note: Learn how to create and use tables (key-value pairs)
+    
+    display "=== Creating Tables ==="
+    set empty_table to [ : ]
+    set person to ["name": "Alice", "age": 25, "city": "Boston"]
+    
+    display "Empty table: " added to (empty_table as text)
+    display "Person: " added to (person as text)
+    
+    display ""
+    display "=== Accessing Table Values ==="
+    display "Name: " added to person["name"]
+    display "Age: " added to (person["age"] as text)
+    display "City: " added to person["city"]
+    
+    display ""
+    display "=== Modifying Table Values ==="
+    display "Updating age to 26..."
+    set person["age"] to 26
+    display "New age: " added to (person["age"] as text)
+    
+    display "Moving to New York..."
+    set person["city"] to "New York"
+    display "New city: " added to person["city"]
+    
+    display ""
+    display "=== Adding New Keys ==="
+    set person["job"] to "Engineer"
+    set person["salary"] to 75000
+    display "Job: " added to person["job"]
+    display "Salary: $" added to (person["salary"] as text)
+    
+    display ""
+    display "=== Building a Table from Input ==="
+    display "Let's create a book record!"
+    display ""
+    
+    display "Enter book title: "
+    set title to input as text
+    
+    display "Enter author: "
+    set author to input as text
+    
+    display "Enter year published: "
+    set year to input as number
+    
+    display "Enter number of pages: "
+    set pages to input as number
+    
+    set book to ["title": title, "author": author, "year": year, "pages": pages]
+    
+    display ""
+    display "=== Book Information ==="
+    display "Title: " added to book["title"]
+    display "Author: " added to book["author"]
+    display "Year: " added to (book["year"] as text)
+    display "Pages: " added to (book["pages"] as text)
+    
+    display ""
+    display "=== Nested Tables ==="
+    set student to ["name": "Bob", "grades": ["math": 85, "english": 92, "science": 78]]
+    
+    display "Student: " added to student["name"]
+    display "Math grade: " added to (student["grades"]["math"] as text)
+    display "English grade: " added to (student["grades"]["english"] as text)
+    display "Science grade: " added to (student["grades"]["science"] as text)
+    
+    set total to student["grades"]["math"] + student["grades"]["english"] + student["grades"]["science"]
+    set average to total / 3
+    display "Average grade: " added to (average as text)
+    
+    exit
+

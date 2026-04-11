@@ -1,0 +1,36 @@
+building: guess_the_number
+    note: A fun number guessing game that teaches randomness and loops!
+
+    display "==================================="
+    display "   Welcome to Guess the Number!"
+    display "==================================="
+    display ""
+    
+    set max_number to 100
+    set playing to true
+    
+    repeat while playing
+        display "I'm thinking of a number between 1 and " added to (max_number as text) added to "..."
+        display ""
+        
+        call play_round with max_number storing result in attempts
+        
+        display ""
+        display "Congratulations! You got it in " added to (attempts as text) added to " tries!"
+        display ""
+        
+        call get_feedback with attempts storing result in feedback
+        display feedback
+        
+        display ""
+        display "Play again? (yes/no): "
+        set answer to input
+        
+        if answer equals "no"
+            set playing to false
+            display ""
+            display "Thanks for playing! Goodbye!"
+        otherwise
+            display ""
+    
+    exit

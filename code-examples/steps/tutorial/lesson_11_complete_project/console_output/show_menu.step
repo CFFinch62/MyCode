@@ -1,0 +1,19 @@
+step: show_menu
+    belongs to: console_ouput
+    expects: nothing
+    returns: choice
+    
+    do:
+        display ""
+        display "=== MAIN MENU ==="
+        display "1. Add Contact"
+        display "2. List All Contacts"
+        display "3. Search Contact"
+        display "4. Count Contacts"
+        display "5. Exit"
+        display ""
+        display "Enter your choice (1-5): "
+        set choice to input as number
+        
+        return choice
+

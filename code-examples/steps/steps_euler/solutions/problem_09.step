@@ -1,0 +1,45 @@
+step: problem_09
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        sum_target as number
+        results as list
+        triplet as list
+        a as number
+        b as number
+        c as number
+        product as number
+        
+    do:
+        call time storing result in start
+        set sum_target to 1000.0
+        
+        note: Delegating the mathematical search to the helpers floor
+        call find_triplets_by_sum with sum_target storing result in results
+        
+        note: Project Euler #9 specifies exactly one triplet exists
+        set triplet to results[0]
+        
+        set a to triplet[0]
+        set b to triplet[1]
+        set c to triplet[2]
+        set product to (a * b * c)
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM  9")
+        display("###################################") 
+        display("")
+        display("There exists exactly one Pythagorean")
+        display("triplet for which a + b + c = 1000.")
+        display("Find the product abc.")
+        display("")  
+        display("The product is" added to product)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+note: EXPECTED ANSWER: 375, 200, 425

@@ -1,0 +1,48 @@
+rem: Lesson 16 - Randomness and Games
+rem: Using random numbers to make programs fun and unpredictable
+
+task Main()
+    rem: Random float between 0.0 and 1.0
+    display("=== Random Numbers ===")
+    display("Random float: " & random())
+    display("Random float: " & random())
+
+    rem: Random integer in a range
+    display("Dice roll: " & random_int(1, 6))
+    display("Dice roll: " & random_int(1, 6))
+
+    rem: Random choice from a list
+    var colors = ["red", "blue", "green", "yellow", "purple"]
+    display("Random color: " & random_choice(colors))
+
+    rem: Simulating dice rolls
+    display("")
+    display("=== Rolling 5 Dice ===")
+    var total = 0
+    loop i from 1 to 5
+        var roll = random_int(1, 6)
+        display("  Die " & i & ": " & roll)
+        total = total + roll
+    display(v"  Total: {total}")
+
+    rem: Coin flip simulation
+    display("")
+    display("=== 10 Coin Flips ===")
+    var heads = 0
+    var tails = 0
+    loop i from 1 to 10
+        var flip = random_int(0, 1)
+        if flip == 0
+            heads = heads + 1
+        else
+            tails = tails + 1
+    display(v"  Heads: {heads}, Tails: {tails}")
+
+    rem: Random password generator
+    display("")
+    display("=== Random Password Generator ===")
+    var chars = ["a","b","c","d","e","f","g","h","j","k","m","n","p","q","r","s","t","u","v","w","x","y","z","2","3","4","5","6","7","8","9"]
+    var password = ""
+    loop i from 1 to 8
+        password = password & random_choice(chars)
+    display(v"Generated password: {password}")

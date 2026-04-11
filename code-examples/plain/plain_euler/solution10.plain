@@ -1,0 +1,73 @@
+note:
+    ####################################
+	Project Euler Probelm # 10
+ 	####################################
+	Find the sum of all the primes below 
+	two million.  
+	####################################
+
+rem: HELPERS
+task GetPrimesUpTo using (n)
+    rem: Create sieve array using a loop
+	var sieve = []
+    var i = 0
+    loop i <= n
+        append(sieve, 1)
+        i = i + 1
+    
+    rem: Mark 0 and 1 as not prime
+    sieve[0] = 0
+    sieve[1] = 0
+    
+    rem: Sieve of Eratosthenes
+    i = 2
+    loop i <= to_int(n**0.5)
+        if sieve[i] == 1
+            rem: Mark multiples of i as not prime
+            rem: Start at i*i and increment by i each time
+            var multiple = i * i
+            loop multiple <= n
+                sieve[multiple] = 0
+                multiple = multiple + i
+        i = i + 1
+    
+    rem: Collect primes into result list
+    var primes = []
+    i = 0
+    loop i <= n
+        if sieve[i] == 1
+            append(primes, i)
+        i = i + 1
+    
+    deliver primes
+    
+task SumList using (l)
+    var sum = 0
+    
+    loop i from 0 to len(l)-1
+		sum += l[i]
+  
+	deliver sum        
+
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var lstPrimes = GetPrimesUpTo(2000000)
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 10")
+	display("###################################")
+	display()
+	display("Find the sum of all the primes below ")
+	display("two million.")
+	display()  
+	display("The sum is: ") 
+    display(SumList(lstPrimes))
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 142913828922 

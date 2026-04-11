@@ -1,0 +1,15 @@
+step: add_contact
+    belongs to: contacts
+    expects: contact_list
+    returns: nothing
+    
+    declare:
+        new_contact as table
+    
+    do:
+        call get_contact_info storing result in new_contact
+        add new_contact to contact_list
+        
+        display ""
+        display "✓ Contact added successfully!"
+

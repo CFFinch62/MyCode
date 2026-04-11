@@ -1,0 +1,32 @@
+step: demo_safe_input
+    belongs to: examples
+    returns: age
+
+    note: Demonstrate safe input loop pattern
+
+    do:
+        display "--- Safe Input Loop Demo ---"
+        display ""
+        display "Keep asking until we get valid input."
+        display ""
+        
+        set valid_input to false
+        set age to 0
+        
+        repeat while valid_input is equal to false
+            display "Enter your age (must be a positive number): "
+            
+            attempt:
+                set age to input as number
+                if age is greater than 0
+                    set valid_input to true
+                otherwise
+                    display "Age must be positive! Try again."
+            if unsuccessful:
+                display "That's not a number! Try again."
+        
+        display ""
+        display "Great! Your age is: " added to (age as text)
+        display ""
+        
+        return age

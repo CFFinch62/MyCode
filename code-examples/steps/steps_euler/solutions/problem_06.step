@@ -1,0 +1,43 @@
+step: problem_06
+
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        i as number
+        sum as number
+        sumsq as number
+        diff as number
+        
+    do:
+        set i to 1
+        set sum to 0
+        set sumsq to 0
+        set diff to 0
+        
+        call time storing result in start
+    
+        repeat while i is less than or equal to 100
+            set sumsq to sumsq + (i * i)
+            set sum to sum + i
+            set i to i + 1
+        set sqsum to sum * sum
+        
+        call abs with (sumsq - sqsum) storing result in diff
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 6")
+        display("###################################") 
+        display("Find the difference between the sum")
+        display("of the squares of the first one hundred")
+        display("natural numbers and the square of the sum.")
+        display("") 
+        display("The difference is: " added to diff)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+note: EXPECTED ANSWER: 25164150

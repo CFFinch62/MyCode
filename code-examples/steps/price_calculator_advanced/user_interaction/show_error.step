@@ -1,0 +1,9 @@
+step: show_error
+    belongs to: user_interaction
+    expects: message as text
+    returns: nothing
+
+    do:
+        display ""
+        display "  ⚠ ERROR: " added to message
+        display ""

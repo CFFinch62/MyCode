@@ -1,0 +1,29 @@
+step: is_valid_combination
+    belongs to: user_interaction
+    expects: first as number, second as number
+    returns: valid as text
+
+    declare:
+        valid as text
+        margin as number
+        markup as number
+
+    do:
+        set margin to 2
+        set markup to 4
+        set valid to "yes"
+
+        note: Same choice is invalid
+        if first equals second
+            set valid to "no"
+
+        note: Margin and Markup together is invalid
+        if first equals margin
+            if second equals markup
+                set valid to "no"
+
+        if first equals markup
+            if second equals margin
+                set valid to "no"
+
+        return valid

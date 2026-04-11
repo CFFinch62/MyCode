@@ -1,0 +1,38 @@
+step: problem_01
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    note: SET VARIBLES
+    declare:
+        M1 as number
+        M2 as number
+        LIMIT as number
+        answer as number
+        
+    note: MAIN PROGRAM
+    do:
+        set M1 to 3
+        set M2 to 5
+        set LIMIT to 999
+        set answer to 0
+        
+        call time storing result in start
+        
+        display "calling sum_of_two_multiples..."
+        call sum_of_two_multiples with M1, M2, LIMIT storing result in answer
+
+        display("#################################")
+        display("PROJECT EULER PROBLEM 1")
+        display("#################################")
+        display("Find the sum of all the multiples")
+        display("of 3 or 5 below 1000.")
+        display("")     
+        display("Sum is: " added to answer)
+        display("#################################")
+        
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+     
+note: EXPECTED ANSWER: 233168

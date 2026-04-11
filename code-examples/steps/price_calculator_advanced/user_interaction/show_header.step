@@ -1,0 +1,13 @@
+step: show_header
+    belongs to: user_interaction
+    expects: nothing
+    returns: nothing
+
+    do:
+        display "╔══════════════════════════════════════════╗"
+        display "║       PRICE METRICS CALCULATOR           ║"
+        display "╠══════════════════════════════════════════╣"
+        display "║  Calculate Price, Margin, Profit,        ║"
+        display "║  Markup, and Cost from any two values    ║"
+        display "╚══════════════════════════════════════════╝"
+        display ""

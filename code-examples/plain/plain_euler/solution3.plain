@@ -1,0 +1,48 @@
+note:
+    ####################################
+	Project Euler Probelm # 3
+ 	####################################
+	What is the largest prime factor of 
+	the number 600851475143?
+	####################################
+
+rem: HELPERS
+rem: Trial division - divide n down as factors are found.
+rem: Any factor found this way must be prime since all smaller
+rem: factors have already been divided out. No IsPrime needed.
+task GPF using (n)
+    var n1 = n
+    var largest = 1
+    var factor = 2
+    loop factor * factor <= n1
+        loop n1 % factor == 0
+            largest = factor
+            n1 = n1 // factor
+        factor = factor + 1
+    if n1 > 1
+        largest = n1
+    deliver largest
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var answer as Integer = GPF(600851475143)
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 3")
+	display("###################################")
+	display()
+	display("What is the largest prime factor of")
+	display("the number 600851475143?")
+	display()  
+	display("The greatest prime factor is:") 
+    display(answer)
+	display("###################################")
+
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+
+rem: EXPECTED ANSWER: 6857
+

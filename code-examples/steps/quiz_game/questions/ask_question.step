@@ -1,0 +1,28 @@
+step: ask_question
+    belongs to: questions
+    expects: q, question_num
+    returns: is_correct
+
+    note: Ask a single question and check the answer
+
+    do:
+        display "Question " added to (question_num as text) added to ":"
+        display q["question"]
+        display ""
+        display "  a) " added to q["a"]
+        display "  b) " added to q["b"]
+        display "  c) " added to q["c"]
+        display "  d) " added to q["d"]
+        display ""
+        display "Your answer (a/b/c/d): "
+        set user_answer to input
+        
+        if user_answer equals q["answer"]
+            display "Correct!"
+            set is_correct to true
+        otherwise
+            display "Wrong! The answer was: " added to q["answer"]
+            set is_correct to false
+        
+        display ""
+        return is_correct

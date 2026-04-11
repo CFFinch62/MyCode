@@ -1,0 +1,18 @@
+step: is_valid_choice
+    belongs to: user_interaction
+    expects: choice as number
+    returns: valid as text
+
+    declare:
+        valid as text
+
+    do:
+        if choice >= 1
+            if choice <= 5
+                set valid to "yes"
+            otherwise
+                set valid to "no"
+        otherwise
+            set valid to "no"
+
+        return valid

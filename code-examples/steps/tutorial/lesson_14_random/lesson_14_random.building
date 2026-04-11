@@ -1,0 +1,42 @@
+building: lesson_14_random
+    note: Learn how to add randomness to your programs!
+    
+    display "========================================"
+    display "   Lesson 14: Randomness and Games"
+    display "========================================"
+    display ""
+    
+    display "--- Why Randomness? ---"
+    display ""
+    display "Randomness makes programs unpredictable and fun!"
+    display "You can use it for:"
+    display "  - Games (dice rolls, card shuffles)"
+    display "  - Simulations"
+    display "  - Random selection"
+    display "  - Making tests more thorough"
+    display ""
+    
+    note: Demonstrate random integers
+    call demo_dice_rolls
+    
+    note: Demonstrate random choice
+    call demo_random_choice
+    
+    note: Play a mini game
+    call play_higher_lower storing result in game_score
+    
+    note: Run coin flip simulator
+    call coin_flip_simulator
+    
+    display "========================================"
+    display "   Key Takeaways"
+    display "========================================"
+    display ""
+    display "1. random_int with min, max: Random number in range"
+    display "2. random_choice with list: Pick random item from list"
+    display "3. Combine with loops for repeated random events"
+    display "4. Great for games, simulations, and testing!"
+    display ""
+    display "Great job completing the randomness lesson!"
+    
+    exit

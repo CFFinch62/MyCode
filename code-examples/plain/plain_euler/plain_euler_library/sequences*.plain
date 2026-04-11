@@ -1,0 +1,63 @@
+note: Generates the Collatz chain for a number n.
+
+    Args:
+    n: Starting number
+
+    Returns:
+    List of numbers in the Collatz chain
+task CollatzChain using (n)
+    var chain = []
+    append(chain, n)
+    if n % 2 == 0
+        var tmp = n // 2
+        append(chain, tmp)
+        loop tmp != 1
+            if tmp % 2 == 0
+                tmp = tmp // 2
+                append(chain, tmp)
+            else
+                tmp = 3 * tmp + 1
+                append(chain, tmp)
+    else
+        tmp = 3 * n + 1
+        append(chain, tmp)
+        loop tmp != 1
+            if tmp % 2 == 0
+                tmp = tmp // 2
+                append(chain, tmp)
+            else
+                tmp = 3 * tmp + 1
+                append(chain, tmp)
+    deliver chain
+
+note: Checks if a number is a Lychrel number.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is a Lychrel number, False otherwise
+task IsLychrel using (n)
+    var rn = to_int(to_string(n)[/* UNSUPPORTED: Slice */])
+    var nn = n
+    var i = 0
+    loop i < 51
+        nn = nn + rn
+        if IsPalindrome(to_string(nn))
+            deliver false
+        i = i + 1
+        rn = to_int(to_string(nn)[/* UNSUPPORTED: Slice */])
+    deliver true
+
+note: Checks if a number is a Curzon number.
+
+    Args:
+    num: Number to check
+
+    Returns:
+    True if num is a Curzon number, False otherwise
+task IsCurzon using (num)
+    var elv = 2 ** num + 1
+    var mul = 2 * num + 1
+    var res = elv % mul
+    deliver res == 0

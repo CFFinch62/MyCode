@@ -1,0 +1,16 @@
+rem: mathlib/geometry.plain - Another module inside 'mathlib' assembly
+rem: Tests a second module within the same assembly.
+
+fxd PI as float = 3.14159265
+
+task CircleArea using (radius)
+    deliver PI * radius * radius
+
+task RectangleArea using (width, height)
+    deliver width * height
+
+task TriangleArea using (base, height)
+    deliver 0.5 * base * height
+
+task GetPi using ()
+    deliver PI

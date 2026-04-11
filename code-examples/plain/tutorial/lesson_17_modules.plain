@@ -1,0 +1,65 @@
+rem: Lesson 17 - Modules and Organization
+rem: Organizing code across multiple files with the import system
+
+rem: NOTE: This example shows module concepts.
+rem: To fully run imports, you need actual module files.
+rem: This file demonstrates the syntax and concepts.
+
+task Main()
+    display("=== Modules and Organization ===")
+    display("")
+
+    rem: PLAIN uses a three-tier organization:
+    rem:   Package  - Your project's root directory
+    rem:   Assembly - Subdirectory grouping related modules
+    rem:   Module   - A single .plain file with related tasks
+
+    rem: Import syntax examples (commented out since modules may not exist):
+    rem: use:
+    rem:     assemblies:
+    rem:         io
+    rem:     modules:
+    rem:         math
+    rem:         io.files
+    rem:     tasks:
+    rem:         math.Sqrt
+    rem:         io.files.ReadText
+
+    display("PLAIN Import Levels:")
+    display("  1. assemblies: - Import a whole group")
+    display("     Access tasks as: assembly.module.TaskName()")
+    display("")
+    display("  2. modules: - Import specific modules")
+    display("     Access tasks as: module.TaskName()")
+    display("")
+    display("  3. tasks: - Import individual tasks")
+    display("     Access tasks directly: TaskName()")
+
+    display("")
+    display("=== Project Structure Example ===")
+    display("  my_project/")
+    display("    main.plain          (entry point)")
+    display("    utils.plain          (utility module)")
+    display("    math/")
+    display("      geometry.plain     (math.geometry module)")
+    display("      statistics.plain   (math.statistics module)")
+    display("    io/")
+    display("      files.plain        (io.files module)")
+    display("      network.plain      (io.network module)")
+
+    rem: Demonstrating local task organization
+    display("")
+    display("=== Organizing Tasks Locally ===")
+    var area = CalculateCircleArea(5.0)
+    display(v"Circle area (r=5): {area}")
+
+    var perimeter = CalculateRectPerimeter(10, 5)
+    display(v"Rectangle perimeter (10x5): {perimeter}")
+
+rem: These would normally be in a separate module file
+task CalculateCircleArea using (radius)
+    fxd PI as float = 3.14159
+    deliver PI * radius ** 2
+
+task CalculateRectPerimeter using (length, width)
+    deliver 2 * (length + width)

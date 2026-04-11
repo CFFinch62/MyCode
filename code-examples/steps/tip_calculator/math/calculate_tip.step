@@ -1,0 +1,19 @@
+step: calculate_tip
+    belongs to: math
+    expects: amount, percent
+    returns: tip
+
+    note: Calculate tip based on percentage
+
+    riser: calculate_percentage
+        expects: value, pct
+        returns: result
+
+        do:
+            set result to value * (pct / 100)
+            return result
+
+    do:
+        call calculate_percentage with amount, percent storing result in tip
+        return tip
+

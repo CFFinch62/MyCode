@@ -1,0 +1,9 @@
+step: greet_person
+    belongs to: string
+    expects: name
+    returns: nothing
+    
+    do:
+        display "Hello, " added to name added to "!"
+        display "Nice to meet you!"
+

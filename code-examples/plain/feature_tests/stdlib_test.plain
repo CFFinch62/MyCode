@@ -1,0 +1,147 @@
+rem: Test all Phase 6 Standard Library functions
+
+rem: =========================================
+rem: Type Checking Functions
+rem: =========================================
+display("=== Type Checking ===")
+display("is_int(42):", is_int(42))
+display("is_int(3.14):", is_int(3.14))
+display("is_float(3.14):", is_float(3.14))
+display("is_float(42):", is_float(42))
+display("is_string('hello'):", is_string("hello"))
+display("is_string(42):", is_string(42))
+display("is_bool(true):", is_bool(true))
+display("is_bool(1):", is_bool(1))
+display("is_list([1,2,3]):", is_list([1, 2, 3]))
+display("is_table({a:1}):", is_table({"a": 1}))
+display("is_null(null):", is_null(null))
+display("is_null(0):", is_null(0))
+
+rem: =========================================
+rem: Type Conversion Functions
+rem: =========================================
+display("")
+display("=== Type Conversion ===")
+display("to_bool(1):", to_bool(1))
+display("to_bool(0):", to_bool(0))
+display("to_bool('hello'):", to_bool("hello"))
+display("to_bool(''):", to_bool(""))
+display("to_bool(null):", to_bool(null))
+
+rem: =========================================
+rem: String Operations
+rem: =========================================
+display("")
+display("=== String Operations ===")
+display("upper('hello'):", upper("hello"))
+display("lower('HELLO'):", lower("HELLO"))
+display("trim('  hello  '):", trim("  hello  "))
+display("split('a,b,c', ','):", split("a,b,c", ","))
+display("join(['x','y','z'], '-'):", join(["x", "y", "z"], "-"))
+display("substring('Hello', 1, 4):", substring("Hello", 1, 4))
+display("replace('hello', 'l', 'r'):", replace("hello", "l", "r"))
+display("contains('hello', 'ell'):", contains("hello", "ell"))
+display("contains([1,2,3], 2):", contains([1, 2, 3], 2))
+display("starts_with('hello', 'he'):", starts_with("hello", "he"))
+display("ends_with('hello', 'lo'):", ends_with("hello", "lo"))
+
+rem: =========================================
+rem: Math - Basic
+rem: =========================================
+display("")
+display("=== Math Basic ===")
+display("abs(-5):", abs(-5))
+display("abs(-3.14):", abs(-3.14))
+display("sqrt(16):", sqrt(16))
+display("sqr(5):", sqr(5))
+display("pow(2, 8):", pow(2, 8))
+display("round(3.7):", round(3.7))
+display("round(3.2):", round(3.2))
+display("floor(3.7):", floor(3.7))
+display("ceil(3.2):", ceil(3.2))
+display("min(5, 3):", min(5, 3))
+display("max(5, 3):", max(5, 3))
+display("mod(10, 3):", mod(10, 3))
+
+rem: =========================================
+rem: Math - Trigonometry
+rem: =========================================
+display("")
+display("=== Math Trigonometry ===")
+display("sin(0):", sin(0))
+display("cos(0):", cos(0))
+display("tan(0):", tan(0))
+display("asin(0):", asin(0))
+display("acos(1):", acos(1))
+display("atan(0):", atan(0))
+display("atan2(1, 1):", atan2(1, 1))
+
+rem: =========================================
+rem: Math - Logarithmic
+rem: =========================================
+display("")
+display("=== Math Logarithmic ===")
+display("log(2.71828):", log(2.71828))
+display("log10(100):", log10(100))
+display("log2(8):", log2(8))
+display("exp(1):", exp(1))
+
+rem: =========================================
+rem: Math - Random
+rem: =========================================
+display("")
+display("=== Math Random ===")
+display("random():", random())
+display("random_int(1, 6):", random_int(1, 6))
+display("random_choice(['red','green','blue']):", random_choice(["red", "green", "blue"]))
+
+rem: =========================================
+rem: List Operations
+rem: =========================================
+display("")
+display("=== List Operations ===")
+var myList = [3, 1, 2]
+display("Initial list:", myList)
+append(myList, 4)
+display("After append(myList, 4):", myList)
+insert(myList, 1, 99)
+display("After insert(myList, 1, 99):", myList)
+var popped = pop(myList, 1)
+display("pop(myList, 1) returned:", popped)
+display("List after pop:", myList)
+sort(myList)
+display("After sort(myList):", myList)
+reverse(myList)
+display("After reverse(myList):", myList)
+remove(myList, 3)
+display("After remove(myList, 3):", myList)
+
+var nums = [7, 2, 9, 1, 5]
+display("min(nums):", min(nums))
+display("max(nums):", max(nums))
+display("sum(nums):", sum(nums))
+
+var words = ["cherry", "apple", "banana"]
+display("min(words):", min(words))
+display("max(words):", max(words))
+
+var prices = [9.99, 4.50, 12.00]
+display("sum(prices):", sum(prices))
+
+rem: =========================================
+rem: Table Operations
+rem: =========================================
+display("")
+display("=== Table Operations ===")
+var myTable = {"a": 1, "b": 2, "c": 3}
+display("Initial table:", myTable)
+display("keys(myTable):", keys(myTable))
+display("values(myTable):", values(myTable))
+display("has_key(myTable, 'a'):", has_key(myTable, "a"))
+display("has_key(myTable, 'x'):", has_key(myTable, "x"))
+remove(myTable, "b")
+display("After remove(myTable, 'b'):", myTable)
+
+display("")
+display("=== All tests completed! ===")
+

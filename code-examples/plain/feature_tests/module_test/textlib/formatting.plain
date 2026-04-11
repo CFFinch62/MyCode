@@ -1,0 +1,25 @@
+rem: textlib/formatting.plain - Module inside 'textlib' assembly
+rem: Tests module in a separate assembly from mathlib.
+
+task Banner using (text)
+    var line = "=========================="
+    deliver line & "\n  " & text & "\n" & line
+
+task Repeat using (text, count)
+    var result = ""
+    loop i from 1 to count
+        result = result & text
+    deliver result
+
+task PadRight using (text, width)
+    var padded = text
+    loop len(padded) < width
+        padded = padded & " "
+    deliver padded
+
+task Capitalize using (text)
+    if len(text) == 0
+        deliver ""
+    var first = upper(substring(text, 0, 1))
+    var rest = lower(substring(text, 1, len(text)))
+    deliver first & rest

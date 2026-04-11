@@ -1,0 +1,98 @@
+rem: Text Graphics Demo - Phase 1 TUI Features
+rem: Demonstrates text_at, text_color, draw_line, and draw_box
+
+task Main()
+    rem: Clear screen and set up
+    clear()
+    
+    rem: Draw a title box
+    text_color("cyan")
+    draw_box(1, 1, 60, 3, "PLAIN Text Graphics Demo")
+    
+    rem: Reset color
+    text_color("default")
+    
+    rem: Demonstrate text_at - positioned text
+    text_at(3, 5, "Positioned Text Examples:")
+    text_at(5, 7, "This text is at column 5, row 7")
+    text_at(5, 8, "This text is at column 5, row 8")
+    text_at(10, 9, "This is indented more")
+    
+    rem: Demonstrate colors
+    text_at(3, 11, "Color Examples:")
+    
+    text_color("red")
+    text_at(5, 12, "Red text")
+    
+    text_color("green")
+    text_at(20, 12, "Green text")
+    
+    text_color("yellow")
+    text_at(35, 12, "Yellow text")
+    
+    text_color("blue")
+    text_at(5, 13, "Blue text")
+    
+    text_color("magenta")
+    text_at(20, 13, "Magenta text")
+    
+    text_color("cyan")
+    text_at(35, 13, "Cyan text")
+    
+    rem: Reset color
+    text_color("default")
+    
+    rem: Demonstrate lines
+    text_at(3, 15, "Line Drawing Examples:")
+    
+    text_color("green")
+    draw_line(5, 17, 30, "h")
+    text_at(5, 16, "Horizontal line:")
+    
+    draw_line(5, 19, 5, "v")
+    text_at(7, 19, "Vertical")
+    text_at(7, 20, "line")
+    
+    rem: Custom character lines
+    text_color("yellow")
+    draw_line(40, 17, 15, "h", "=")
+    text_at(40, 16, "Custom char:")
+    
+    draw_line(40, 19, 5, "v", "*")
+    
+    rem: Reset color
+    text_color("default")
+    
+    rem: Demonstrate boxes
+    text_at(3, 25, "Box Drawing Examples:")
+    
+    text_color("blue")
+    draw_box(5, 27, 25, 5, "Info Box")
+    text_color("default")
+    text_at(7, 29, "Content goes here")
+    
+    text_color("red")
+    draw_box(35, 27, 25, 5, "Alert")
+    text_color("default")
+    text_at(37, 29, "Important message!")
+    
+    rem: Create a data display panel
+    text_color("cyan")
+    draw_box(5, 33, 55, 8, "Sensor Data Monitor")
+    text_color("default")
+    
+    text_at(7, 35, "Temperature: 72.5°F")
+    text_at(7, 36, "Humidity:    45%")
+    text_at(7, 37, "Pressure:    1013 hPa")
+    text_at(7, 38, "Status:      ")
+    text_color("green")
+    text_at(20, 38, "NORMAL")
+    text_color("default")
+    
+    rem: Position cursor at bottom
+    text_at(1, 42, "Press Enter to exit...")
+    var dummy = get("")
+    
+    rem: Clear screen before exit
+    clear()
+

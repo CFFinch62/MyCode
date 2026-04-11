@@ -1,0 +1,87 @@
+rem: Character Table for PLAIN
+rem: Shows all printable ASCII characters (codes 32-126)
+rem: PLAIN's chr() and ord() support full Unicode (0 to 1,114,111)
+rem: but this table focuses on the standard printable range.
+
+task PadLeft using (text, width)
+    var txt = to_string(text)
+    var padding = ""
+    loop i from 1 to width - len(txt)
+        padding = padding & " "
+    deliver padding & txt
+
+task PadRight using (text, width)
+    var txt = to_string(text)
+    var padding = txt
+    loop i from 1 to width - len(txt)
+        padding = padding & " "
+    deliver padding
+
+task Main()
+    display("============================================================")
+    display("         PLAIN Character Table  (chr / ord)")
+    display("    Encoding: Unicode (full range 0 - 1,114,111)")
+    display("============================================================")
+    display("")
+
+    rem: ── Control Characters (0-31) ──
+    display("--- Control Characters (0-31) - not printable ---")
+    display("Code  Name      Code  Name      Code  Name      Code  Name")
+    display("----  ----      ----  ----      ----  ----      ----  ----")
+
+    var controls = ["NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "TAB", "LF", "VT", "FF", "CR", "SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US"]
+
+    loop row from 0 to 7
+        var line = ""
+        loop col from 0 to 3
+            var idx = row * 4 + col
+            var codeVal = PadLeft(idx, 4)
+            var nameVal = PadRight(controls[idx], 10)
+            line = line & codeVal & "  " & nameVal
+        display(line)
+    display("")
+
+    rem: ── Printable ASCII (32-126) ──
+    display("--- Printable ASCII Characters (32-126) ---")
+    display("Code Char     Code Char     Code Char     Code Char     Code Char")
+    display("---- ----     ---- ----     ---- ----     ---- ----     ---- ----")
+
+    rem: 95 printable characters, display in rows of 5
+    loop row from 0 to 18
+        var line = ""
+        loop col from 0 to 4
+            var c = 32 + row * 5 + col
+            if c <= 126
+                var codeVal = PadLeft(c, 4)
+                var ch = chr(c)
+                if c == 32
+                    ch = "SPC"
+                var padCh = PadRight(ch, 9)
+                line = line & codeVal & " " & padCh
+        display(line)
+
+    display("")
+    display(" 127  DEL (Delete)")
+    display("")
+
+    rem: ── Extended Unicode Examples ──
+    display("--- Extended Unicode Examples ---")
+    display("PLAIN supports the full Unicode range via chr() and ord().")
+    display("")
+    display("  Code  Char  Description")
+    display("  ----  ----  -----------")
+
+    var codes = [169, 174, 176, 181, 223, 228, 233, 241, 252, 915, 937, 1040, 8364, 8482, 9733, 9829, 128512]
+    var descs = ["Copyright Sign", "Registered Sign", "Degree Sign", "Micro Sign", "Sharp S (Eszett)", "a-umlaut", "e-acute", "n-tilde", "u-umlaut", "Greek Gamma", "Greek Omega", "Cyrillic A", "Euro Sign", "Trademark", "Black Star", "Heart Suit", "Grinning Face"]
+
+    loop i from 0 to len(codes) - 1
+        var c = codes[i]
+        var ch = chr(c)
+        var desc = descs[i]
+        var codeVal = PadLeft(c, 6)
+        display(codeVal & "  " & ch & "     " & desc)
+
+    display("")
+    display("Try it yourself:")
+    display("  display(chr(9733))      rem: displays a star")
+    display("  display(ord(" & chr(34) & "A" & chr(34) & "))       rem: displays 65")

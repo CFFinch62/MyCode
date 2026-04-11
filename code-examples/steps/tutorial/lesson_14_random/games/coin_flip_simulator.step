@@ -1,0 +1,27 @@
+step: coin_flip_simulator
+    belongs to: games
+
+    note: Simulate coin flips
+
+    do:
+        display "--- Coin Flip Simulator ---"
+        display ""
+        display "Flipping a coin 10 times..."
+        display ""
+        
+        set heads to 0
+        set tails to 0
+        set sides to ["Heads", "Tails"]
+        
+        repeat 10 times
+            call random_choice with sides storing result in flip
+            display "Flip: " added to flip
+            
+            if flip equals "Heads"
+                set heads to heads + 1
+            otherwise
+                set tails to tails + 1
+        
+        display ""
+        display "Results: Heads = " added to (heads as text) added to ", Tails = " added to (tails as text)
+        display ""

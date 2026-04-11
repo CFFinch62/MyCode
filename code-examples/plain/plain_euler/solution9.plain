@@ -1,0 +1,40 @@
+note:
+    ####################################
+	Project Euler Probelm # ?
+ 	####################################
+	Find the Pythagorean triplet for 
+	which a + b + c = 1000.
+	####################################
+	
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var answer = ""
+    
+	var iters = 0
+	loop m from 1 to 499
+    		iters = iters + 1
+    		loop n from 1 to m - 1
+        		iters = iters + 1
+        		var a = m ** 2 - n ** 2
+        		var b = 2 * m * n
+        		var c = m ** 2 + n ** 2
+        		if a + b + c == 1000
+              	answer = a * b * c
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM")
+	display("###################################")
+	display()
+	display("Find the Pythagorean triplet for")
+	display("which a + b + c = 1000.")
+	display()  
+	display("The product of the triplet is:") 
+	display(answer)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+ 
+	rem: EXPECTED ANSWER: 31875000

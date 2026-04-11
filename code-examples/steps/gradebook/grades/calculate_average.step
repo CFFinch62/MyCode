@@ -1,0 +1,31 @@
+step: calculate_average
+    belongs to: grades
+    expects: students
+    returns: result
+
+    note: Calculate the class average grade
+    note: Returns a table with "average" and "count" keys
+
+    do:
+        set total to 0
+        set count to 0
+        
+        repeat for each student in students
+            if student["grade"] is not equal to ""
+                attempt:
+                    set grade_num to student["grade"] as number
+                    set total to total + grade_num
+                    set count to count + 1
+                if unsuccessful:
+                    note: Skip invalid grades
+        
+        set result to [:]
+        
+        if count is equal to 0
+            set result["average"] to 0
+            set result["count"] to 0
+        otherwise
+            set result["average"] to total / count
+            set result["count"] to count
+        
+        return result

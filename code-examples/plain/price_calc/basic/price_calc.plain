@@ -1,0 +1,153 @@
+rem: Price-Calc (Basic Version)
+rem: A pricing calculator that accepts any two of five values
+rem: and calculates the remaining three.
+rem:
+rem: Values: Price($), Margin(%), Profit($), Markup(%), Cost($)
+rem: Note: Margin and Markup cannot both be entered together.
+
+task Main()
+    display("================================")
+    display("   Price Calculator (Basic)")
+    display("================================")
+    display("")
+    display("Enter any two values below.")
+    display("Press Enter to skip a value.")
+    display("")
+
+    rem: Read user inputs (empty string means skipped)
+    var strPrice = get("  Price ($):   ")
+    var strMargin = get("  Margin (%):  ")
+    var strProfit = get("  Profit ($):  ")
+    var strMarkup = get("  Markup (%):  ")
+    var strCost = get("  Cost ($):    ")
+
+    rem: Determine which values were provided
+    var blnHasPrice = len(strPrice) > 0
+    var blnHasMargin = len(strMargin) > 0
+    var blnHasProfit = len(strProfit) > 0
+    var blnHasMarkup = len(strMarkup) > 0
+    var blnHasCost = len(strCost) > 0
+
+    rem: Count how many values were entered
+    var intCount = 0
+    if blnHasPrice
+        intCount += 1
+    if blnHasMargin
+        intCount += 1
+    if blnHasProfit
+        intCount += 1
+    if blnHasMarkup
+        intCount += 1
+    if blnHasCost
+        intCount += 1
+
+    rem: Validate: exactly two values required
+    if intCount != 2
+        abort "Please provide exactly 2 values (you entered " & intCount & ")"
+
+    rem: Validate: margin and markup cannot both be entered
+    if blnHasMargin and blnHasMarkup
+        abort "Cannot use both Margin and Markup (both are percentages)"
+
+    rem: Convert provided values to floats
+    var fltPrice = 0.0
+    var fltMargin = 0.0
+    var fltProfit = 0.0
+    var fltMarkup = 0.0
+    var fltCost = 0.0
+
+    if blnHasPrice
+        fltPrice = to_float(strPrice)
+    if blnHasMargin
+        fltMargin = to_float(strMargin)
+    if blnHasProfit
+        fltProfit = to_float(strProfit)
+    if blnHasMarkup
+        fltMarkup = to_float(strMarkup)
+    if blnHasCost
+        fltCost = to_float(strCost)
+
+    rem: Build a pair key to identify which two values were entered
+    rem: P=Price, M=Margin, R=Profit, K=Markup, C=Cost
+    var strPair = ""
+    if blnHasPrice
+        strPair &= "P"
+    if blnHasMargin
+        strPair &= "M"
+    if blnHasProfit
+        strPair &= "R"
+    if blnHasMarkup
+        strPair &= "K"
+    if blnHasCost
+        strPair &= "C"
+
+    rem: Calculate the missing values based on the pair entered
+    choose strPair
+        choice "PM"
+            rem: Price + Margin given
+            fltProfit = fltPrice * fltMargin / 100
+            fltCost = fltPrice - fltProfit
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "PR"
+            rem: Price + Profit given
+            fltCost = fltPrice - fltProfit
+            fltMargin = (fltProfit / fltPrice) * 100
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "PK"
+            rem: Price + Markup given
+            fltCost = fltPrice / (1 + fltMarkup / 100)
+            fltProfit = fltPrice - fltCost
+            fltMargin = (fltProfit / fltPrice) * 100
+        choice "PC"
+            rem: Price + Cost given
+            fltProfit = fltPrice - fltCost
+            fltMargin = (fltProfit / fltPrice) * 100
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "MR"
+            rem: Margin + Profit given
+            fltPrice = fltProfit / (fltMargin / 100)
+            fltCost = fltPrice - fltProfit
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "MC"
+            rem: Margin + Cost given
+            fltPrice = fltCost / (1 - fltMargin / 100)
+            fltProfit = fltPrice - fltCost
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "RK"
+            rem: Profit + Markup given
+            fltCost = fltProfit / (fltMarkup / 100)
+            fltPrice = fltCost + fltProfit
+            fltMargin = (fltProfit / fltPrice) * 100
+        choice "RC"
+            rem: Profit + Cost given
+            fltPrice = fltCost + fltProfit
+            fltMargin = (fltProfit / fltPrice) * 100
+            fltMarkup = (fltProfit / fltCost) * 100
+        choice "KC"
+            rem: Markup + Cost given
+            fltProfit = fltCost * fltMarkup / 100
+            fltPrice = fltCost + fltProfit
+            fltMargin = (fltProfit / fltPrice) * 100
+
+    rem: Round all values to 2 decimal places
+    fltPrice = round(fltPrice * 100) / 100
+    fltCost = round(fltCost * 100) / 100
+    fltProfit = round(fltProfit * 100) / 100
+    fltMargin = round(fltMargin * 100) / 100
+    fltMarkup = round(fltMarkup * 100) / 100
+
+    rem: Display results
+    DisplayResults(fltPrice, fltCost, fltProfit, fltMargin, fltMarkup)
+
+rem: Display the calculated pricing results
+task DisplayResults with (fltPrice, fltCost, fltProfit, fltMargin, fltMarkup)
+    display("")
+    display("================================")
+    display("          Results")
+    display("================================")
+    display("  Price:   $" & fltPrice)
+    display("  Cost:    $" & fltCost)
+    display("  Profit:  $" & fltProfit)
+    display("  Margin:  " & fltMargin & "%")
+    display("  Markup:  " & fltMarkup & "%")
+    display("================================")

@@ -1,0 +1,36 @@
+step: select_questions
+    belongs to: questions
+    expects: all_questions, difficulty, count
+    returns: selected
+
+    note: Filter questions by difficulty, then pick 'count' at random without repeats
+    note: If count is 0, return ALL questions for the difficulty in shuffled order
+
+    do:
+        note: Build pool of matching difficulty questions
+        set pool to []
+        repeat for each q in all_questions
+            if q["difficulty"] equals difficulty
+                add q to pool
+
+        set pool_size to length of pool
+
+        note: Determine how many to pick
+        set num_to_pick to count
+        if count equals 0
+            set num_to_pick to pool_size
+
+        note: Pick unique random indices from the pool
+        set selected to []
+        set used_indices to []
+
+        repeat num_to_pick times
+            set idx to 0
+            call random_int with 0, pool_size - 1 storing result in idx
+            note: Keep re-rolling until we get an unused index
+            repeat while idx is in used_indices
+                call random_int with 0, pool_size - 1 storing result in idx
+            add idx to used_indices
+            add pool[idx] to selected
+
+        return selected

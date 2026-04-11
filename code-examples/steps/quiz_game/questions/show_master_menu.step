@@ -1,0 +1,52 @@
+step: show_master_menu
+    belongs to: questions
+    expects: all_questions
+
+    note: Display the Master Level menu and loop until the player quits
+
+    do:
+        set playing to true
+
+        repeat while playing
+            clear console
+            call banner with "*** MASTER LEVEL ***", 44 storing result in master_banner
+            display master_banner
+            display ""
+            display "You have mastered all three levels — welcome to the Master Level!"
+            display ""
+            display "Choose a level to attempt ALL questions and post your best score:"
+            display ""
+            display "  1 - Beginner      (20 questions)"
+            display "  2 - Intermediate  (20 questions)"
+            display "  3 - Professional  (20 questions)"
+            display "  4 - Quit"
+            display ""
+            display "Your choice (1/2/3/4): "
+            set choice to input
+
+            if choice equals "1"
+                call run_master_level with all_questions, "beg", "BEGINNER"
+            otherwise if choice equals "2"
+                call run_master_level with all_questions, "int", "INTERMEDIATE"
+            otherwise if choice equals "3"
+                call run_master_level with all_questions, "pro", "PROFESSIONAL"
+            otherwise if choice equals "4"
+                set playing to false
+            otherwise
+                display ""
+                display "Invalid choice — please enter 1, 2, 3 or 4."
+                display "Press ENTER to continue..."
+                set dummy to input
+
+            if playing
+                if choice equals "1" or choice equals "2" or choice equals "3"
+                    display ""
+                    display "Would you like to play again? (yes/no): "
+                    set again to input
+                    if again equals "no"
+                        set playing to false
+
+        display ""
+        display "Thanks for playing Steps Quiz Game — see you next time!"
+        display ""
+        exit

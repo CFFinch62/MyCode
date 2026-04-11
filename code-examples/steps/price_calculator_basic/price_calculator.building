@@ -1,0 +1,15 @@
+building: price_calculator
+
+    note: Console Price Calculator
+    note: Each calculation requires 2 inputs and produces 3 outputs.
+
+    display "Console Price Calculator"
+    display ""
+    display "Each calculation requires 2 inputs and produces 3 outputs."
+    display "Price, Profit and Cost are monetary values."
+    display "Margin and Markup are percentage values."
+
+    call display_menu storing result in choice
+    call route_calculation with choice
+
+    exit

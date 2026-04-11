@@ -1,0 +1,34 @@
+step: show_second_menu
+    belongs to: user_interaction
+    expects: first_choice as number
+    returns: nothing
+
+    declare:
+        margin as number
+        markup as number
+
+    do:
+        set margin to 2
+        set markup to 4
+
+        display "Select SECOND value to enter:"
+        display ""
+
+        if first_choice not equals 1
+            display "  1. Price ($)"
+
+        if first_choice not equals margin
+            if first_choice not equals markup
+                display "  2. Margin (%)"
+
+        if first_choice not equals 3
+            display "  3. Profit ($)"
+
+        if first_choice not equals markup
+            if first_choice not equals margin
+                display "  4. Markup (%)"
+
+        if first_choice not equals 5
+            display "  5. Cost ($)"
+
+        display ""

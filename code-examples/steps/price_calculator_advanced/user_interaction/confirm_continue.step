@@ -1,0 +1,26 @@
+step: confirm_continue
+    belongs to: user_interaction
+    expects: nothing
+    returns: should_continue as text
+
+    declare:
+        response as text
+        should_continue as text
+
+    do:
+        display ""
+        display "Would you like to calculate again? (y/n): "
+        set response to input
+
+        if response equals "y"
+            set should_continue to "yes"
+        otherwise if response equals "Y"
+            set should_continue to "yes"
+        otherwise if response equals "yes"
+            set should_continue to "yes"
+        otherwise if response equals "Yes"
+            set should_continue to "yes"
+        otherwise
+            set should_continue to "no"
+
+        return should_continue

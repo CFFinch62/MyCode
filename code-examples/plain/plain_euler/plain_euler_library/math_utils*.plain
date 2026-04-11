@@ -1,0 +1,79 @@
+
+note: Calculates the binomial coefficient (r choose d).
+    Args:
+    r: Total number of items
+    d: Number of items to choose
+    Returns:
+    Binomial coefficient
+task Choose using (r, d)
+    deliver factorial(math, r) / factorial(math, d) * factorial(math, r - d)
+
+note: Creates a set containing integers from 1 up to the given limit (inclusive).
+    Args:
+    limit: An integer specifying the upper bound of the set.
+    Returns:
+    A set containing integers from 1 to limit.
+task CreateIntegerSet using (start, limit)
+    if not Isinstance(limit, int) or limit < 1
+        abort "Limit must be a positive integer."
+    if not Isinstance(start, int) or start < 1
+        abort "Start must be a positive integer."
+    deliver Set(Range(start, limit + 1))
+
+task FindAbundantNumbers using (limit)
+    var sum_of_divisors = [0] * limit + 1
+    loop i from 2 to limit
+        loop j from i * 2 to limit step i
+            sum_of_divisors[j] = sum_of_divisors[j] + i
+    var abundant_numbers = []
+    loop i from 2 to limit
+        if sum_of_divisors[i] > i
+            append(abundant_numbers, i)
+    deliver abundant_numbers
+
+note: Generates all possible sums of combinations of 2 numbers from a list.
+    This is an efficient implementation that avoids duplicate calculations.
+    Args:
+    numbers: List of numbers to generate pairwise sums from
+    Returns:
+    List of all possible sums of combinations of 2 numbers
+task PairwiseSums using (numbers)
+    var sums = []
+    var n = length(numbers)
+    loop i from 0 to n - 1
+        loop j from i + 1 to n - 1
+            append(sums, numbers[i] + numbers[j])
+    deliver sums
+
+note: Generates all possible unique sums of combinations of 2 numbers from a list.
+    This is an efficient implementation that avoids duplicate calculations.
+    Args:
+    numbers: List of numbers to generate pairwise sums from
+    Returns:
+    Set of all unique sums of combinations of 2 numbers up to limit
+task UniquePairwiseSums using (numbers, limit)
+    var sums = Set()
+    loop num1 in numbers
+        loop num2 in numbers
+            if num1 + num2 < limit
+                add(sums, num1 + num2)
+    deliver sums
+
+note: Checks if a number is a perfect square.
+    Args:
+    x: Number to check
+    Returns:
+    True if x is a perfect square, False otherwise
+task IsSquare using (x)
+    if x < 0
+        deliver false
+    var y = isqrt(math, x)
+    deliver y * y == x
+
+note: Checks if a number is odd.
+    Args:
+    n: Number to check
+    Returns:
+    True if n is odd, False otherwise
+task IsOdd using (n)
+    deliver n % 2 != 0

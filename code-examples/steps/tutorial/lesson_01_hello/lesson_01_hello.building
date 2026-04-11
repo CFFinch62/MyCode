@@ -1,0 +1,12 @@
+building: lesson_01_hello
+    note: Lesson 1 - Your First Steps Program
+    note: This program displays messages and exits
+    
+    display "Hello, Steps!"
+    display "Welcome to programming!"
+    display ""
+    display "This is your first Steps program."
+    display "You can add as many display statements as you want."
+    
+    exit
+

@@ -1,0 +1,32 @@
+step: get_contact_info
+    belongs to: user_input
+    expects: nothing
+    returns: contact
+    
+    declare:
+        name as text
+        email as text
+        phone as text
+        city as text
+        contact as table
+    
+    do:
+        display ""
+        display "=== New Contact ==="
+        
+        display "Enter name: "
+        set name to input as text
+        
+        display "Enter email: "
+        set email to input as text
+        
+        display "Enter phone: "
+        set phone to input as text
+        
+        display "Enter city: "
+        set city to input as text
+        
+        set contact to ["name": name, "email": email, "phone": phone, "city": city]
+        
+        return contact
+

@@ -176,6 +176,17 @@ export function setupIpcHandlers(
         require('electron').app.quit();
     });
 
+    ipcMain.handle(IPC_CHANNELS.APP_GET_PATH, () => {
+        return require('electron').app.getAppPath();
+    });
+
+    ipcMain.handle('app:get-appimage-dir', () => {
+        const appImagePath = process.env.APPIMAGE;
+        if (!appImagePath) return null;
+        const path = require('path');
+        return path.dirname(appImagePath);
+    });
+
     // Git operations
     ipcMain.handle(IPC_CHANNELS.GIT_IS_REPO, async (_event, filePath: string) => {
         return await gitService.isGitRepository(filePath);

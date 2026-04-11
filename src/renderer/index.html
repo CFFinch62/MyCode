@@ -99,16 +99,16 @@
         </div>
       </div>
 
-      <!-- Bottom Panel Area (for terminal, plugin panels) -->
+      <!-- Bottom Panel Area (for plugin panels, e.g. runner output) -->
       <div id="bottom-panel-area" class="bottom-panel-area hidden">
+        <div id="bottom-panel-resizer" class="bottom-resizer"></div>
         <div class="bottom-panel-tabs">
-          <button class="bottom-tab-btn active" data-panel="terminal">Terminal</button>
-          <!-- Plugin bottom tabs will be added here -->
+          <!-- Plugin bottom tabs are added here dynamically -->
+          <button id="bottom-panel-close" class="bottom-panel-close" title="Close panel">✕</button>
         </div>
         <div id="bottom-panel-content" class="bottom-panel-content">
           <!-- Bottom panel content will be rendered here -->
         </div>
-        <div id="bottom-panel-resizer" class="bottom-resizer"></div>
       </div>
 
       <!-- Status Bar -->

@@ -1,0 +1,14 @@
+step: show_main_menu
+    belongs to: user_interaction
+    expects: nothing
+    returns: nothing
+
+    do:
+        display "Select FIRST value to enter:"
+        display ""
+        display "  1. Price ($)"
+        display "  2. Margin (%)"
+        display "  3. Profit ($)"
+        display "  4. Markup (%)"
+        display "  5. Cost ($)"
+        display ""

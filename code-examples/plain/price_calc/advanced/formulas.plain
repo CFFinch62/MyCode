@@ -1,0 +1,99 @@
+rem: Price-Calc - Formulas Module
+rem: Contains all pricing calculation logic.
+rem:
+rem: Core relationships:
+rem:   Price  = Cost + Profit
+rem:   Margin = (Profit / Price) * 100
+rem:   Markup = (Profit / Cost) * 100
+
+rem: Main calculation dispatcher
+rem: Takes a pair key and all input values, calculates the missing ones.
+rem: Returns a list: [Price, Cost, Profit, Margin, Markup]
+task Calculate using (strPair, inPrice, inMargin, inProfit, inMarkup, inCost)
+    var lstResult = []
+
+    choose strPair
+        choice "PM"
+            lstResult = FromPriceMargin(inPrice, inMargin)
+        choice "PR"
+            lstResult = FromPriceProfit(inPrice, inProfit)
+        choice "PK"
+            lstResult = FromPriceMarkup(inPrice, inMarkup)
+        choice "PC"
+            lstResult = FromPriceCost(inPrice, inCost)
+        choice "MR"
+            lstResult = FromMarginProfit(inMargin, inProfit)
+        choice "MC"
+            lstResult = FromMarginCost(inMargin, inCost)
+        choice "RK"
+            lstResult = FromProfitMarkup(inProfit, inMarkup)
+        choice "RC"
+            lstResult = FromProfitCost(inProfit, inCost)
+        choice "KC"
+            lstResult = FromMarkupCost(inMarkup, inCost)
+        default
+            abort "Unknown input combination"
+
+    rem: Round all values to 2 decimal places
+    loop i from 0 to 4
+        lstResult[i] = round(lstResult[i] * 100) / 100
+
+    deliver lstResult
+
+rem: --- Individual pair calculations ---
+rem: Each takes two known values and derives the other three.
+rem: All return [Price, Cost, Profit, Margin, Markup]
+
+task FromPriceMargin using (fltPrice, fltMargin)
+    var fltProfit = fltPrice * fltMargin / 100
+    var fltCost = fltPrice - fltProfit
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromPriceProfit using (fltPrice, fltProfit)
+    var fltCost = fltPrice - fltProfit
+    var fltMargin = (fltProfit / fltPrice) * 100
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromPriceMarkup using (fltPrice, fltMarkup)
+    var fltCost = fltPrice / (1 + fltMarkup / 100)
+    var fltProfit = fltPrice - fltCost
+    var fltMargin = (fltProfit / fltPrice) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromPriceCost using (fltPrice, fltCost)
+    var fltProfit = fltPrice - fltCost
+    var fltMargin = (fltProfit / fltPrice) * 100
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromMarginProfit using (fltMargin, fltProfit)
+    var fltPrice = fltProfit / (fltMargin / 100)
+    var fltCost = fltPrice - fltProfit
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromMarginCost using (fltMargin, fltCost)
+    var fltPrice = fltCost / (1 - fltMargin / 100)
+    var fltProfit = fltPrice - fltCost
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromProfitMarkup using (fltProfit, fltMarkup)
+    var fltCost = fltProfit / (fltMarkup / 100)
+    var fltPrice = fltCost + fltProfit
+    var fltMargin = (fltProfit / fltPrice) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromProfitCost using (fltProfit, fltCost)
+    var fltPrice = fltCost + fltProfit
+    var fltMargin = (fltProfit / fltPrice) * 100
+    var fltMarkup = (fltProfit / fltCost) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]
+
+task FromMarkupCost using (fltMarkup, fltCost)
+    var fltProfit = fltCost * fltMarkup / 100
+    var fltPrice = fltCost + fltProfit
+    var fltMargin = (fltProfit / fltPrice) * 100
+    deliver [fltPrice, fltCost, fltProfit, fltMargin, fltMarkup]

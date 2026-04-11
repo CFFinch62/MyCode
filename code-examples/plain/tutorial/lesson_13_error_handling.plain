@@ -1,0 +1,65 @@
+rem: Lesson 13 - Error Handling
+rem: Gracefully handling errors with attempt/handle/ensure
+
+rem: A function that may abort
+task ValidateAge using (age)
+    if age < 0
+        abort "Age cannot be negative"
+    if age > 150
+        abort "Age seems unrealistic"
+    deliver age
+
+task Main()
+    rem: Basic error handling - no error occurs
+    display("=== Safe Division ===")
+    attempt
+        var result = 10 / 3
+        display("  10 / 3 = " & result)
+    handle
+        display("  An error occurred!")
+    display("")
+
+    rem: Error handling - division by zero
+    display("=== Division by Zero ===")
+    attempt
+        var bad = 10 / 0
+        display("  This won't print")
+    handle
+        display("  Caught a division error!")
+    display("")
+
+    rem: Using abort to signal errors
+    display("=== Age Validation ===")
+    attempt
+        var age1 = ValidateAge(25)
+        display("  Valid age: " & age1)
+    handle
+        display("  Age was rejected!")
+    display("")
+
+    attempt
+        var age2 = ValidateAge(-5)
+        display("  This won't print")
+    handle
+        display("  Negative age was rejected!")
+    display("")
+
+    attempt
+        var age3 = ValidateAge(200)
+        display("  This won't print")
+    handle
+        display("  Unrealistic age was rejected!")
+    display("")
+
+    rem: Ensure block always runs, even after an error
+    display("=== Cleanup with Ensure ===")
+    attempt
+        display("  Working...")
+        abort "Something went wrong"
+    handle
+        display("  Error was caught!")
+    ensure
+        display("  Cleanup complete (always runs).")
+    display("")
+
+    display("Program finished gracefully!")

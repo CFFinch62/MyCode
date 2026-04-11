@@ -1,0 +1,43 @@
+note:
+    ####################################
+	Project Euler Problem # 7
+ 	####################################
+	What is the 10001st prime number?
+	####################################
+	
+rem: GLOBALS
+var a as Integer = 0
+var cnt as Integer = 0
+
+rem: HELPERS
+task IsPrime using (n)
+    if n < 2
+        deliver false
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0
+            deliver false
+    deliver true
+    
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+    loop cnt < 10001
+        a += 1
+        if IsPrime(a)
+            cnt += 1
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 7")
+	display("###################################")
+	display()
+	display("What is the 10,001st prime number?")
+	display()  
+	display("The 10,001st prime number is:") 
+    display(a)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 104743

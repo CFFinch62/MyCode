@@ -1,0 +1,10 @@
+step: get_greeting
+    belongs to: helpers
+    expects: name
+    returns: message
+
+    do:
+        set message to "Welcome " added to name added to " !"
+        display "This step recevied your name and send sback a message."
+        return message
+

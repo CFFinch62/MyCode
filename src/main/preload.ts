@@ -51,6 +51,8 @@ contextBridge.exposeInMainWorld('mycode', {
     // App
     app: {
         quit: () => ipcRenderer.send(IPC_CHANNELS.APP_QUIT),
+        getAppPath: () => ipcRenderer.invoke(IPC_CHANNELS.APP_GET_PATH),
+        getAppImageDir: () => ipcRenderer.invoke('app:get-appimage-dir'),
     },
 
     // Menu event listeners
@@ -78,6 +80,8 @@ contextBridge.exposeInMainWorld('mycode', {
     // Terminal operations
     terminal: {
         create: (cwd?: string, cols?: number, rows?: number) => ipcRenderer.invoke(IPC_CHANNELS.TERMINAL_CREATE, { cwd, cols, rows }),
+        createProcess: (cmd: string, args: string[], cwd?: string, cols?: number, rows?: number) =>
+            ipcRenderer.invoke(IPC_CHANNELS.TERMINAL_CREATE_PROCESS, { cmd, args, cwd, cols, rows }),
         write: (id: string, data: string) => ipcRenderer.send(IPC_CHANNELS.TERMINAL_DATA, { id, data }),
         resize: (id: string, cols: number, rows: number) => ipcRenderer.send(IPC_CHANNELS.TERMINAL_RESIZE, { id, cols, rows }),
         destroy: (id: string) => ipcRenderer.invoke(IPC_CHANNELS.TERMINAL_DESTROY, id),
@@ -162,6 +166,8 @@ declare global {
             };
             app: {
                 quit: () => void;
+                getAppPath: () => Promise<string>;
+                getAppImageDir: () => Promise<string | null>;
             };
             onMenuEvent: {
                 newTab: (callback: () => void) => void;

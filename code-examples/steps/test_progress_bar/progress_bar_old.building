@@ -1,0 +1,121 @@
+building: progress_bar_live_update
+    note: Demonstrates updating a progress bar in place using carriage return
+    note: Uses \r to return cursor to start of line for in-place updates
+
+    note: Carriage return (\r) moves cursor back to start of current line
+    note: This allows us to overwrite the same line repeatedly
+    set carriage_return to "\r"
+
+    note: Display a banner for the demo
+    call banner with "Live Progress Bar Demo", 60 storing result in banner_text
+    display banner_text
+    display ""
+
+    note: Test 1 - Updating progress bar in place using carriage return
+    call line with 60, "double" storing result in divider
+    display divider
+    display "Test 1: In-Place Update (Carriage Return)"
+    display divider
+    display ""
+
+    set i to 0
+    repeat while i is less than or equal to 100
+        call progress_bar with i, 100, 40 storing result in bar
+        set label to "Downloading file... " added to bar
+        note: Use carriage return to go back to start of line (no newline)
+        display carriage_return added to label
+        set i to i + 10
+
+    display ""
+    display "✓ Download complete!"
+    display ""
+    display ""
+
+    note: Test 2 - Processing with item count
+    display divider
+    display "Test 2: Processing Items"
+    display divider
+    display ""
+
+    set i to 0
+    repeat while i is less than or equal to 20
+        call progress_bar with i, 20, 40 storing result in bar
+        set label to "Progress: " added to bar added to " (" added to (i as text) added to "/20)"
+        display carriage_return added to label
+        set i to i + 1
+
+    display ""
+    display "✓ Processing complete!"
+    display ""
+    display ""
+
+    note: Test 3 - Simulated file transfer with percentage
+    display divider
+    display "Test 3: File Transfer Simulation"
+    display divider
+    display ""
+
+    set i to 0
+    repeat while i is less than or equal to 100
+        call progress_bar with i, 100, 35 storing result in bar
+        set label to carriage_return added to "Transfer: " added to bar added to " " added to (i as text) added to "%"
+        display label
+        set i to i + 5
+
+    display ""
+    display "✓ Transfer complete!"
+    display ""
+    display ""
+
+    note: Test 4 - Multiple tasks with different progress levels
+    display divider
+    display "Test 4: Multiple Progress Bars (Static)"
+    display divider
+    display ""
+
+    call progress_bar with 100, 100, 30 storing result in bar
+    display "Task 1: " added to bar added to " ✓"
+
+    call progress_bar with 75, 100, 30 storing result in bar
+    display "Task 2: " added to bar
+
+    call progress_bar with 50, 100, 30 storing result in bar
+    display "Task 3: " added to bar
+
+    call progress_bar with 25, 100, 30 storing result in bar
+    display "Task 4: " added to bar
+
+    call progress_bar with 0, 100, 30 storing result in bar
+    display "Task 5: " added to bar
+
+    display ""
+    display ""
+
+    note: Test 5 - Compact vs Wide progress bars
+    display divider
+    display "Test 5: Different Bar Widths"
+    display divider
+    display ""
+
+    call progress_bar with 60, 100, 15 storing result in bar
+    display "Compact:  " added to bar
+
+    call progress_bar with 60, 100, 30 storing result in bar
+    display "Standard: " added to bar
+
+    call progress_bar with 60, 100, 50 storing result in bar
+    display "Wide:     " added to bar
+
+    display ""
+    display ""
+
+    note: Final summary
+    call banner with "Demo Complete!", 60 storing result in final_banner
+    display final_banner
+    display ""
+    display "Key Technique:"
+    display "  Use \\r (carriage return) to move cursor to start of line"
+    display "  Then display new progress bar content to overwrite the old"
+    display ""
+    display "This creates the illusion of an updating progress bar!"
+

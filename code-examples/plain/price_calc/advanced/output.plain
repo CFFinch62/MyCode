@@ -1,0 +1,27 @@
+rem: Price-Calc - Output Module
+rem: Handles formatted display of pricing data.
+
+rem: Display the program header
+task DisplayHeader()
+    display("================================")
+    display("  Price Calculator (Advanced)")
+    display("================================")
+    display("")
+
+rem: Display all five pricing values
+task DisplayResults with (fltPrice, fltCost, fltProfit, fltMargin, fltMarkup)
+    display("")
+    display("================================")
+    display("          Results")
+    display("================================")
+    display("  Price:   $" & fltPrice)
+    display("  Cost:    $" & fltCost)
+    display("  Profit:  $" & fltProfit)
+    display("  Margin:  " & fltMargin & "%")
+    display("  Markup:  " & fltMarkup & "%")
+    display("================================")
+
+rem: Display a formatted error message
+task DisplayError with (strMessage)
+    display("")
+    display("Error: " & strMessage)

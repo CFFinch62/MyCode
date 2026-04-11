@@ -1,0 +1,77 @@
+step: problem_04
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        answer as number
+        start as number
+        finished as number
+        elapsed as number
+        
+    riser: max_pal
+        expects: nothing
+        returns: pal
+
+        declare:
+            i as number
+            j as number
+            num as number
+            tmp as text
+            rev as text
+            outer_done as boolean
+            inner_done as boolean
+
+        do:
+            set pal to 0
+            set i to 999
+            set outer_done to false
+
+            repeat while i is greater than 99 and not outer_done
+                note: if best possible product for this i can't beat pal, we're done
+                if i * 999 is less than or equal to pal
+                    set outer_done to true
+                if not outer_done
+                    set j to 999
+                    set inner_done to false
+                    repeat while j is greater than or equal to i and not inner_done
+                        set num to i * j
+                        note: products only decrease from here, skip the rest
+                        if num is less than or equal to pal
+                            set inner_done to true
+                        if not inner_done
+                            set tmp to num as text
+                            call reverse with tmp storing result in rev
+                            if tmp equals rev
+                                if num is greater than pal
+                                    set pal to num
+                        set j to j - 1
+                    set i to i - 1
+                otherwise
+                    set i to 0
+
+            return pal
+    
+    note: main procedure        
+    do:
+        set answer to 0
+
+        call time storing result in start
+    
+        call max_pal storing result in answer 
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 4")
+        display("###################################") 
+        display("")
+        display("Find the largest palindrome made from ")
+        display("the product of two 3-digit numbers.")
+        display("")  
+        display("Largest Palindrome is: " added to answer)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+rem: EXPECTED ANSWER: 906609

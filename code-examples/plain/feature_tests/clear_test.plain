@@ -1,0 +1,5 @@
+display("Line 1")
+display("Line 2")
+rem: sleep(1000) - removing sleep for automated testing speed
+clear()
+display("Cleared!")

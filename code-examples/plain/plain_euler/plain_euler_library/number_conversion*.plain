@@ -1,0 +1,39 @@
+
+note: Converts a decimal number to binary.
+
+    Args:
+    n: Decimal number to convert
+
+    Returns:
+    Binary string representation
+task DecToBin using (n)
+    deliver replace(to_bin(n), "0b", "")
+
+note: Generates a random binary string of length n.
+
+    Args:
+    n: Length of the binary string
+
+    Returns:
+    Random binary string
+task RndBinStr using (n)
+    var bin_str = ""
+    loop i from 0 to n - 1
+        bin_str = bin_str + to_string(random_int(0, 1))
+    deliver bin_str
+
+note: Calculates the sum of digits in a number.
+
+    Args:
+    n: Number to sum digits of
+
+    Returns:
+    Sum of digits
+task SumDigits using (n)
+    var idx = 0
+    var sum = 0
+    var snum = to_string(n)
+    loop idx < length(snum)
+        sum = sum + to_int(snum[idx])
+        idx = idx + 1
+    deliver sum

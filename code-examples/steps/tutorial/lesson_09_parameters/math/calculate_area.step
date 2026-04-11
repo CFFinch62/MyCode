@@ -1,0 +1,9 @@
+step: calculate_area
+    belongs to: math
+    expects: length, width
+    returns: area
+    
+    do:
+        set area to length * width
+        return area
+

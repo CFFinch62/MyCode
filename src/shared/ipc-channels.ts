@@ -60,6 +60,7 @@ export const IPC_CHANNELS = {
 
     // Terminal operations
     TERMINAL_CREATE: 'terminal:create',
+    TERMINAL_CREATE_PROCESS: 'terminal:create-process',
     TERMINAL_DATA: 'terminal:data',
     TERMINAL_RESIZE: 'terminal:resize',
     TERMINAL_DESTROY: 'terminal:destroy',

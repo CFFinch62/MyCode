@@ -1,0 +1,42 @@
+task ProgBar using (limit)
+    rem: Open standard output in append mode to write without newlines
+    rem: We use "/dev/stdout" which works on Linux/Unix systems
+    var stdout = open("/dev/stdout", "a")
+    
+    if is_null(stdout)
+        display("Error: Could not open stdout for progress bar.")
+        return
+    
+    loop i from 0 to limit
+        rem: Calculate percentage
+        var percent = (i * 100) / limit
+        
+        rem: Build progress bar string
+        rem: We use chr(13) to return to the start of the line
+        var bar = chr(13) & "Progress: ["
+        
+        rem: Add '#' for completed part
+        var completed = (i * 20) / limit
+        loop j from 0 to to_int(completed)
+            bar = bar & "#"
+        
+        rem: Add space for remaining part
+        loop j from to_int(completed) to 20
+            bar = bar & " "
+            
+        bar = bar & v"] {percent}%"
+        
+        rem: Write to stdout
+        write(stdout, bar)
+        
+    rem: clear the line or just move to next
+    write(stdout, "\n")
+    close(stdout)
+    
+    display("Task completed!")
+
+task Main()
+		rem: update progress bar
+		ProgBar(100)
+		rem: Simulate work
+        sleep(50)

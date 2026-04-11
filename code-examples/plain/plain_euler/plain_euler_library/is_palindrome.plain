@@ -1,0 +1,29 @@
+task IsPalindrome with (value)
+    var strText = ""
+    
+    rem: Determine the string representation based on type
+	if is_int(value) or is_float(value)
+    		strText = to_string(value)
+	else
+    		if is_string(value)
+        		strText = value
+    		else
+        		deliver false
+          
+    rem: Now begin to check if strText is a palindrome
+    var intLen = len(strText)
+    
+    rem: Handle edge case
+    if intLen <= 1
+        deliver true
+    
+    rem: Compare characters from both ends
+    loop i from 0 to (intLen // 2) - 1
+        var charLeft = substring(strText, i, i + 1)
+        var charRight = substring(strText, intLen - 1 - i, intLen - i)
+        
+        if charLeft != charRight
+            deliver false
+    
+    deliver true
+

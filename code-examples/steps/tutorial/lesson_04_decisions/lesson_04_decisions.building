@@ -1,0 +1,57 @@
+building: lesson_04_decisions
+    note: Lesson 4 - Making Decisions
+    note: Learn about if, otherwise if, and otherwise
+    
+    display "=== Age Checker ==="
+    display "How old are you? "
+    set age to input as number
+    
+    if age is less than 13
+        display "You are a child."
+    otherwise if age is less than 20
+        display "You are a teenager."
+    otherwise if age is less than 65
+        display "You are an adult."
+    otherwise
+        display "You are a senior."
+    
+    display ""
+    display "=== Number Comparison ==="
+    display "Enter a number: "
+    set num to input as number
+    
+    if num is equal to 0
+        display "The number is zero."
+    otherwise if num is greater than 0
+        display "The number is positive."
+    otherwise
+        display "The number is negative."
+    
+    display ""
+    display "=== Password Checker ==="
+    display "Enter the password: "
+    set password to input as text
+    
+    if password is equal to "secret123"
+        display "Access granted! Welcome!"
+    otherwise
+        display "Access denied. Wrong password."
+    
+    display ""
+    display "=== Grade Calculator ==="
+    display "Enter your score (0-100): "
+    set score to input as number
+    
+    if score is greater than or equal to 90
+        display "Grade: A - Excellent!"
+    otherwise if score is greater than or equal to 80
+        display "Grade: B - Good job!"
+    otherwise if score is greater than or equal to 70
+        display "Grade: C - Satisfactory"
+    otherwise if score is greater than or equal to 60
+        display "Grade: D - Needs improvement"
+    otherwise
+        display "Grade: F - Please study more"
+    
+    exit
+

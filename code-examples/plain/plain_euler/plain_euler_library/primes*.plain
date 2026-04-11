@@ -1,0 +1,74 @@
+note: Check if a number is prime.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is prime, False otherwise
+task IsPrime using (n)
+    if n < 2
+        deliver false
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0
+            deliver false
+    deliver true
+
+note: Check if a number is a left truncatable prime.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is left truncatable, False otherwise
+task IsLeftTruncatablePrime using (n)
+    var strNum = to_string(n)
+    var cnt = 1
+    if contains(strNum, "0")
+        deliver false
+    loop i from 0 to length(strNum) - 2
+        strNum = strNum[/* UNSUPPORTED: Slice */]
+        var intNum = to_int(strNum)
+        if IsPrime(intNum)
+            cnt = cnt + 1
+    if cnt == length(to_string(n))
+        deliver true
+    else
+        deliver false
+
+note: Check if a number is a right truncatable prime.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is right truncatable, False otherwise
+task IsRightTruncatablePrime using (n)
+    var strNum = to_string(n)
+    var cnt = 1
+    if contains(strNum, "0")
+        deliver false
+    loop i from 0 to length(strNum) - 2
+        strNum = strNum[/* UNSUPPORTED: Slice */]
+        var intNum = to_int(strNum)
+        if IsPrime(intNum)
+            cnt = cnt + 1
+    if cnt == length(to_string(n))
+        deliver true
+    else
+        deliver false
+
+note: Returns a list of all primes up to n using Sieve of Eratosthenes.
+
+    Args:
+    n: Upper limit
+
+    Returns:
+    List of primes up to n
+task GetPrimesUpTo using (n)
+    var sieve = [true] * n + 1
+    sieve[0] = false
+    sieve[1] = false
+    loop i from 2 to to_int(n ** 0.5)
+        if sieve[i]
+            sieve[/* UNSUPPORTED: Slice */] = [false] * length(sieve[/* UNSUPPORTED: Slice */])
+    deliver /* UNSUPPORTED: ListComp */

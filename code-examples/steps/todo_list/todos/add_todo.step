@@ -1,0 +1,20 @@
+step: add_todo
+    belongs to: todos
+    expects: todos
+    returns: todos
+
+    note: Add a new todo item
+
+    do:
+        display "Enter the todo task: "
+        set task_text to input
+        
+        set new_todo to [:]
+        set new_todo["task"] to task_text
+        set new_todo["done"] to "false"
+        add new_todo to todos
+        
+        display "Added: " added to task_text
+        display ""
+        
+        return todos

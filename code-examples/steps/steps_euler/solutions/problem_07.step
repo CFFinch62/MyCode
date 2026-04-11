@@ -1,0 +1,50 @@
+step: problem_07
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        all_primes as list
+        answer as number
+        estimate as number
+        log_a as number
+        log_b as number
+        log_c as number
+        safe_limit as number
+        COUNT as number
+        
+    do:
+        set count to 10000    
+        set all_primes to []
+        set answer to 0
+        set estimate to 0
+        set log_a to 0
+        set log_b to 0
+        set safe_limit to 0
+        
+        call time storing result in start
+        
+        call log with count storing result in log_a
+        call log with log_a storing result in log_b
+        
+        set estimate to count * (log_a + log_b)
+        
+        call round with estimate * 1.2 storing result in safe_limit
+        call gen_primes_to_n with safe_limit storing result in all_primes
+        
+        set answer to all_primes[count]
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 7")
+        display("###################################") 
+        display("")
+        display("What is the 10001st prime number?")
+        display("")
+        display("The 10001st prime is: " added to answer)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+note: EXPECTED ANSWER: 104743

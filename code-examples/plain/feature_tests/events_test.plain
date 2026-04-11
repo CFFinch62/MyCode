@@ -1,0 +1,60 @@
+rem: Test Events & Timers Operations
+
+rem: =========================================
+rem: Basic Timing
+rem: =========================================
+display("=== Basic Timing ===")
+
+display("Sleeping for 500ms...")
+sleep(500)
+display("Awake!")
+
+rem: =========================================
+rem: Simple Timer Demo
+rem: =========================================
+display("")
+display("=== Timer Demo (run_events for 2 seconds) ===")
+
+var counter = 0
+
+task OnTick()
+    counter = counter + 1
+    display(v"Tick {counter}")
+
+var timer = create_timer(500, OnTick)
+start_timer(timer)
+
+rem: Run events for 2 seconds
+run_events(2100)
+
+cancel_timer(timer)
+display(v"Timer completed with {counter} ticks")
+
+rem: =========================================
+rem: Timeout Demo  
+rem: =========================================
+display("")
+display("=== Timeout Demo ===")
+
+var timeoutFired = false
+
+task OnTimeout()
+    display("Timeout fired!")
+    timeoutFired = true
+
+var timeout = create_timeout(1000, OnTimeout)
+start_timer(timeout)
+
+rem: Wait a bit longer than the timeout
+sleep(1500)
+
+if timeoutFired
+    display("Timeout test passed!")
+else
+    display("Timeout test failed!")
+
+rem: =========================================
+rem: Summary
+rem: =========================================
+display("")
+display("=== All Events tests completed! ===")

@@ -1,0 +1,83 @@
+rem: Lesson 11 - Project: Gradebook
+rem: A complete program combining variables, lists, tasks, loops, and decisions
+
+task Main()
+    display("=================================")
+    display("     Student Gradebook v1.0")
+    display("=================================")
+    display("")
+
+    rem: Student data
+    var names = ["Alice", "Bob", "Charlie", "Diana", "Eve"]
+    var scores1 = [95, 87, 92, 88]
+    var scores2 = [78, 82, 74, 80]
+    var scores3 = [92, 96, 89, 95]
+    var scores4 = [65, 70, 68, 72]
+    var scores5 = [88, 91, 85, 90]
+    var allScores = [scores1, scores2, scores3, scores4, scores5]
+
+    rem: Display all student reports
+    loop i from 0 to len(names) - 1
+        DisplayStudentReport(names[i], allScores[i])
+
+    rem: Class summary
+    display("")
+    DisplayClassSummary(names, allScores)
+
+rem: Calculate the average of a list of scores
+task CalculateAverage using (scores)
+    var total = 0.0
+    loop score in scores
+        total = total + score
+    deliver total / len(scores)
+
+rem: Determine letter grade from average
+task GetGrade using (average)
+    if average >= 90
+        deliver "A"
+    else
+        if average >= 80
+            deliver "B"
+        else
+            if average >= 70
+                deliver "C"
+            else
+                if average >= 60
+                    deliver "D"
+                else
+                    deliver "F"
+
+rem: Display a single student's report
+task DisplayStudentReport with (name, scores)
+    var avg = CalculateAverage(scores)
+    var grade = GetGrade(avg)
+
+    display(v"Student: {name}")
+    display("  Scores: " & scores)
+    display(v"  Average: {avg}")
+    display(v"  Grade: {grade}")
+    display("")
+
+rem: Display overall class summary
+task DisplayClassSummary with (names, allScores)
+    display("=================================")
+    display("       Class Summary")
+    display("=================================")
+
+    var classTotal = 0.0
+    var bestIdx = 0
+    var bestAvg = 0.0
+
+    loop i from 0 to len(names) - 1
+        var avg = CalculateAverage(allScores[i])
+        classTotal = classTotal + avg
+        if avg > bestAvg
+            bestAvg = avg
+            bestIdx = i
+
+    var classAvg = classTotal / len(names)
+
+    display(v"  Class Average: {classAvg}")
+    display("  Top Student: " & names[bestIdx] & " (" & bestAvg & ")")
+    display("  Total Students: " & len(names))
+    display("=================================")

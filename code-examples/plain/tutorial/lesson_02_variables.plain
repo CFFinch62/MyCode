@@ -1,0 +1,36 @@
+rem: Lesson 2 - Variables and Types
+rem: Learn about storing data in variables
+
+task Main()
+    rem: Variables with type prefix inference
+    var intAge = 25
+    var fltPrice = 9.99
+    var strName = "Alice"
+    var blnActive = true
+
+    display("Name: " & strName)
+    display("Age: " & intAge)
+    display("Price: $" & fltPrice)
+    display("Active: " & blnActive)
+
+    rem: Constants cannot be changed
+    fxd PI as float = 3.14159
+    fxd APP_NAME as string = "My First App"
+
+    display("Pi is " & PI)
+    display("App: " & APP_NAME)
+
+    rem: Explicit type with 'as' keyword
+    var score as integer = 95
+    var temperature as float = 72.5
+
+    display("Score: " & score)
+    display("Temperature: " & temperature)
+
+    rem: Changing variable values
+    var intCount = 0
+    display("Count starts at: " & intCount)
+    intCount = intCount + 1
+    display("Count is now: " & intCount)
+    intCount += 5
+    display("Count after adding 5: " & intCount)

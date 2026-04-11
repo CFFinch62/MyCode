@@ -1,0 +1,29 @@
+{
+    "name": "mycode-ez-language",
+    "version": "1.0.0",
+    "displayName": "EZ Language Support",
+    "description": "Syntax highlighting for EZ programming language (.ez files)",
+    "author": "Chuck Finch",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:ez",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "ez",
+                    "aliases": [
+                        "EZ",
+                        "Ez",
+                        "ez"
+                    ],
+                    "extensions": [
+                        ".ez"
+                    ]
+                }
+            ]
+        }
+    }
+}

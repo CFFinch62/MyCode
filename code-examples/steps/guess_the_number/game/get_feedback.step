@@ -1,0 +1,16 @@
+step: get_feedback
+    belongs to: game
+    expects: attempts
+    returns: message
+
+    note: Get feedback message based on number of attempts
+
+    do:
+        if attempts is less than or equal to 3
+            set message to "Amazing! You're a mind reader!"
+        otherwise if attempts is less than or equal to 7
+            set message to "Great job! That was impressive!"
+        otherwise
+            set message to "You got it! Keep practicing!"
+        
+        return message

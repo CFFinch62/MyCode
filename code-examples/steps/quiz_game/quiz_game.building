@@ -1,0 +1,126 @@
+building: quiz_game
+    note: A multi-level Steps knowledge assessment quiz
+
+    clear console
+
+    call banner with "Steps Quiz Game", 44 storing result in title_banner
+    display title_banner
+    display ""
+    display "Test your Steps knowledge across three levels:"
+    display "  BEG  - Beginner"
+    display "  INT  - Intermediate"
+    display "  PRO  - Professional"
+    display ""
+    display "Each level: 5 random questions from a pool of 20."
+    display "Score 100% to unlock the next level!"
+    display ""
+    display "Press ENTER to begin..."
+    set dummy to input
+
+    note: Build full question bank
+    call build_questions storing result in all_questions
+
+    note: ======== BEGINNER LEVEL ========
+    call banner with "BEGINNER Level", 44 storing result in lvl_banner
+    display lvl_banner
+    display ""
+
+    call select_questions with all_questions, "beg", 5 storing result in beg_questions
+    set score to 0
+    set question_num to 1
+
+    repeat for each q in beg_questions
+        clear console
+        display lvl_banner
+        display ""
+        call ask_question with q, question_num storing result in is_correct
+        if is_correct
+            set score to score + 1
+        set question_num to question_num + 1
+        display "Press ENTER to continue..."
+        set dummy to input
+
+    call show_final_score with score, 5, "BEGINNER"
+    call get_score_feedback with score, 5, "BEGINNER", false storing result in feedback
+    display feedback
+    display ""
+
+    if score is less than 5
+        display "Study up and come back — you've got this!"
+        display ""
+        exit
+
+    display "Press ENTER to continue to INTERMEDIATE..."
+    set dummy to input
+
+    note: ======== INTERMEDIATE LEVEL ========
+    call banner with "INTERMEDIATE Level", 44 storing result in lvl_banner
+
+    call select_questions with all_questions, "int", 5 storing result in int_questions
+    set score to 0
+    set question_num to 1
+
+    repeat for each q in int_questions
+        clear console
+        display lvl_banner
+        display ""
+        call ask_question with q, question_num storing result in is_correct
+        if is_correct
+            set score to score + 1
+        set question_num to question_num + 1
+        display "Press ENTER to continue..."
+        set dummy to input
+
+    call show_final_score with score, 5, "INTERMEDIATE"
+    call get_score_feedback with score, 5, "INTERMEDIATE", false storing result in feedback
+    display feedback
+    display ""
+
+    if score is less than 5
+        display "Review intermediate topics and try again!"
+        display ""
+        exit
+
+    display "Press ENTER to continue to PROFESSIONAL..."
+    set dummy to input
+
+    note: ======== PROFESSIONAL LEVEL ========
+    call banner with "PROFESSIONAL Level", 44 storing result in lvl_banner
+
+    call select_questions with all_questions, "pro", 5 storing result in pro_questions
+    set score to 0
+    set question_num to 1
+
+    repeat for each q in pro_questions
+        clear console
+        display lvl_banner
+        display ""
+        call ask_question with q, question_num storing result in is_correct
+        if is_correct
+            set score to score + 1
+        set question_num to question_num + 1
+        display "Press ENTER to continue..."
+        set dummy to input
+
+    call show_final_score with score, 5, "PROFESSIONAL"
+    call get_score_feedback with score, 5, "PROFESSIONAL", false storing result in feedback
+    display feedback
+    display ""
+
+    if score is less than 5
+        display "Review the advanced docs and try again to achieve a perfect score!"
+        display ""
+        exit
+
+    note: ======== MASTER LEVEL UNLOCK ========
+    display "========================================"
+    display "   *** MASTER LEVEL UNLOCKED! ***"
+    display "========================================"
+    display ""
+    display "Incredible! You've conquered all three levels with a perfect score!"
+    display "The Master Level is now yours — face all 20 questions per level."
+    display ""
+    display "Press ENTER to enter the Master Level..."
+    set dummy to input
+
+    call show_master_menu with all_questions

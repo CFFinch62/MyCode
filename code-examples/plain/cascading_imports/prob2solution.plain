@@ -1,0 +1,43 @@
+note:
+    ####################################
+	Project Euler Probelm # 5
+ 	####################################
+	What is the smallest positive number
+	that is evenly divisible by all of 
+	the numbers from 1 to 20?
+	####################################
+	
+rem: IMPORTS
+use:
+	modules:
+		lcm
+
+rem: GLOBALS
+
+rem: HELPERS
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+
+	var c = 1
+
+	loop i from 1 to 21
+    		c = lcm.LCM(c, i)
+
+	display("###################################")
+	display("PROJECT EULER PROBLEM 5")
+	display("###################################")
+	display()
+	display("What is the smallest positive number")
+	display("that is evenly divisible by all of")
+	display("the numbers from 1 to 20?")
+	display()  
+	display("Least common multiple of all intergers")
+	display(v"from 1 to 20 is: {to_int(c)}")
+	display("###################################")
+
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 232792560

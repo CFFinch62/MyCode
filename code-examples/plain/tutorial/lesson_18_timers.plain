@@ -1,0 +1,37 @@
+rem: Lesson 18 - Events and Timers
+rem: Using sleep, timers, and the event loop
+
+task OnTick()
+    display("  Tick!")
+
+task OnTimeout()
+    display("  Timeout fired!")
+
+task Main()
+    rem: Basic timing with sleep
+    display("=== Countdown with Sleep ===")
+    loop i from 3 to 1 step -1
+        display(i & "...")
+        sleep(500)
+    display("Go!")
+    display("")
+
+    rem: Using sleep for timed steps
+    display("=== Timed Steps ===")
+    display("  Step 1: Starting...")
+    sleep(300)
+    display("  Step 2: Processing...")
+    sleep(300)
+    display("  Step 3: Done!")
+    display("")
+
+    rem: One-shot timeout
+    display("=== Timeout Demo ===")
+    display("Setting a 1-second timeout...")
+    var timeout = create_timeout(1000, OnTimeout)
+    start_timer(timeout)
+    wait_for_events()
+    display("")
+
+    display("=== Events Complete ===")
+    display("All timers and events have finished!")

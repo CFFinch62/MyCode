@@ -1,0 +1,40 @@
+step: route_calculation
+    belongs to: user_interaction
+    expects: choice as text
+    returns: nothing
+
+    declare:
+        results as table
+
+    riser: invalid_choice
+        expects: nothing
+        returns: nothing
+
+        do:
+            display "Invalid selection. Please try again."
+
+    do:
+        if choice equals "1"
+            call calc_from_price_and_margin storing result in results
+        otherwise if choice equals "2"
+            call calc_from_price_and_profit storing result in results
+        otherwise if choice equals "3"
+            call calc_from_price_and_markup storing result in results
+        otherwise if choice equals "4"
+            call calc_from_price_and_cost storing result in results
+        otherwise if choice equals "5"
+            call calc_from_margin_and_profit storing result in results
+        otherwise if choice equals "6"
+            call calc_from_margin_and_cost storing result in results
+        otherwise if choice equals "7"
+            call calc_from_profit_and_markup storing result in results
+        otherwise if choice equals "8"
+            call calc_from_profit_and_cost storing result in results
+        otherwise if choice equals "9"
+            call calc_from_markup_and_cost storing result in results
+        otherwise
+            call invalid_choice
+            call display_menu storing result in new_choice
+            call route_calculation with new_choice
+
+        call display_values with results

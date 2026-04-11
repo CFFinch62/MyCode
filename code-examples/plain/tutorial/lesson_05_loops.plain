@@ -1,0 +1,46 @@
+rem: Lesson 5 - Loops and Repetition
+rem: Different ways to loop in PLAIN
+
+task Main()
+    rem: Counting loop (from...to)
+    display("=== Counting from 1 to 5 ===")
+    loop i from 1 to 5
+        display("Count: " & i)
+
+    rem: Counting with step
+    display("")
+    display("=== Even numbers from 2 to 10 ===")
+    loop i from 2 to 10 step 2
+        display(i)
+
+    rem: Countdown with negative step
+    display("")
+    display("=== Countdown! ===")
+    loop i from 5 to 1 step -1
+        display(i & "...")
+    display("Liftoff!")
+
+    rem: Collection loop (for-each)
+    display("")
+    display("=== Favorite fruits ===")
+    var fruits = ["apple", "banana", "cherry", "mango"]
+    loop fruit in fruits
+        display("I like " & fruit & "!")
+
+    rem: Nested loops
+    display("")
+    display("=== Multiplication Table (1-4) ===")
+    loop row from 1 to 4
+        var line = ""
+        loop col from 1 to 4
+            line = line & (row * col) & "  "
+        display(line)
+
+    rem: Summing with a loop
+    display("")
+    display("=== Sum of 1 to 10 ===")
+    var total = 0
+    loop i from 1 to 10
+        total = total + i 
+        rem: alternate code 'total += i'
+    display(v"Sum = {total}")

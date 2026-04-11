@@ -93,6 +93,30 @@ export class App {
         // Apply initial state
         this.updateSidebarVisibility();
 
+        // Register languages from plugin manifests before restoring session
+        try {
+            const plugins = await window.mycode.plugins.list();
+            for (const plugin of plugins) {
+                if (plugin.enabled && plugin.manifest.mycode.contributes?.languages) {
+                    for (const lang of plugin.manifest.mycode.contributes.languages) {
+                        if (typeof monaco !== 'undefined' && monaco.languages) {
+                            try {
+                                monaco.languages.register({
+                                    id: lang.id,
+                                    extensions: lang.extensions,
+                                    aliases: lang.aliases
+                                });
+                            } catch (e) {
+                                // Might already be registered
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.error('Failed to register plugin languages during init:', e);
+        }
+
         // Restore previous session
         await this.restoreSession();
 
@@ -310,6 +334,39 @@ export class App {
             document.addEventListener('mouseup', () => {
                 isResizing = false;
                 document.body.style.cursor = '';
+            });
+        }
+
+        // Bottom panel close button
+        const bottomPanelArea = document.getElementById('bottom-panel-area');
+        document.getElementById('bottom-panel-close')?.addEventListener('click', () => {
+            bottomPanelArea?.classList.add('hidden');
+        });
+
+        // Bottom panel resizer (drag the top edge to resize height)
+        const bottomResizer = document.getElementById('bottom-panel-resizer');
+        if (bottomResizer && bottomPanelArea) {
+            let isResizingBottom = false;
+            let startY = 0;
+            let startHeight = 0;
+            bottomResizer.addEventListener('mousedown', (e) => {
+                isResizingBottom = true;
+                startY = e.clientY;
+                startHeight = bottomPanelArea.offsetHeight;
+                document.body.style.cursor = 'ns-resize';
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizingBottom) return;
+                const diff = startY - e.clientY; // drag up → taller
+                const newHeight = Math.max(80, Math.min(startHeight + diff, window.innerHeight * 0.7));
+                bottomPanelArea.style.height = `${newHeight}px`;
+            });
+            document.addEventListener('mouseup', () => {
+                if (isResizingBottom) {
+                    isResizingBottom = false;
+                    document.body.style.cursor = '';
+                }
             });
         }
 
@@ -637,10 +694,10 @@ export class App {
 
         const markers = diagnostics.map(d => ({
             severity: this.toMonacoSeverity(d.severity),
-            startLineNumber: d.range.start.line,
-            startColumn: d.range.start.column,
-            endLineNumber: d.range.end.line,
-            endColumn: d.range.end.column,
+            startLineNumber: d.range.startLine,
+            startColumn: d.range.startColumn,
+            endLineNumber: d.range.endLine,
+            endColumn: d.range.endColumn,
             message: d.message,
             source: d.source || 'plugin'
         }));

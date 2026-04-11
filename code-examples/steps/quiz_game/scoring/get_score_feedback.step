@@ -1,0 +1,19 @@
+step: get_score_feedback
+    belongs to: scoring
+    expects: score, total, level, is_last_level
+    returns: message
+
+    note: Get feedback message based on score and whether it unlocks the next level
+
+    do:
+        if score is equal to total
+            if is_last_level
+                set message to "OUTSTANDING! You've mastered all levels of Steps!"
+            otherwise
+                set message to "PERFECT! You've unlocked the next level — keep going!"
+        otherwise if is_last_level
+            set message to "You scored " added to (score as text) added to "/" added to (total as text) added to " on the " added to level added to " level. So close! Review the advanced docs and try again to achieve a perfect score!"
+        otherwise
+            set message to "You scored " added to (score as text) added to "/" added to (total as text) added to " on the " added to level added to " level. You need 100% to advance. Review the docs and try again!"
+
+        return message

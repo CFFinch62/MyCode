@@ -1,0 +1,21 @@
+task Main()
+    var stdout = open("/dev/stdout", "a")
+    if is_null(stdout)
+        display("Error opening stdout")
+        return
+
+    rem: Test 1: Simple overwrite
+    write(stdout, "Part 1")
+    sleep(1000)
+    write(stdout, "\rPart 2")
+    sleep(1000)
+    write(stdout, "\n")
+    
+    rem: Test 2: Overwrite with longer string to ensure no wrapping artifact
+    write(stdout, "Downloading: [>    ]")
+    sleep(1000)
+    write(stdout, "\rDownloading: [==>  ]")
+    sleep(1000)
+    write(stdout, "\n")
+
+    close(stdout)

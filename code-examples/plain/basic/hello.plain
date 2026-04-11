@@ -1,0 +1,7 @@
+rem: Simple Hello World program in PLAIN
+
+task Main()
+    var strName = "World"
+    var greeting = v"Hello, {strName}!"
+    display(greeting)
+

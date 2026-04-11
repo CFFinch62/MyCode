@@ -1,0 +1,54 @@
+rem: Lesson 7 - Working with Tables
+rem: Key-value collections (like dictionaries)
+
+task Main()
+    rem: Creating a table
+    var tblPerson = {"name": "Alice", "age": 30, "city": "Portland"}
+    display("Person: " & tblPerson)
+
+    rem: Accessing values
+    display("Name: " & tblPerson["name"])
+    display("Age: " & tblPerson.age)
+
+    rem: Adding and changing entries
+    tblPerson["email"] = "alice@example.com"
+    tblPerson["age"] = 31
+    display("Updated: " & tblPerson)
+
+    rem: Checking for keys
+    if has_key(tblPerson, "email")
+        display("Email found: " & tblPerson["email"])
+
+    if not has_key(tblPerson, "phone")
+        display("No phone number on file.")
+
+    rem: Getting all keys and values
+    var allKeys = keys(tblPerson)
+    var allValues = values(tblPerson)
+    display("Keys: " & allKeys)
+    display("Values: " & allValues)
+
+    rem: Looping through a table
+    display("")
+    display("=== Person Details ===")
+    loop key in keys(tblPerson)
+        display("  " & key & ": " & tblPerson[key])
+
+    rem: Removing entries
+    remove(tblPerson, "email")
+    display("After removing email: " & tblPerson)
+
+    rem: Table as a counter
+    display("")
+    display("=== Word Counter ===")
+    var lstWords = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+    var tblCounts = {}
+
+    loop word in lstWords
+        if has_key(tblCounts, word)
+            tblCounts[word] = tblCounts[word] + 1
+        else
+            tblCounts[word] = 1
+
+    loop word in keys(tblCounts)
+        display("  " & word & ": " & tblCounts[word])

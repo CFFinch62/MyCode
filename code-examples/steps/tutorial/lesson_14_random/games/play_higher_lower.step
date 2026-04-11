@@ -1,0 +1,50 @@
+step: play_higher_lower
+    belongs to: games
+    returns: score
+
+    note: Play a mini higher-or-lower game
+
+    do:
+        display "--- Mini Game: Higher or Lower ---"
+        display ""
+        display "I'll give you a number (1-10). Guess if the next will be higher or lower!"
+        display ""
+        
+        call random_int with 1, 10 storing result in current
+        set score to 0
+        set rounds to 3
+        
+        repeat rounds times
+            display "Current number: " added to (current as text)
+            display "Will the next be (h)igher or (l)ower? "
+            set guess to input
+            
+            call random_int with 1, 10 storing result in next_num
+            display "Next number: " added to (next_num as text)
+            
+            if guess equals "h"
+                if next_num is greater than current
+                    display "Correct! +1 point"
+                    set score to score + 1
+                otherwise if next_num is less than current
+                    display "Wrong! The number was lower."
+                otherwise
+                    display "It's the same! No points."
+            otherwise if guess equals "l"
+                if next_num is less than current
+                    display "Correct! +1 point"
+                    set score to score + 1
+                otherwise if next_num is greater than current
+                    display "Wrong! The number was higher."
+                otherwise
+                    display "It's the same! No points."
+            otherwise
+                display "Please enter 'h' or 'l' next time!"
+            
+            set current to next_num
+            display ""
+        
+        display "Game over! Your score: " added to (score as text) added to " out of " added to (rounds as text)
+        display ""
+        
+        return score

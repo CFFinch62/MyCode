@@ -1,0 +1,24 @@
+step: get_number_input
+    belongs to: user_interaction
+    expects: prompt_text as text
+    returns: value as number
+
+    declare:
+        value as number fixed
+        input_text as number
+
+    do:
+        display prompt_text
+        set input_text to input
+
+        attempt:
+            set value to input_text as number
+        if unsuccessful:
+            display "Entry Error: Invalid Input!"
+            call ask_repeat
+
+        if value equals 0
+            display "Entry Error: Value cannot be zero!"
+            call ask_repeat
+
+        return value

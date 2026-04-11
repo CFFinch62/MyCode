@@ -1,0 +1,10 @@
+step: get_lucky_number
+    belongs to: helpers
+    expects: nothing
+    returns: lucky_num
+
+    do:
+        set lucky_num to 7
+        display "I have received nothing but still returned your lucky number"
+        return lucky_num
+

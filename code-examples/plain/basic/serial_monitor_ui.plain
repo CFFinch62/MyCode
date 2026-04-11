@@ -1,0 +1,151 @@
+rem: Serial Port Monitor with Text Graphics UI
+rem: Demonstrates Phase 1 TUI features for real-world data acquisition
+rem: This is a simulation - replace with actual serial port for real use
+
+task DrawHeader()
+    text_color("cyan")
+    draw_box(1, 1, 78, 3, "PLAIN Serial Monitor")
+    text_color("default")
+
+task DrawStatusPanel with (port_name, baud, status, packets)
+    text_color("green")
+    draw_box(2, 5, 38, 8, "Connection Status")
+    text_color("default")
+
+    text_at(4, 7, "Port:     " & port_name)
+    text_at(4, 8, "Baud:     " & to_string(baud))
+    text_at(4, 9, "Status:   ")
+
+    if status == "CONNECTED"
+        text_color("green")
+    else
+        text_color("red")
+    text_at(14, 9, status)
+    text_color("default")
+
+    text_at(4, 10, "Packets:  " & to_string(packets))
+    text_at(4, 11, "Errors:   0")
+
+task DrawDataPanel with (latest_data)
+    text_color("yellow")
+    draw_box(42, 5, 36, 8, "Latest Data")
+    text_color("default")
+
+    text_at(44, 7, "Temperature: " & latest_data.temp & "°F")
+    text_at(44, 8, "Humidity:    " & latest_data.humidity & "%")
+    text_at(44, 9, "Pressure:    " & latest_data.pressure & " hPa")
+    text_at(44, 10, "Timestamp:   " & latest_data.time)
+
+task DrawDataHistory with (history)
+    text_color("blue")
+    draw_box(2, 14, 76, 12, "Data History (Last 8 readings)")
+    text_color("default")
+    
+    rem: Header
+    text_at(4, 16, "Time")
+    text_at(15, 16, "Temp")
+    text_at(28, 16, "Humidity")
+    text_at(43, 16, "Pressure")
+    text_at(60, 16, "Status")
+    
+    text_color("white")
+    draw_line(3, 17, 74, "h")
+    text_color("default")
+    
+    rem: Data rows
+    var row = 18
+    var count = len(history)
+    var start = 0
+    if count > 8
+        start = count - 8
+    
+    loop i from start to count - 1
+        var entry = history[i]
+        text_at(4, row, entry.time)
+        text_at(15, row, v"{entry.temp}°F")
+        text_at(28, row, v"{entry.humidity}%")
+        text_at(43, row, v"{entry.pressure} hPa")
+        
+        rem: Status indicator
+        if entry.temp > 80
+            text_color("red")
+            text_at(60, row, "HIGH")
+        else
+            if entry.temp < 65
+                text_color("blue")
+                text_at(60, row, "LOW")
+            else
+                text_color("green")
+                text_at(60, row, "OK")
+        text_color("default")
+        
+        row = row + 1
+
+task DrawFooter with (message)
+    text_color("white")
+    draw_line(1, 27, 78, "h")
+    text_color("default")
+    text_at(2, 28, message)
+
+task SimulateSerialData using (iteration)
+    rem: Simulate sensor data (replace with actual serial_read_line in real use)
+    var base_temp = 72.0
+    var variation = (random() - 0.5) * 10.0
+    var temp = base_temp + variation
+    
+    var base_humidity = 45
+    var humidity = base_humidity + to_int((random() - 0.5) * 20)
+    
+    var base_pressure = 1013
+    var pressure = base_pressure + to_int((random() - 0.5) * 10)
+    
+    var timestamp = "T+" & to_string(iteration) & "s"
+
+    deliver {
+        "temp": round(temp * 10) / 10,
+        "humidity": humidity,
+        "pressure": pressure,
+        "time": timestamp
+    }
+
+task Main()
+    rem: Configuration
+    var port_name = "/dev/ttyUSB0"  rem: Change for your system
+    var baud = 9600
+    var status = "CONNECTED"
+    var packet_count = 0
+    var history = []
+    
+    rem: Main monitoring loop (reduced to 10 iterations for testing)
+    loop iteration from 1 to 10
+        rem: Clear screen and redraw UI
+        clear()
+        
+        rem: Draw UI components
+        DrawHeader()
+        DrawStatusPanel(port_name, baud, status, packet_count)
+        
+        rem: Simulate reading data (replace with actual serial port reading)
+        var data = SimulateSerialData(iteration)
+        append(history, data)
+        packet_count = packet_count + 1
+        
+        rem: Display current data
+        DrawDataPanel(data)
+        
+        rem: Display history
+        DrawDataHistory(history)
+        
+        rem: Footer with instructions
+        DrawFooter("Monitoring... (Simulated data - Press Ctrl+C to stop)")
+        
+        rem: Wait before next update
+        sleep(500)
+    
+    rem: Clean exit
+    clear()
+    display("")
+    display("Serial monitor stopped.")
+    display("Total packets received: " & packet_count)
+    display("")
+

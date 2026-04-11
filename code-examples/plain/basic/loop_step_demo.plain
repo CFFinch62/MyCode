@@ -1,0 +1,48 @@
+rem: Demonstration of loop with step keyword
+
+task Main()
+    display("=== Loop Step Examples ===")
+    display("")
+    
+    rem: Basic counting with step
+    display("Count by 5s from 0 to 50:")
+    loop i from 0 to 50 step 5
+        display(v"  {i}")
+    
+    display("")
+    
+    rem: Countdown with negative step
+    display("Countdown by 2s from 10 to 0:")
+    loop i from 10 to 0 step -2
+        display(v"  {i}")
+    
+    display("")
+    
+    rem: Even numbers only
+    display("Even numbers from 2 to 20:")
+    loop i from 2 to 20 step 2
+        display(v"  {i}")
+    
+    display("")
+    
+    rem: Odd numbers only
+    display("Odd numbers from 1 to 19:")
+    loop i from 1 to 19 step 2
+        display(v"  {i}")
+    
+    display("")
+    
+    rem: Large step
+    display("Decades from 1900 to 2020:")
+    loop year from 1900 to 2020 step 10
+        display(v"  {year}")
+    
+    display("")
+    
+    rem: Using step with calculations
+    display("Powers of 2 indices (0, 2, 4, 8, 16...):")
+    var power = 1
+    loop i from 0 to 16 step power
+        display(v"  Index: {i}, Power: {power}")
+        power = power * 2
+

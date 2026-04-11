@@ -1,0 +1,20 @@
+step: add_student
+    belongs to: grades
+    expects: students
+    returns: students
+
+    note: Add a new student to the list
+
+    do:
+        display "Enter student name: "
+        set student_name to input
+        
+        set new_student to [:]
+        set new_student["name"] to student_name
+        set new_student["grade"] to ""
+        add new_student to students
+        
+        display "Added: " added to student_name
+        display ""
+        
+        return students

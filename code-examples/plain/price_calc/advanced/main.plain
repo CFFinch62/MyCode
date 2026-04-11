@@ -1,0 +1,98 @@
+rem: Price-Calc (Advanced Version) - Main Module
+rem: Entry point that coordinates input, calculation, and output.
+rem:
+rem: This version demonstrates PLAIN's module system by splitting
+rem: the program across multiple files with imports.
+rem:
+rem: Project structure:
+rem:   main.plain     - User interaction and validation (this file)
+rem:   formulas.plain - Pricing calculation logic
+rem:   output.plain   - Formatted display tasks
+
+use:
+    tasks:
+        formulas.Calculate
+        output.DisplayHeader
+        output.DisplayResults
+        output.DisplayError
+
+task Main()
+    DisplayHeader()
+
+    display("Enter any two values below.")
+    display("Press Enter to skip a value.")
+    display("")
+
+    rem: Read user inputs (empty string means skipped)
+    var strPrice = get("  Price ($):   ")
+    var strMargin = get("  Margin (%):  ")
+    var strProfit = get("  Profit ($):  ")
+    var strMarkup = get("  Markup (%):  ")
+    var strCost = get("  Cost ($):    ")
+
+    rem: Determine which values were provided
+    var blnHasPrice = len(strPrice) > 0
+    var blnHasMargin = len(strMargin) > 0
+    var blnHasProfit = len(strProfit) > 0
+    var blnHasMarkup = len(strMarkup) > 0
+    var blnHasCost = len(strCost) > 0
+
+    rem: Count how many values were entered
+    var intCount = 0
+    if blnHasPrice
+        intCount += 1
+    if blnHasMargin
+        intCount += 1
+    if blnHasProfit
+        intCount += 1
+    if blnHasMarkup
+        intCount += 1
+    if blnHasCost
+        intCount += 1
+
+    rem: Validate: exactly two values required
+    if intCount != 2
+        DisplayError("Please provide exactly 2 values (you entered " & intCount & ")")
+        abort "Invalid input count"
+
+    rem: Validate: margin and markup cannot both be entered
+    if blnHasMargin and blnHasMarkup
+        DisplayError("Cannot use both Margin and Markup (both are percentages)")
+        abort "Invalid combination"
+
+    rem: Convert provided values to floats
+    var fltPrice = 0.0
+    var fltMargin = 0.0
+    var fltProfit = 0.0
+    var fltMarkup = 0.0
+    var fltCost = 0.0
+
+    if blnHasPrice
+        fltPrice = to_float(strPrice)
+    if blnHasMargin
+        fltMargin = to_float(strMargin)
+    if blnHasProfit
+        fltProfit = to_float(strProfit)
+    if blnHasMarkup
+        fltMarkup = to_float(strMarkup)
+    if blnHasCost
+        fltCost = to_float(strCost)
+
+    rem: Build a pair key (P=Price, M=Margin, R=Profit, K=Markup, C=Cost)
+    var strPair = ""
+    if blnHasPrice
+        strPair &= "P"
+    if blnHasMargin
+        strPair &= "M"
+    if blnHasProfit
+        strPair &= "R"
+    if blnHasMarkup
+        strPair &= "K"
+    if blnHasCost
+        strPair &= "C"
+
+    rem: Calculate all five values using the formulas module
+    var lstResult = Calculate(strPair, fltPrice, fltMargin, fltProfit, fltMarkup, fltCost)
+
+    rem: Display the results using the output module
+    DisplayResults(lstResult[0], lstResult[1], lstResult[2], lstResult[3], lstResult[4])

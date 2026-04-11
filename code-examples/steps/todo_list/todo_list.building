@@ -1,0 +1,55 @@
+building: todo_list
+    note: A todo list manager with file persistence!
+    
+    display "========================================"
+    display "       Steps Todo List Manager"
+    display "========================================"
+    display ""
+    
+    note: Set up the data file
+    set filename to "todos.csv"
+    
+    note: Load existing todos
+    call load_todos with filename storing result in todos
+    
+    if length of todos is greater than 0
+        display "Loaded " added to (length of todos) as text added to " existing todo(s)."
+    otherwise
+        display "Starting with a fresh list."
+    
+    display ""
+    
+    note: Main menu loop
+    set running to true
+    
+    repeat while running
+        display "--- Menu ---"
+        display "1. View all todos"
+        display "2. Add a todo"
+        display "3. Mark todo as done"
+        display "4. Save and quit"
+        display ""
+        display "Enter choice (1-4): "
+        set choice to input
+        display ""
+        
+        if choice equals "1"
+            call show_todos with todos
+        
+        otherwise if choice equals "2"
+            call add_todo with todos storing result in todos
+        
+        otherwise if choice equals "3"
+            call mark_done with todos storing result in todos
+        
+        otherwise if choice equals "4"
+            call save_todos with filename, todos
+            display ""
+            display "Goodbye!"
+            set running to false
+        
+        otherwise
+            display "Please enter 1, 2, 3, or 4."
+            display ""
+    
+    exit

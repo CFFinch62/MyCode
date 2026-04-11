@@ -1,0 +1,55 @@
+rem: ============================================
+rem: example_file_copy.plain - File Copy with Progress
+rem: ============================================
+rem: Copies a text file line by line, showing
+rem: progress as each line is written.
+rem: ============================================
+use:
+    assemblies:
+        pb_lib
+    modules:
+        pb_lib.prog_bar
+
+task Main()
+    rem: Use script_dir() to create files in the same directory as this script
+    var strSource = join_path(script_dir(), "sample_data.txt")
+    var strDest = join_path(script_dir(), "sample_data_copy.txt")
+
+	var intStart = time()
+
+    rem: Create sample file if it doesn't exist
+    if not file_exists(strSource)
+        display("Creating sample data file...")
+        var lstData = []
+        loop i from 1 to 201
+            append(lstData, v"Record {i}: This is sample data line number {i}")
+        write_lines(strSource, lstData)
+        display(v"Created {strSource} with 200 lines.")
+        display("")
+
+    rem: Read the source file
+    var lstLines = read_lines(strSource)
+    var intTotal = len(lstLines)
+
+    display(v"Copying {strSource} to {strDest} ({intTotal} lines)...")
+    display("")
+
+    pb_lib.prog_bar.Init(intTotal)
+
+    rem: Copy line by line with progress
+    var hOut = open(strDest, "w")
+    loop i from 0 to intTotal - 1
+        write_line(hOut, lstLines[i])
+        pb_lib.prog_bar.Update(i + 1)
+        sleep(20)
+    close(hOut)
+
+    pb_lib.prog_bar.Finish()
+    display("")
+    display(v"File copied successfully!")
+
+    rem: Verify the copy
+    var lstCopy = read_lines(strDest)
+    display(v"Verified: {len(lstCopy)} lines in copy.")
+    
+	var intEnd = time()

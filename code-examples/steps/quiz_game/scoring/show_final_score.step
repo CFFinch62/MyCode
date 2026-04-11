@@ -1,0 +1,16 @@
+step: show_final_score
+    belongs to: scoring
+    expects: score, total, level
+
+    note: Display the final score for a level
+
+    do:
+        display "========================================"
+        display "           LEVEL COMPLETE!"
+        display "========================================"
+        display ""
+        display "Level:  " added to level
+        display "Score:  " added to (score as text) added to " / " added to (total as text)
+        set pct to (score / total) * 100
+        display "Result: " added to (pct as decimal(0)) added to "%"
+        display ""

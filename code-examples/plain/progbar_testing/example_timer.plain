@@ -1,0 +1,78 @@
+rem: ============================================
+rem: example_timer.plain - Timer-Based Progress
+rem: ============================================
+rem: Uses PLAIN's timer system to animate the
+rem: progress bar while work happens. The bar
+rem: advances automatically and snaps to 100%
+rem: when the work signals it is done.
+rem:
+rem: This pattern is useful when you don't know
+rem: exactly how many steps the work will take.
+rem: ============================================
+use:
+    assemblies:
+        pb_lib
+    modules:
+        pb_lib.prog_bar
+
+var intProgress = 0
+var blnDone = false
+var tmrBar = null
+var intStartTime = 0
+var intExpectedDuration = 6030  rem: 201 iterations × 30ms
+
+task OnTick()
+    if blnDone
+        pb_lib.prog_bar.Finish()
+        cancel_timer(tmrBar)
+        stop_events()
+    else
+        rem: Calculate progress based on elapsed time, not just tick count
+        var intElapsed = time() - intStartTime
+        var intCalculatedProgress = to_int((intElapsed * 95) / intExpectedDuration)
+
+        rem: Cap at 95% until work is actually done
+        if intCalculatedProgress > 95
+            intCalculatedProgress = 95
+
+        intProgress = intCalculatedProgress
+        pb_lib.prog_bar.Update(intProgress)
+
+task Main()
+    rem: Create a sample file to process
+    var strPath = "sample_data.txt"
+    if not file_exists(strPath)
+        display("Creating sample data file...")
+        var lstData = []
+        loop i from 1 to 201
+            append(lstData, v"Record {i}: This is sample data line number {i}")
+        write_lines(strPath, lstData)
+
+    display("Processing file with timer-based progress...")
+    display("")
+
+    rem: Set up the progress bar (100 = percentage scale)
+    pb_lib.prog_bar.Init(100)
+
+    rem: Record start time for time-based progress calculation
+    intStartTime = time()
+
+    rem: Start the timer to update the bar every 100ms
+    rem: Progress is now calculated based on elapsed time, not tick count
+    tmrBar = create_timer(100, OnTick)
+    start_timer(tmrBar)
+
+    rem: Do the actual work while the bar animates
+    var lstLines = read_lines(strPath)
+    var intWordCount = 0
+    loop i from 0 to len(lstLines) - 1
+        var lstWords = split(lstLines[i], " ")
+        intWordCount = intWordCount + len(lstWords)
+        sleep(30)
+
+    rem: Signal done and wait for the bar to finish
+    blnDone = true
+    wait_for_events()
+
+    display("")
+    display(v"Done! Found {intWordCount} words in {len(lstLines)} lines.")

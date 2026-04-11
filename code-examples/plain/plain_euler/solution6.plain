@@ -1,0 +1,43 @@
+note:
+    ##########################################
+	Project Euler Probelm 6 ?
+ 	##########################################
+	Find the difference between the sum of 
+	the squares of the first one hundred 
+	natural numbers and the square of the sum.
+	##########################################
+	
+rem: GLOBALS
+var sumsq as Integer = 0
+var sum as Integer = 0
+var sqsum as Integer = 0
+var diff as Integer = 0
+
+rem: HELPERS
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+    loop i from 1 to 100
+        sumsq = sumsq + (i ** 2)
+        sum = sum + (i)
+    sqsum = sum ** 2
+    diff = abs(sumsq - sqsum)
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM 6")
+	display("###################################")
+	display()
+	display("Find the difference between the sum of ")
+	display("the squares of the first one hundred ")
+	display("natural numbers and the square of the sum.")
+	display()  
+	display("The diffence between the 2 sums is:") 
+    display(diff)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 25164150

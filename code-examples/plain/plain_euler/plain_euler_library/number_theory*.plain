@@ -1,0 +1,200 @@
+use:
+    tasks:
+        pelib.is_prime
+        pelib.is_palindrome
+
+
+note: Calulates the factorial of a number
+
+    Args:
+    n: Number to find the factorial of
+
+    Returns:
+    factorial of n
+task Factorial using (n)
+    var f = 1
+    loop i from 0 to n - 1
+        f = f * i + 1
+    deliver f
+
+note: Find the greatest prime factor of a number.
+
+    Args:
+    n: Number to find greatest prime factor of
+
+    Returns:
+    The greatest prime factor of n
+task Gpf using (n)
+    var largest = 1
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0 and IsPrime(i)
+            largest = i
+    deliver largest
+
+note: Returns all factors of a number n.
+
+    Args:
+    n: Number to find factors for
+
+    Returns:
+    List of all factors of n
+task AllFactors using (n)
+    var factors = []
+    loop i from 1 to n
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+note: Returns all proper factors of a number n (excluding 1 and n).
+
+    Args:
+    n: Number to find proper factors for
+
+    Returns:
+    List of proper factors of n
+task ProperFactors using (n)
+    var factors = []
+    loop i from 2 to n - 1
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+note: Returns all proper divisors of a number n (excluding n itself).
+
+    Args:
+    n: Number to find proper divisors for
+
+    Returns:
+    List of proper divisors of n
+task ProperDivisors using (n)
+    var factors = []
+    loop i from 1 to n - 1
+        if n % i == 0
+            append(factors, i)
+    deliver factors
+
+note: Checks if a number is perfect (sum of proper divisors equals the number).
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is perfect, False otherwise
+task IsPerfect using (n)
+    var tmp = ProperDivisors(n)
+    var total = Sum(tmp)
+    deliver total == n
+
+note: Checks if a number is abundant (sum of proper divisors exceeds the number).
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is abundant, False otherwise
+task IsAbundant using (n)
+    var tmp = ProperDivisors(n)
+    var total = Sum(tmp)
+    deliver total > n
+
+note: Checks if a number is deficient (sum of proper divisors is less than the number).
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is deficient, False otherwise
+task IsDeficient using (n)
+    var tmp = ProperDivisors(n)
+    var total = Sum(tmp)
+    deliver total < n
+
+note: Checks if a number is triangular.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is triangular, False otherwise
+task IsTriangular using (n)
+    if -1 + 1 + 8 * n ** 0.5 / 2 % 1 == 0
+        deliver true
+    deliver false
+
+note: Checks if a number is pentagonal.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is pentagonal, False otherwise
+task IsPentagonal using (n)
+    deliver 1 + 24 * n + 1 ** 0.5 % 6 == 0
+
+note: Checks if a number is hexagonal.
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is hexagonal, False otherwise
+task IsHexagonal using (n)
+    deliver 1 + 8 * n + 1 ** 0.5 % 4 == 0
+
+task IsPandigital using (n, b, z)
+    var digits = List(Set(to_string(n)))
+    if z
+        var a = 0
+    else
+        a = 1
+    if b > 0
+        var base = b
+    else
+        base = length(digits)
+    loop i from a to base
+        if count(digits, to_string(i)) < 1 or count(digits, to_string(i)) > 1
+            deliver false
+    deliver true
+
+note: Checks if a number is equal to the sum of the factorials of its digits
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is curious, False otherwise
+task IsCurious using (n)
+    if Sum(/* UNSUPPORTED: GeneratorExp */) == n
+        deliver true
+    deliver false
+
+note: Checks if all numbers created by permutating a numbers digits, are prime
+
+    Args:
+    n: Number to check
+
+    Returns:
+    True if n is circular, False otherwise
+task IsCircular using (n)
+    var l = length(to_string(n))
+    var rotated_string = to_string(n)
+    loop i from 0 to l - 1
+        var first_letter = rotated_string[/* UNSUPPORTED: Slice */]
+        var remaining_chars = rotated_string[/* UNSUPPORTED: Slice */]
+        rotated_string = remaining_chars + first_letter
+        if not IsPrime(to_int(rotated_string))
+            deliver false
+            exit
+    deliver true
+
+task IsLychrel using (n)
+    var rn = to_int(to_string(n)[/* UNSUPPORTED: Slice */])
+    var nn = n
+    var i = 0
+    loop i < 51
+        nn = nn + rn
+        if IsPalindrome(to_string(nn))
+            deliver false
+        i = i + 1
+        rn = to_int(to_string(nn)[/* UNSUPPORTED: Slice */])
+    deliver true

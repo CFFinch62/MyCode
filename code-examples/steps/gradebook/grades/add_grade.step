@@ -1,0 +1,45 @@
+step: add_grade
+    belongs to: grades
+    expects: students
+    returns: students
+
+    note: Add a grade for an existing student
+
+    do:
+        if length of students is equal to 0
+            display "No students to grade!"
+            display ""
+            return students
+        
+        display "Students:"
+        set index to 1
+        repeat for each student in students
+            display (index as text) added to ". " added to student["name"]
+            set index to index + 1
+        
+        display ""
+        display "Enter student number: "
+        
+        attempt:
+            set num to input as number
+            set student_index to num - 1
+            
+            if student_index is greater than or equal to 0
+                if student_index is less than length of students
+                    display "Enter grade (0-100): "
+                    set grade_input to input as number
+                    
+                    set current_student to students[student_index]
+                    set current_student["grade"] to grade_input as text
+                    set students[student_index] to current_student
+                    
+                    display "Grade recorded!"
+                otherwise
+                    display "Invalid number."
+            otherwise
+                display "Invalid number."
+        if unsuccessful:
+            display "Please enter a valid number."
+        
+        display ""
+        return students

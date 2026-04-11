@@ -1,0 +1,13 @@
+step: show_menu
+    belongs to: output
+
+    note: Display the main menu options
+
+    do:
+        display "--- Gradebook Menu ---"
+        display "1. View all students"
+        display "2. Add a student"
+        display "3. Add grade for student"
+        display "4. View class average"
+        display "5. Save and quit"
+        display ""

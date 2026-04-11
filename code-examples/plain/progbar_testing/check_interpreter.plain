@@ -1,0 +1,59 @@
+rem: Check interpreter timing accuracy
+rem: This helps diagnose timing issues
+
+task Main()
+    display("=== Interpreter Timing Test ===")
+    display("")
+    
+    rem: Test 1: Basic sleep accuracy
+    display("Test 1: Sleep accuracy (10 iterations of 100ms)")
+    var intStart = time()
+    loop i from 1 to 10
+        sleep(100)
+    var intEnd = time()
+    var intElapsed = intEnd - intStart
+    display(v"Expected: 1000ms, Actual: {intElapsed}ms")
+    display("")
+    
+    rem: Test 2: Timer tick accuracy
+    display("Test 2: Timer tick accuracy (10 ticks at 100ms)")
+    var intTicks = 0
+    var intTimerStart = time()
+    
+    task OnTick()
+        intTicks = intTicks + 1
+        if intTicks >= 10
+            stop_events()
+    
+    var tmr = create_timer(100, OnTick)
+    start_timer(tmr)
+    wait_for_events()
+    
+    var intTimerEnd = time()
+    var intTimerElapsed = intTimerEnd - intTimerStart
+    display(v"Expected: ~1000ms, Actual: {intTimerElapsed}ms, Ticks: {intTicks}")
+    display("")
+    
+    rem: Test 3: Combined sleep + timer
+    display("Test 3: Sleep + Timer interaction")
+    intTicks = 0
+    intTimerStart = time()
+    
+    task OnTick2()
+        intTicks = intTicks + 1
+    
+    var tmr2 = create_timer(50, OnTick2)
+    start_timer(tmr2)
+    
+    rem: Sleep for 500ms while timer runs
+    sleep(500)
+    cancel_timer(tmr2)
+    
+    intTimerEnd = time()
+    intTimerElapsed = intTimerEnd - intTimerStart
+    display(v"Slept: 500ms, Actual: {intTimerElapsed}ms, Ticks during sleep: {intTicks}")
+    display(v"Expected ticks: ~10, Actual: {intTicks}")
+    display("")
+    
+    display("=== Test Complete ===")
+

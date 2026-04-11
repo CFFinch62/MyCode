@@ -332,6 +332,16 @@ export class TabManager {
 
     private detectLanguage(filePath: string): string {
         const ext = filePath.split('.').pop()?.toLowerCase() || '';
+
+        // Check if monaco has this extension registered (e.g. from loaded plugins)
+        if (typeof monaco !== 'undefined' && monaco.languages) {
+            const languages = monaco.languages.getLanguages();
+            const matchedLang = languages.find(l => l.extensions && l.extensions.includes(`.${ext}`));
+            if (matchedLang) {
+                return matchedLang.id;
+            }
+        }
+
         const languageMap: Record<string, string> = {
             'js': 'javascript',
             'jsx': 'javascript',
@@ -377,6 +387,10 @@ export class TabManager {
             'step': 'steps',
             // PLAIN language
             'plain': 'plain',
+            // FORGE language
+            'fg': 'forge',
+            // EZ language
+            'ez': 'ez'
         };
 
         return languageMap[ext] || 'plaintext';

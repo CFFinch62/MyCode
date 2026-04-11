@@ -1,0 +1,100 @@
+rem: Test File I/O Operations
+
+rem: =========================================
+rem: Simple File Operations
+rem: =========================================
+display("=== Simple File Operations ===")
+
+rem: Write and read a file
+write_file("test_output.txt", "Hello, PLAIN!")
+var content = read_file("test_output.txt")
+display("read_file:", content)
+
+rem: Append to file
+append_file("test_output.txt", "\nAppended line")
+content = read_file("test_output.txt")
+display("After append:", content)
+
+rem: Write and read lines
+var myLines = ["Line 1", "Line 2", "Line 3"]
+write_lines("test_lines.txt", myLines)
+var readLines = read_lines("test_lines.txt")
+display("read_lines:", readLines)
+
+rem: =========================================
+rem: File System Operations
+rem: =========================================
+display("")
+display("=== File System Operations ===")
+
+display("file_exists('test_output.txt'):", file_exists("test_output.txt"))
+display("file_exists('nonexistent.txt'):", file_exists("nonexistent.txt"))
+display("file_size('test_output.txt'):", file_size("test_output.txt"))
+
+rem: Copy and rename
+copy_file("test_output.txt", "test_copy.txt")
+display("Copied file, exists:", file_exists("test_copy.txt"))
+
+rename_file("test_copy.txt", "test_renamed.txt")
+display("Renamed file, exists:", file_exists("test_renamed.txt"))
+
+rem: Directory operations
+if not dir_exists("test_dir")
+    create_dir("test_dir")
+display("dir_exists('test_dir'):", dir_exists("test_dir"))
+
+var items = list_dir(".")
+display("Files in current dir (first 5):")
+loop i from 0 to min(4, len(items) - 1)
+    display("  -", items[i])
+
+rem: =========================================
+rem: Path Operations
+rem: =========================================
+display("")
+display("=== Path Operations ===")
+
+var joined = join_path("folder", "subfolder", "file.txt")
+display("join_path:", joined)
+
+var parts = split_path("/home/user/file.txt")
+display("split_path:", parts)
+
+display("get_extension('file.tar.gz'):", get_extension("file.tar.gz"))
+display("absolute_path('.'):", absolute_path("."))
+
+rem: =========================================
+rem: Handle-based Operations
+rem: =========================================
+display("")
+display("=== Handle-based Operations ===")
+
+var file = open("test_handle.txt", "w")
+write_line(file, "First line via handle")
+write_line(file, "Second line via handle")
+write(file, "No newline here")
+close(file)
+display("Wrote file via handle")
+
+file = open("test_handle.txt", "r")
+var handleContent = read(file)
+close(file)
+display("Read via handle:", handleContent)
+
+rem: =========================================
+rem: Cleanup
+rem: =========================================
+
+display("")
+display("=== Cleanup ===")
+
+
+delete_file("test_output.txt")
+delete_file("test_lines.txt")
+delete_file("test_renamed.txt")
+delete_file("test_handle.txt")
+delete_dir("test_dir")
+display("Cleaned up test files")
+
+display("")
+display("=== All File I/O tests completed! ===")

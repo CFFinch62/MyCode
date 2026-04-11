@@ -1,0 +1,71 @@
+rem: Lesson 6 - Working with Lists
+rem: Ordered collections of items
+
+task Main()
+    rem: Creating a list
+    var lstColors = ["red", "green", "blue"]
+    display("Colors: " & lstColors)
+    display("Number of colors: " & len(lstColors))
+
+    rem: Accessing items by index (0-based)
+    display("First color: " & lstColors[0])
+    display("Last color: " & lstColors[2])
+
+    rem: Adding items
+    append(lstColors, "yellow")
+    append(lstColors, "purple")
+    display("After adding: " & lstColors)
+
+    rem: Inserting at a position
+    insert(lstColors, 1, "orange")
+    display("After insert at 1: " & lstColors)
+
+    rem: Removing items
+    remove(lstColors, "green")
+    display("After removing green: " & lstColors)
+
+    rem: Pop (remove by index)
+    var removed = pop(lstColors, 0)
+    display(v"Popped: {removed}")
+    display("After pop: " & lstColors)
+
+    rem: Checking if item exists
+    if contains(lstColors, "blue")
+        display("Blue is in the list!")
+
+    rem: Sorting and reversing
+    var lstNumbers = [5, 2, 8, 1, 9, 3]
+    display("Before sort: " & lstNumbers)
+    sort(lstNumbers)
+    display("After sort: " & lstNumbers)
+    reverse(lstNumbers)
+    display("Reversed: " & lstNumbers)
+
+    rem: Looping through a list
+    display("")
+    display("=== Shopping List ===")
+    var lstShopping = ["milk", "bread", "eggs", "butter"]
+    var intItem = 1
+    loop item in lstShopping
+        display(v"{intItem}. {item}")
+        intItem = intItem + 1
+
+    rem: Finding min, max, and sum
+    display("")
+    display("=== List Analysis ===")
+    var lstScores = [85, 92, 78, 95, 88]
+    display("Scores: " & lstScores)
+    display("Lowest:  " & min(lstScores))
+    display("Highest: " & max(lstScores))
+    display("Total:   " & sum(lstScores))
+
+    rem: min and max work with strings too
+    var lstNames = ["Zara", "Alice", "Mike"]
+    display("First alphabetically: " & min(lstNames))
+    display("Last alphabetically:  " & max(lstNames))
+
+    rem: Building a list in a loop
+    var lstSquares = []
+    loop i from 1 to 5
+        append(lstSquares, i * i)
+    display("Squares: " & lstSquares)

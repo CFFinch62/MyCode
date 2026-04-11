@@ -1,0 +1,24 @@
+step: demo_cleanup
+    belongs to: examples
+
+    note: Demonstrate cleanup with then continue section
+
+    do:
+        display "--- Cleanup Demo ---"
+        display ""
+        display "The 'then continue' section ALWAYS runs, whether or not there was an error."
+        display "It's useful for cleanup tasks."
+        display ""
+        
+        set file_opened to true
+        
+        attempt:
+            display "Simulating some risky operation..."
+            display "Operation completed successfully!"
+        if unsuccessful:
+            display "Something went wrong!"
+        then continue:
+            display "Cleaning up... (this always runs)"
+            set file_opened to false
+        
+        display ""

@@ -1,0 +1,26 @@
+task Main()
+    display("Testing chr() and ord() functions...")
+    
+    var charA = chr(65)
+    display(v"chr(65) = '{charA}'")
+    if charA == "A"
+        display("PASS: chr(65) is 'A'")
+    else
+        display("FAIL: chr(65) is not 'A'")
+        
+    var codeA = ord("A")
+    display(v"ord('A') = {codeA}")
+    if codeA == 65
+        display("PASS: ord('A') is 65")
+    else
+        display("FAIL: ord('A') is not 65")
+        
+    var cr = chr(13)
+    var codeCR = ord(cr)
+    display(v"ord(chr(13)) = {codeCR}")
+    if codeCR == 13
+        display("PASS: ord(chr(13)) is 13")
+    else
+        display("FAIL: ord(chr(13)) is not 13")
+        
+    display("All tests completed.")

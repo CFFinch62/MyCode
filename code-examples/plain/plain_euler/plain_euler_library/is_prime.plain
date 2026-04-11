@@ -1,0 +1,11 @@
+note: Check if a number is prime.
+    Args: n - Number to check
+    Delivers: True if n is prime, False otherwise
+    
+task IsPrime using (n)
+    if n < 2
+        deliver false
+    loop i from 2 to to_int(n ** 0.5)
+        if n % i == 0
+            deliver false
+    deliver true

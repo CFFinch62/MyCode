@@ -1,0 +1,80 @@
+rem: Lesson 15 - Working with Files
+rem: Reading and writing files on disk
+
+task Main()
+    rem: Note: This lesson uses /tmp for temporary files
+    rem: To create files in the same directory as your script, use:
+    rem:   var filePath = join_path(script_dir(), "myfile.txt")
+
+    rem: Writing a file using write_lines
+    display("=== Writing Files ===")
+    var lines = ["Hello from PLAIN!", "This is line 2.", "This is line 3."]
+    write_lines("/tmp/plain_demo.txt", lines)
+    display("Wrote 3 lines to /tmp/plain_demo.txt")
+
+    rem: Reading a file as a single string
+    display("")
+    display("=== Reading a File ===")
+    var content = read_file("/tmp/plain_demo.txt")
+    display("File contents:")
+    display(content)
+
+    rem: Reading lines as a list
+    display("=== Reading Lines ===")
+    var readLines = read_lines("/tmp/plain_demo.txt")
+    display("Number of lines: " & len(readLines))
+    loop i from 0 to len(readLines) - 1
+        var line = readLines[i]
+        display("  Line " & (i + 1) & ": " & line)
+
+    rem: Appending to a file
+    display("")
+    display("=== Appending ===")
+    append_file("/tmp/plain_demo.txt", "This line was appended!")
+    var updated = read_lines("/tmp/plain_demo.txt")
+    display("After append (" & len(updated) & " lines):")
+    loop i from 0 to len(updated) - 1
+        var u = updated[i]
+        display("  " & u)
+
+    rem: Writing a CSV-style file
+    display("")
+    display("=== CSV Data ===")
+    var data = ["Name,Score", "Alice,95", "Bob,87", "Charlie,92"]
+    write_lines("/tmp/plain_scores.txt", data)
+    display("Wrote /tmp/plain_scores.txt")
+
+    rem: File system operations
+    display("")
+    display("=== File System ===")
+    var exists = file_exists("/tmp/plain_demo.txt")
+    display("File exists: " & exists)
+    var size = file_size("/tmp/plain_demo.txt")
+    display("File size: " & size & " bytes")
+
+    rem: Directory operations
+    if not dir_exists("/tmp/plain_test_dir")
+        create_dir("/tmp/plain_test_dir")
+        display("Created /tmp/plain_test_dir")
+
+    rem: Path operations
+    var path = join_path("/tmp", "plain_test", "data.txt")
+    display("Joined path: " & path)
+    var ext = get_extension("/tmp/plain_demo.txt")
+    display("Extension: " & ext)
+
+    rem: Script directory - files relative to this script
+    display("")
+    display("=== Script Directory ===")
+    var scriptPath = script_dir()
+    display("This script is located in: " & scriptPath)
+    display("Tip: Use join_path(script_dir(), \"file.txt\") to create")
+    display("     files in the same directory as your script!")
+
+    rem: Cleanup
+    delete_file("/tmp/plain_demo.txt")
+    delete_file("/tmp/plain_scores.txt")
+    if dir_exists("/tmp/plain_test_dir")
+        delete_dir("/tmp/plain_test_dir")
+    display("")
+    display("Cleanup complete!")

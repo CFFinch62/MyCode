@@ -1,0 +1,43 @@
+step: demo_csv_files
+    belongs to: fileops
+
+    note: Demonstrate CSV file operations
+
+    do:
+        display "--- CSV Files Demo ---"
+        display ""
+        display "CSV files store structured data like a spreadsheet."
+        display ""
+        
+        note: Create a list of tables (rows)
+        set students to []
+        
+        set student1 to [:]
+        set student1["name"] to "Alice"
+        set student1["grade"] to "A"
+        add student1 to students
+        
+        set student2 to [:]
+        set student2["name"] to "Bob"
+        set student2["grade"] to "B"
+        add student2 to students
+        
+        set student3 to [:]
+        set student3["name"] to "Charlie"
+        set student3["grade"] to "A"
+        add student3 to students
+        
+        display "Saving 3 students to students.csv..."
+        call write_csv with "students.csv", students
+        display "Done!"
+        display ""
+        
+        display "Reading students.csv back..."
+        call read_csv with "students.csv" storing result in loaded_students
+        
+        display ""
+        display "Loaded students:"
+        repeat for each student in loaded_students
+            display "  " added to student["name"] added to " - Grade: " added to student["grade"]
+        
+        display ""

@@ -1,0 +1,9 @@
+step: save_todos
+    belongs to: data
+    expects: filename, todos
+
+    note: Save todos to CSV file
+
+    do:
+        call write_csv with filename, todos
+        display "Saved " added to (length of todos) as text added to " todo(s) to " added to filename

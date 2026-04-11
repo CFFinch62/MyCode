@@ -1,0 +1,7 @@
+rem: Lesson 1 - Hello, PLAIN!
+rem: Your very first PLAIN program
+
+task Main()
+    display("Hello, PLAIN!")
+    display("Welcome to programming!")
+    display("Let's learn together!")

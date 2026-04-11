@@ -1,0 +1,118 @@
+rem: Dashboard Demo - Simulated Real-Time Data Display
+rem: Shows how to create a simple dashboard using Phase 1 TUI features
+
+task DrawDashboard(temp, humidity, pressure, status)
+    clear()
+    
+    rem: Main title
+    text_color("cyan")
+    draw_box(1, 1, 78, 3, "Environmental Monitoring Dashboard")
+    text_color("default")
+    
+    rem: Temperature panel
+    text_color("yellow")
+    draw_box(2, 5, 24, 6, "Temperature")
+    text_color("default")
+    
+    text_at(4, 7, "Current:")
+    text_color("yellow")
+    text_at(13, 7, v"{temp}°F")
+    text_color("default")
+    
+    text_at(4, 8, "Min: 65°F")
+    text_at(4, 9, "Max: 85°F")
+    
+    rem: Humidity panel
+    text_color("blue")
+    draw_box(28, 5, 24, 6, "Humidity")
+    text_color("default")
+    
+    text_at(30, 7, "Current:")
+    text_color("blue")
+    text_at(39, 7, v"{humidity}%")
+    text_color("default")
+    
+    text_at(30, 8, "Min: 30%")
+    text_at(30, 9, "Max: 70%")
+    
+    rem: Pressure panel
+    text_color("green")
+    draw_box(54, 5, 24, 6, "Pressure")
+    text_color("default")
+    
+    text_at(56, 7, "Current:")
+    text_color("green")
+    text_at(65, 7, v"{pressure} hPa")
+    text_color("default")
+    
+    text_at(56, 8, "Min: 980 hPa")
+    text_at(56, 9, "Max: 1050 hPa")
+    
+    rem: Status panel
+    var statusColor = "green"
+    if status == "WARNING"
+        statusColor = "yellow"
+    if status == "ALERT"
+        statusColor = "red"
+    
+    text_color(statusColor)
+    draw_box(2, 12, 76, 5, "System Status")
+    text_color("default")
+    
+    text_at(4, 14, "Status: ")
+    text_color(statusColor)
+    text_at(12, 14, status)
+    text_color("default")
+    
+    text_at(4, 15, "Last Update: " & format_time(time()))
+    
+    rem: Simple bar graph for temperature
+    text_color("cyan")
+    draw_box(2, 18, 76, 8, "Temperature Trend (Last 10 readings)")
+    text_color("default")
+    
+    rem: Draw a simple bar
+    var barLength = to_int((temp - 60) / 30 * 60)
+    if barLength > 0
+        text_color("yellow")
+        draw_line(4, 21, barLength, "h", "█")
+        text_color("default")
+    
+    rem: Footer
+    text_at(2, 27, "Press Ctrl+C to exit")
+
+task format_time(timestamp)
+    rem: Simple time formatter (just show timestamp for now)
+    return "T+" & to_int(timestamp / 1000) & "s"
+
+task Main()
+    rem: Simulate changing data
+    var temp = 72.5
+    var humidity = 45
+    var pressure = 1013
+    var status = "NORMAL"
+    var count = 0
+    
+    loop i from 1 to 20
+        rem: Simulate data changes
+        temp = 70.0 + random() * 10.0
+        humidity = 40 + to_int(random() * 20)
+        pressure = 1005 + to_int(random() * 20)
+        
+        rem: Update status based on conditions
+        status = "NORMAL"
+        if temp > 80 or humidity > 60
+            status = "WARNING"
+        if temp > 85 or humidity > 65
+            status = "ALERT"
+        
+        rem: Draw the dashboard
+        DrawDashboard(temp, humidity, pressure, status)
+        
+        rem: Wait before next update
+        sleep(500)
+    
+    rem: Final screen
+    clear()
+    display("Dashboard demo complete!")
+

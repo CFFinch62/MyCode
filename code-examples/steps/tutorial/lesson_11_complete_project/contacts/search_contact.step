@@ -1,0 +1,44 @@
+step: search_contact
+    belongs to: contacts
+    expects: contact_list
+    returns: nothing
+
+    declare:
+        search_name as text
+        contact as table
+        found as boolean
+        found_count as number
+        name_lower as text
+        search_lower as text
+        
+    do:
+        display ""
+        display "=== Search Contact ==="
+        display "Enter name to search: "
+        set search_name to input as text
+
+        note: Convert search term to lowercase for case-insensitive matching
+        call lowercase with search_name storing result in search_lower
+
+        set found to false
+        set found_count to 0
+
+        display ""
+        display "Search results for: " added to search_name
+        display ""
+
+        repeat for each contact in contact_list
+            note: Convert contact name to lowercase for comparison
+            call lowercase with contact["name"] storing result in name_lower
+
+            note: Check if the contact name contains the search term
+            if name_lower contains search_lower
+                set found to true
+                set found_count to found_count + 1
+                display "Match #" added to (found_count as text) added to ":"
+                call show_contact with contact
+                display ""
+
+        if found is equal to false
+            display "No contacts found matching '" added to search_name added to "'"
+

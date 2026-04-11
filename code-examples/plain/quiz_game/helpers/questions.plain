@@ -1,0 +1,678 @@
+rem: PLAIN Quiz Game - Questions Module
+rem: Contains the full bank of 60 quiz questions (20 per level).
+rem: Each question is a table with keys:
+rem:   question - the question text
+rem:   a, b, c, d - the four answer choices
+rem:   answer    - the correct choice letter ("a", "b", "c", or "d")
+rem:   level     - difficulty level ("beg", "int", or "pro")
+
+task BuildQuestions
+    var questions = []
+
+    rem: ============ BEGINNER QUESTIONS ============
+
+    rem: BEG Q1
+    var q = {}
+    q["question"] = "What keyword displays output to the console in PLAIN?"
+    q["a"] = "print"
+    q["b"] = "output"
+    q["c"] = "display"
+    q["d"] = "show"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q2
+    q = {}
+    q["question"] = "What keyword declares a mutable variable in PLAIN?"
+    q["a"] = "set"
+    q["b"] = "let"
+    q["c"] = "def"
+    q["d"] = "var"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q3
+    q = {}
+    q["question"] = "What keyword declares a constant (fixed value) in PLAIN?"
+    q["a"] = "const"
+    q["b"] = "fxd"
+    q["c"] = "final"
+    q["d"] = "fixed"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q4
+    q = {}
+    q["question"] = "What is the single-line comment syntax in PLAIN?"
+    q["a"] = "#"
+    q["b"] = "//"
+    q["c"] = "rem:"
+    q["d"] = "--"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q5
+    q = {}
+    q["question"] = "What keyword starts a multi-line comment block in PLAIN?"
+    q["a"] = "rem:"
+    q["b"] = "note:"
+    q["c"] = "comment:"
+    q["d"] = "block:"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q6
+    q = {}
+    q["question"] = "How do you get user input in PLAIN?"
+    q["a"] = "input()"
+    q["b"] = "read()"
+    q["c"] = "scan()"
+    q["d"] = "get()"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q7
+    q = {}
+    q["question"] = "What operator concatenates strings in PLAIN?"
+    q["a"] = "+"
+    q["b"] = "&"
+    q["c"] = ".."
+    q["d"] = "concat"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q8
+    q = {}
+    q["question"] = "What is the boolean literal for false in PLAIN?"
+    q["a"] = "False"
+    q["b"] = "FALSE"
+    q["c"] = "false"
+    q["d"] = "no"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q9
+    q = {}
+    q["question"] = "What keyword starts conditional logic in PLAIN?"
+    q["a"] = "when"
+    q["b"] = "check"
+    q["c"] = "if"
+    q["d"] = "test"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q10
+    q = {}
+    q["question"] = "What keyword starts the else branch in PLAIN?"
+    q["a"] = "otherwise"
+    q["b"] = "elif"
+    q["c"] = "or"
+    q["d"] = "else"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q11
+    q = {}
+    q["question"] = "What syntax creates an empty list in PLAIN?"
+    q["a"] = "()"
+    q["b"] = "{}"
+    q["c"] = "[]"
+    q["d"] = "list()"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q12
+    q = {}
+    q["question"] = "What syntax creates an empty table (dictionary) in PLAIN?"
+    q["a"] = "[]"
+    q["b"] = "()"
+    q["c"] = "table()"
+    q["d"] = "{}"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q13
+    q = {}
+    q["question"] = "What keyword defines a named task (function or procedure) in PLAIN?"
+    q["a"] = "def"
+    q["b"] = "func"
+    q["c"] = "task"
+    q["d"] = "sub"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q14
+    q = {}
+    q["question"] = "What is the entry point task name in every PLAIN program?"
+    q["a"] = "Start()"
+    q["b"] = "Main()"
+    q["c"] = "Run()"
+    q["d"] = "Begin()"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q15
+    q = {}
+    q["question"] = "What file extension do PLAIN programs use?"
+    q["a"] = ".pl"
+    q["b"] = ".plain"
+    q["c"] = ".pln"
+    q["d"] = ".plg"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q16
+    q = {}
+    q["question"] = "What keyword breaks out of a loop in PLAIN?"
+    q["a"] = "break"
+    q["b"] = "stop"
+    q["c"] = "exit"
+    q["d"] = "quit"
+    q["answer"] = "c"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q17
+    q = {}
+    q["question"] = "What keyword skips to the next loop iteration in PLAIN?"
+    q["a"] = "next"
+    q["b"] = "skip"
+    q["c"] = "pass"
+    q["d"] = "continue"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q18
+    q = {}
+    q["question"] = "Which loop syntax counts from 1 to 10 in PLAIN?"
+    q["a"] = "for i in range(1, 10)"
+    q["b"] = "loop i from 1 to 10"
+    q["c"] = "repeat 10 times"
+    q["d"] = "do i = 1 to 10"
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q19
+    q = {}
+    q["question"] = "What value represents 'no value' or absence in PLAIN?"
+    q["a"] = "nil"
+    q["b"] = "nothing"
+    q["c"] = "undefined"
+    q["d"] = "null"
+    q["answer"] = "d"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: BEG Q20
+    q = {}
+    q["question"] = "How do you write an interpolated string in PLAIN?"
+    q["a"] = "f\"Hello {name}\""
+    q["b"] = "v\"Hello {name}\""
+    q["c"] = "s\"Hello {name}\""
+    q["d"] = "i\"Hello {name}\""
+    q["answer"] = "b"
+    q["level"] = "beg"
+    append(questions, q)
+
+    rem: ============ INTERMEDIATE QUESTIONS ============
+
+    rem: INT Q1
+    q = {}
+    q["question"] = "What keyword declares a task that returns a value (function)?"
+    q["a"] = "task Name with (params)"
+    q["b"] = "task Name using (params)"
+    q["c"] = "task Name returns (params)"
+    q["d"] = "task Name giving (params)"
+    q["answer"] = "b"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q2
+    q = {}
+    q["question"] = "What keyword returns a value from a task (function) in PLAIN?"
+    q["a"] = "return"
+    q["b"] = "give"
+    q["c"] = "deliver"
+    q["d"] = "output"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q3
+    q = {}
+    q["question"] = "What keyword declares a task that performs side effects only (procedure)?"
+    q["a"] = "task Name with (params)"
+    q["b"] = "task Name using (params)"
+    q["c"] = "task Name proc (params)"
+    q["d"] = "task Name do (params)"
+    q["answer"] = "a"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q4
+    q = {}
+    q["question"] = "Are task parameters mutable or immutable in PLAIN?"
+    q["a"] = "Mutable — can be changed inside the task"
+    q["b"] = "Immutable — cannot be changed inside the task"
+    q["c"] = "Optional — may or may not be passed"
+    q["d"] = "Global — visible outside the task"
+    q["answer"] = "b"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q5
+    q = {}
+    q["question"] = "Which loop syntax iterates over every item in a collection?"
+    q["a"] = "loop item from collection"
+    q["b"] = "loop each item in collection"
+    q["c"] = "loop item in collection"
+    q["d"] = "for item in collection"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q6
+    q = {}
+    q["question"] = "What built-in adds an item to the end of a list?"
+    q["a"] = "add(lst, item)"
+    q["b"] = "push(lst, item)"
+    q["c"] = "append(lst, item)"
+    q["d"] = "insert(lst, item)"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q7
+    q = {}
+    q["question"] = "How do you get the length of a list or string in PLAIN?"
+    q["a"] = "length(x)"
+    q["b"] = "size(x)"
+    q["c"] = "count(x)"
+    q["d"] = "len(x)"
+    q["answer"] = "d"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q8
+    q = {}
+    q["question"] = "How do you access a table value by key in PLAIN?"
+    q["a"] = "table.key"
+    q["b"] = "table->key"
+    q["c"] = "table[\"key\"]"
+    q["d"] = "get(table, key)"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q9
+    q = {}
+    q["question"] = "What is the exponentiation operator in PLAIN?"
+    q["a"] = "^"
+    q["b"] = "pow"
+    q["c"] = "**"
+    q["d"] = "exp"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q10
+    q = {}
+    q["question"] = "What is the modulo operator in PLAIN?"
+    q["a"] = "mod"
+    q["b"] = "rem"
+    q["c"] = "//"
+    q["d"] = "%"
+    q["answer"] = "d"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q11
+    q = {}
+    q["question"] = "What keyword swaps two variable values in PLAIN?"
+    q["a"] = "exchange"
+    q["b"] = "swap"
+    q["c"] = "flip"
+    q["d"] = "switch"
+    q["answer"] = "b"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q12
+    q = {}
+    q["question"] = "What does the choose/choice construct replace in PLAIN?"
+    q["a"] = "A loop"
+    q["b"] = "A try/catch"
+    q["c"] = "Multiple if/else branches (switch-like)"
+    q["d"] = "A function call"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q13
+    q = {}
+    q["question"] = "What keyword handles the fallthrough case in a choose block?"
+    q["a"] = "otherwise"
+    q["b"] = "else"
+    q["c"] = "fallback"
+    q["d"] = "default"
+    q["answer"] = "d"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q14
+    q = {}
+    q["question"] = "What does the integer division operator '//' do in PLAIN?"
+    q["a"] = "Performs regular floating-point division"
+    q["b"] = "Returns the remainder of division"
+    q["c"] = "Divides and truncates result to integer"
+    q["d"] = "Raises a value to the power of 2"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q15
+    q = {}
+    q["question"] = "What built-in function returns the type name of a value?"
+    q["a"] = "typeof(v)"
+    q["b"] = "kind(v)"
+    q["c"] = "type(v)"
+    q["d"] = "type_of(v)"
+    q["answer"] = "d"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q16
+    q = {}
+    q["question"] = "Which built-in converts any value to its string representation?"
+    q["a"] = "str(v)"
+    q["b"] = "to_string(v)"
+    q["c"] = "string(v)"
+    q["d"] = "text(v)"
+    q["answer"] = "b"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q17
+    q = {}
+    q["question"] = "What built-in checks if a table has a specific key?"
+    q["a"] = "contains(tbl, key)"
+    q["b"] = "key_exists(tbl, key)"
+    q["c"] = "has_key(tbl, key)"
+    q["d"] = "in_table(tbl, key)"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q18
+    q = {}
+    q["question"] = "What built-in returns all keys of a table as a list?"
+    q["a"] = "table_keys(tbl)"
+    q["b"] = "get_keys(tbl)"
+    q["c"] = "key_list(tbl)"
+    q["d"] = "keys(tbl)"
+    q["answer"] = "d"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q19
+    q = {}
+    q["question"] = "What is the variable shadowing rule in PLAIN?"
+    q["a"] = "Allowed — inner scopes can redeclare outer variables"
+    q["b"] = "Not allowed — variables cannot be redeclared in inner scopes"
+    q["c"] = "Only allowed inside loops"
+    q["d"] = "Only allowed inside tasks"
+    q["answer"] = "b"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: INT Q20
+    q = {}
+    q["question"] = "What type-prefix on a variable name hints to PLAIN it is a boolean?"
+    q["a"] = "bool"
+    q["b"] = "is"
+    q["c"] = "bln"
+    q["d"] = "bl"
+    q["answer"] = "c"
+    q["level"] = "int"
+    append(questions, q)
+
+    rem: ============ PROFESSIONAL QUESTIONS ============
+
+    rem: PRO Q1
+    q = {}
+    q["question"] = "What keyword wraps code that might raise an error in PLAIN?"
+    q["a"] = "try"
+    q["b"] = "guard"
+    q["c"] = "attempt"
+    q["d"] = "safe"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q2
+    q = {}
+    q["question"] = "What keyword catches errors in an attempt block?"
+    q["a"] = "catch"
+    q["b"] = "handle"
+    q["c"] = "rescue"
+    q["d"] = "except"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q3
+    q = {}
+    q["question"] = "What keyword in attempt/handle/ensure always runs, even after an error?"
+    q["a"] = "finally"
+    q["b"] = "always"
+    q["c"] = "cleanup"
+    q["d"] = "ensure"
+    q["answer"] = "d"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q4
+    q = {}
+    q["question"] = "What keyword raises a custom error from a task in PLAIN?"
+    q["a"] = "throw"
+    q["b"] = "raise"
+    q["c"] = "abort"
+    q["d"] = "fail"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q5
+    q = {}
+    q["question"] = "How do you define a custom record type in PLAIN?"
+    q["a"] = "struct Name:"
+    q["b"] = "record Name:"
+    q["c"] = "type Name:"
+    q["d"] = "class Name:"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q6
+    q = {}
+    q["question"] = "What keyword inherits another record's fields and keeps required fields?"
+    q["a"] = "extends"
+    q["b"] = "includes"
+    q["c"] = "based on"
+    q["d"] = "inherits"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q7
+    q = {}
+    q["question"] = "In record composition, what does 'with AnotherRecord' do?"
+    q["a"] = "Makes all inherited fields required"
+    q["b"] = "Makes all imported fields optional"
+    q["c"] = "Excludes fields from the record"
+    q["d"] = "Renames inherited fields"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q8
+    q = {}
+    q["question"] = "How do you import tasks from other modules in PLAIN?"
+    q["a"] = "import module.TaskName"
+    q["b"] = "require module.TaskName"
+    q["c"] = "using module.TaskName"
+    q["d"] = "use: with tasks: section listing module.TaskName"
+    q["answer"] = "d"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q9
+    q = {}
+    q["question"] = "What built-in reads an entire text file and returns its content?"
+    q["a"] = "load_file(path)"
+    q["b"] = "open_file(path)"
+    q["c"] = "read_file(path)"
+    q["d"] = "file_read(path)"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q10
+    q = {}
+    q["question"] = "What built-in returns a random integer between min and max (inclusive)?"
+    q["a"] = "rand_int(min, max)"
+    q["b"] = "random_int(min, max)"
+    q["c"] = "random(min, max)"
+    q["d"] = "pick_int(min, max)"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q11
+    q = {}
+    q["question"] = "What built-in picks a random element from a list?"
+    q["a"] = "random_pick(lst)"
+    q["b"] = "pick_from(lst)"
+    q["c"] = "sample(lst)"
+    q["d"] = "random_choice(lst)"
+    q["answer"] = "d"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q12
+    q = {}
+    q["question"] = "What built-in clears the console screen in PLAIN?"
+    q["a"] = "cls()"
+    q["b"] = "clear_screen()"
+    q["c"] = "clear()"
+    q["d"] = "reset()"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q13
+    q = {}
+    q["question"] = "Which built-in positions text at a specific terminal row and column?"
+    q["a"] = "move_to(x, y, text)"
+    q["b"] = "cursor_at(x, y, text)"
+    q["c"] = "print_at(x, y, text)"
+    q["d"] = "text_at(x, y, text)"
+    q["answer"] = "d"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q14
+    q = {}
+    q["question"] = "What built-in draws a bordered box on the terminal?"
+    q["a"] = "box(x, y, w, h)"
+    q["b"] = "draw_box(x, y, w, h)"
+    q["c"] = "border(x, y, w, h)"
+    q["d"] = "frame(x, y, w, h)"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q15
+    q = {}
+    q["question"] = "What built-in returns the directory of the currently running script?"
+    q["a"] = "current_dir()"
+    q["b"] = "file_dir()"
+    q["c"] = "script_dir()"
+    q["d"] = "base_path()"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q16
+    q = {}
+    q["question"] = "What built-in returns the sum of all numbers in a list?"
+    q["a"] = "add_all(lst)"
+    q["b"] = "total(lst)"
+    q["c"] = "list_sum(lst)"
+    q["d"] = "sum(lst)"
+    q["answer"] = "d"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q17
+    q = {}
+    q["question"] = "What built-in sets the number of decimal places for float display?"
+    q["a"] = "float_precision(n)"
+    q["b"] = "set_decimals(n)"
+    q["c"] = "set_float_precision(n)"
+    q["d"] = "precision(n)"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q18
+    q = {}
+    q["question"] = "What built-in returns the character for an integer Unicode code point?"
+    q["a"] = "char(n)"
+    q["b"] = "chr(n)"
+    q["c"] = "unicode(n)"
+    q["d"] = "to_char(n)"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q19
+    q = {}
+    q["question"] = "How do you sort a list in-place in PLAIN?"
+    q["a"] = "sorted(lst)"
+    q["b"] = "order(lst)"
+    q["c"] = "sort(lst)"
+    q["d"] = "lst.sort()"
+    q["answer"] = "c"
+    q["level"] = "pro"
+    append(questions, q)
+
+    rem: PRO Q20
+    q = {}
+    q["question"] = "Which PLAIN command-line flag shows the lexer token output?"
+    q["a"] = "plain --tokens file.plain"
+    q["b"] = "plain -lex file.plain"
+    q["c"] = "plain --lex file.plain"
+    q["d"] = "plain -tokenize file.plain"
+    q["answer"] = "b"
+    q["level"] = "pro"
+    append(questions, q)
+
+    deliver questions

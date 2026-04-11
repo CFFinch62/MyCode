@@ -1,0 +1,77 @@
+step: lowercase
+    belongs to: strings
+    expects: string
+    returns: result
+    
+    declare:
+        result as text
+        index as number
+        char as text
+    
+    do:
+        set result to ""
+        set index to 0
+        
+        repeat while index is less than (length of string)
+            set char to string[index]
+            
+            note: Simple lowercase conversion for A-Z
+            if char is equal to "A"
+                set result to result added to "a"
+            otherwise if char is equal to "B"
+                set result to result added to "b"
+            otherwise if char is equal to "C"
+                set result to result added to "c"
+            otherwise if char is equal to "D"
+                set result to result added to "d"
+            otherwise if char is equal to "E"
+                set result to result added to "e"
+            otherwise if char is equal to "F"
+                set result to result added to "f"
+            otherwise if char is equal to "G"
+                set result to result added to "g"
+            otherwise if char is equal to "H"
+                set result to result added to "h"
+            otherwise if char is equal to "I"
+                set result to result added to "i"
+            otherwise if char is equal to "J"
+                set result to result added to "j"
+            otherwise if char is equal to "K"
+                set result to result added to "k"
+            otherwise if char is equal to "L"
+                set result to result added to "l"
+            otherwise if char is equal to "M"
+                set result to result added to "m"
+            otherwise if char is equal to "N"
+                set result to result added to "n"
+            otherwise if char is equal to "O"
+                set result to result added to "o"
+            otherwise if char is equal to "P"
+                set result to result added to "p"
+            otherwise if char is equal to "Q"
+                set result to result added to "q"
+            otherwise if char is equal to "R"
+                set result to result added to "r"
+            otherwise if char is equal to "S"
+                set result to result added to "s"
+            otherwise if char is equal to "T"
+                set result to result added to "t"
+            otherwise if char is equal to "U"
+                set result to result added to "u"
+            otherwise if char is equal to "V"
+                set result to result added to "v"
+            otherwise if char is equal to "W"
+                set result to result added to "w"
+            otherwise if char is equal to "X"
+                set result to result added to "x"
+            otherwise if char is equal to "Y"
+                set result to result added to "y"
+            otherwise if char is equal to "Z"
+                set result to result added to "z"
+            otherwise
+                set result to result added to char
+            
+            set index to index + 1
+        
+        return result
+

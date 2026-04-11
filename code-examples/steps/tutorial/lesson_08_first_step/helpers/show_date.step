@@ -1,0 +1,10 @@
+step: show_date
+    belongs to: helpers
+    expects: date as text
+    returns: nothing
+    
+    do:
+        display "I have received todays date but returned nothing to do my job"
+        display "Today's date: " added to date
+       
+

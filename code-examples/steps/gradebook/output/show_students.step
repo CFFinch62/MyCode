@@ -1,0 +1,19 @@
+step: show_students
+    belongs to: output
+    expects: students
+
+    note: Display all students and their grades
+
+    do:
+        if length of students is equal to 0
+            display "No students yet! Add some with option 2."
+        otherwise
+            display "Students and Grades:"
+            display "--------------------"
+            repeat for each student in students
+                set grade_text to student["grade"]
+                if grade_text equals ""
+                    set grade_text to "No grade"
+                display student["name"] added to ": " added to grade_text
+            display "--------------------"
+        display ""

@@ -1,0 +1,52 @@
+building: lesson_09_parameters
+    note: Lesson 9 - Steps with Parameters
+    note: Learn how to pass data to steps and get results back
+    
+    display "=== Steps with Parameters ==="
+    display ""
+    
+    display "Greeting someone by name:"
+    call greet_person with "Alice"
+    call greet_person with "Bob"
+    
+    display ""
+    display "=== Steps with Multiple Parameters ==="
+    call add_numbers with 10, 5 storing result in sum
+    display "10 + 5 = " added to (sum as text)
+    
+    call multiply_numbers with 7, 8 storing result in product
+    display "7 * 8 = " added to (product as text)
+    
+    display ""
+    display "=== Interactive Calculator ==="
+    display "Enter first number: "
+    set num1 to input as number
+    
+    display "Enter second number: "
+    set num2 to input as number
+    
+    call add_numbers with num1, num2 storing result in sum
+    call subtract_numbers with num1, num2 storing result in difference
+    call multiply_numbers with num1, num2 storing result in product
+    call divide_numbers with num1, num2 storing result in quotient
+    
+    display ""
+    display "Results:"
+    display (num1 as text) added to " + " added to (num2 as text) added to " = " added to (sum as text)
+    display (num1 as text) added to " - " added to (num2 as text) added to " = " added to (difference as text)
+    display (num1 as text) added to " * " added to (num2 as text) added to " = " added to (product as text)
+    display (num1 as text) added to " / " added to (num2 as text) added to " = " added to (quotient as text)
+    
+    display ""
+    display "=== Rectangle Area Calculator ==="
+    display "Enter length: "
+    set length to input as number
+    
+    display "Enter width: "
+    set width to input as number
+    
+    call calculate_area with length, width storing result in area
+    display "The area is: " added to (area as text)
+    
+    exit
+

@@ -1,0 +1,28 @@
+rem: ============================================
+rem: script_dir_test.plain - Test script_dir() function
+rem: ============================================
+rem: Demonstrates that script_dir() returns the
+rem: directory where the script is located,
+rem: not the current working directory.
+rem: ============================================
+
+task Main()
+    display("=== Script Directory Test ===")
+    display("")
+    
+    rem: Show the script's directory
+    var scriptDir = script_dir()
+    display(v"Script directory: {scriptDir}")
+    
+    rem: Show the current working directory
+    var cwd = absolute_path(".")
+    display(v"Current working directory: {cwd}")
+    
+    rem: Create a test file in the script's directory
+    var testFile = join_path(scriptDir, "test_output.txt")
+    write_file(testFile, "This file was created by script_dir_test.plain")
+    
+    display("")
+    display(v"Created file: {testFile}")
+    display("File created successfully in the script's directory!")
+

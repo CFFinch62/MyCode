@@ -1,0 +1,41 @@
+note:
+	##################################
+	Project Euler Probelm # 1
+	##################################
+	Find the sum of all the multiples
+	of 3 or 5 below 1000.
+	##################################
+
+rem: GLOBALS
+fxd M1 as Integer = 3
+fxd M2 as Integer = 5
+fxd LIMIT as Integer = 999
+
+rem: HELPERS
+task SumOfTwoMultiples using (n1, n2, max)
+    var sum as integer = 0
+    loop i from 1 to max
+        if (i % n1 == 0 or i % n2 == 0) 
+			sum += i     
+    deliver sum
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var answer = to_string(SumOfTwoMultiples(M1, M2, LIMIT))
+        
+	display("###################################")
+	display("PROJECT EULER PROBLEM 1")
+	display("###################################")
+	display()
+	display("Find the sum of all the multiples")
+	display("of 3 or 5 below 1000.")
+	display()     
+	display(v"Sum is: {answer}")
+	display("###################################")
+ 
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 233168

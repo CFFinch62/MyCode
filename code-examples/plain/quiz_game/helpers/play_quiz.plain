@@ -1,0 +1,80 @@
+rem: PLAIN Quiz Game - Quiz Logic Module
+rem: Handles question selection, asking questions, and running levels.
+rem: Select 5 unique random questions from the pool for a given level
+task SelectQuestions using (allQuestions, level)
+    rem: Filter by level
+    var pool = []
+    loop q in allQuestions
+        if q["level"] == level
+            append(pool, q)
+
+    rem: Pick 5 unique random indices
+    var selected = []
+    var usedIndices = []
+    var poolSize = len(pool)
+
+    loop i from 1 to 5
+        var idx = random_int(0, poolSize - 1)
+        rem: Re-roll until we get an unused index
+        var alreadyUsed = contains(usedIndices, idx)
+        loop alreadyUsed
+            idx = random_int(0, poolSize - 1)
+            alreadyUsed = contains(usedIndices, idx)
+        append(usedIndices, idx)
+        append(selected, pool[idx])
+
+    deliver selected
+
+rem: Ask a single question and return true if the player answered correctly
+task AskQuestion using (q, questionNum)
+    display("")
+    display("Question " & to_string(questionNum) & ":")
+    display(q["question"])
+    display("")
+    display("  a) " & q["a"])
+    display("  b) " & q["b"])
+    display("  c) " & q["c"])
+    display("  d) " & q["d"])
+    display("")
+    var userAnswer = get("Your answer (a/b/c/d): ")
+    userAnswer = lower(trim(userAnswer))
+
+    if userAnswer == q["answer"]
+        display("  ✓ Correct!")
+        deliver true
+    else
+        display("  ✗ Wrong! The correct answer was: " & q["answer"])
+        deliver false
+
+rem: Run a complete level: select questions, ask each one, return final score
+task RunLevel using (allQuestions, levelCode)
+    var questions = SelectQuestions(allQuestions, levelCode)
+    var score = 0
+    var qNum = 1
+
+    loop q in questions
+        var correct = AskQuestion(q, qNum)
+        if correct
+            score = score + 1
+        qNum = qNum + 1
+
+    deliver score
+
+rem: Run a Master Level: ask ALL 20 questions for the chosen level, return score
+task RunMasterLevel using (allQuestions, levelCode)
+    rem: Collect every question for this level (all 20)
+    var pool = []
+    loop q in allQuestions
+        if q["level"] == levelCode
+            append(pool, q)
+
+    var score = 0
+    var qNum = 1
+
+    loop q in pool
+        var correct = AskQuestion(q, qNum)
+        if correct
+            score = score + 1
+        qNum = qNum + 1
+
+    deliver score

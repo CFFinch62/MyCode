@@ -1,0 +1,35 @@
+building: lesson_03_input
+    note: Lesson 3 - User Input and Output
+    note: Learn how to get input from users
+    
+    display "=== Getting User Input ==="
+    display ""
+    
+    display "What is your name? "
+    set name to input as text
+    
+    display "How old are you? "
+    set age to input as number
+    
+    display "What is your favorite color? "
+    set color to input as text
+    
+    display ""
+    display "=== Your Information ==="
+    display "Name: " added to name
+    display "Age: " added to (age as text)
+    display "Favorite color: " added to color
+    
+    display ""
+    display "=== Calculations with Input ==="
+    set years_to_100 to 100 - age
+    display "You will be 100 years old in " added to (years_to_100 as text) added to " years!"
+    
+    display ""
+    display "=== Personalized Message ==="
+    display "Hello, " added to name added to "!"
+    display "I see your favorite color is " added to color added to "."
+    display "That's a great choice!"
+    
+    exit
+

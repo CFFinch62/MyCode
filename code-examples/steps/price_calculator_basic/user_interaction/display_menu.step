@@ -1,0 +1,25 @@
+step: display_menu
+    belongs to: user_interaction
+    expects: nothing
+    returns: choice as text
+
+    declare:
+        choice as text
+
+    do:
+        display ""
+        display "Select the desired calculation based on values you have:"
+        display ""
+        display " Price and Margin: 1"
+        display " Price and Profit: 2"
+        display " Price and Markup: 3"
+        display "   Price and Cost: 4"
+        display "Margin and Profit: 5"
+        display "  Margin and Cost: 6"
+        display "Profit and Markup: 7"
+        display "  Profit and Cost: 8"
+        display "  Markup and Cost: 9"
+        display ""
+        display "Enter calculation number: "
+        set choice to input
+        return choice

@@ -1,0 +1,31 @@
+{
+    "name": "mycode-beam-language",
+    "version": "1.0.0",
+    "displayName": "BEAM Language Support",
+    "description": "Syntax highlighting, Run, and Stop for BEAM (.bas) programs — Fragillidae Software",
+    "author": "Chuck Finch",
+    "license": "MIT",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:beam",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "beam",
+                    "aliases": [
+                        "BEAM",
+                        "Beam",
+                        "yabasic"
+                    ],
+                    "extensions": [
+                        ".bas",
+                        ".yab"
+                    ]
+                }
+            ]
+        }
+    }
+}

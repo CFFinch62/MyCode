@@ -1,0 +1,27 @@
+rem: Lesson 3 - User Input
+rem: Getting input from the user and building responses
+
+task Main()
+    rem: Getting input with get()
+    var strName = get("What is your name? ")
+    var strColor = get("What is your favorite color? ")
+
+    rem: String concatenation with &
+    display("Hello, " & strName & "!")
+    display("Nice to meet you!")
+
+    rem: String interpolation with v""
+    display(v"So {strName}, your favorite color is {strColor}!")
+
+    rem: Converting input to numbers
+    var strAge = get("How old are you? ")
+    var intAge = to_int(strAge)
+
+    var intNextYear = intAge + 1
+    display(v"Next year you will be {intNextYear}!")
+
+    rem: Building a greeting message
+    var strGreeting = "Welcome, " & strName & "! "
+    strGreeting &= "You are " & intAge & " years old "
+    strGreeting &= "and you love " & strColor & "."
+    display(strGreeting)

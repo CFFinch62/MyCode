@@ -1,0 +1,676 @@
+step: build_questions
+    belongs to: questions
+    returns: questions
+
+    note: Build the list of quiz questions with difficulty levels (beg, int, pro)
+
+    do:
+        set questions to []
+
+        note: ============ BEGINNER QUESTIONS ============
+
+        note: BEG Q1
+        set q to [:]
+        set q["question"] to "What keyword assigns a value to a variable in Steps?"
+        set q["a"] to "var"
+        set q["b"] to "set"
+        set q["c"] to "let"
+        set q["d"] to "define"
+        set q["answer"] to "b"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q2
+        set q to [:]
+        set q["question"] to "What operator combines (concatenates) text in Steps?"
+        set q["a"] to "+"
+        set q["b"] to "concat"
+        set q["c"] to "added to"
+        set q["d"] to "&"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q3
+        set q to [:]
+        set q["question"] to "What syntax creates an empty table in Steps?"
+        set q["a"] to "[]"
+        set q["b"] to "{}"
+        set q["c"] to "[:]"
+        set q["d"] to "table()"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q4
+        set q to [:]
+        set q["question"] to "What keyword is used for the else clause in Steps?"
+        set q["a"] to "else"
+        set q["b"] to "otherwise"
+        set q["c"] to "elif"
+        set q["d"] to "or"
+        set q["answer"] to "b"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q5
+        set q to [:]
+        set q["question"] to "What statement ends a Steps program?"
+        set q["a"] to "stop"
+        set q["b"] to "end"
+        set q["c"] to "quit"
+        set q["d"] to "exit"
+        set q["answer"] to "d"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q6
+        set q to [:]
+        set q["question"] to "What syntax creates an empty list in Steps?"
+        set q["a"] to "[]"
+        set q["b"] to "[:]"
+        set q["c"] to "list()"
+        set q["d"] to "{}"
+        set q["answer"] to "a"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q7
+        set q to [:]
+        set q["question"] to "What keyword displays output to the screen in Steps?"
+        set q["a"] to "print"
+        set q["b"] to "output"
+        set q["c"] to "display"
+        set q["d"] to "show"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q8
+        set q to [:]
+        set q["question"] to "What is the boolean literal for true in Steps?"
+        set q["a"] to "True"
+        set q["b"] to "TRUE"
+        set q["c"] to "yes"
+        set q["d"] to "true"
+        set q["answer"] to "d"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q9
+        set q to [:]
+        set q["question"] to "What keyword reads input from the user in Steps?"
+        set q["a"] to "readline"
+        set q["b"] to "input"
+        set q["c"] to "read"
+        set q["d"] to "scan"
+        set q["answer"] to "b"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q10
+        set q to [:]
+        set q["question"] to "What keyword starts a comment in Steps?"
+        set q["a"] to "#"
+        set q["b"] to "//"
+        set q["c"] to "note:"
+        set q["d"] to "rem"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q11
+        set q to [:]
+        set q["question"] to "How do you convert a number to text in Steps?"
+        set q["a"] to "str(x)"
+        set q["b"] to "x as text"
+        set q["c"] to "text(x)"
+        set q["d"] to "convert x to text"
+        set q["answer"] to "b"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q12
+        set q to [:]
+        set q["question"] to "What value represents 'no value' or absence in Steps?"
+        set q["a"] to "null"
+        set q["b"] to "nil"
+        set q["c"] to "undefined"
+        set q["d"] to "nothing"
+        set q["answer"] to "d"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q13
+        set q to [:]
+        set q["question"] to "What file extension is used for a Steps program entry point?"
+        set q["a"] to ".step"
+        set q["b"] to ".steps"
+        set q["c"] to ".building"
+        set q["d"] to ".main"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q14
+        set q to [:]
+        set q["question"] to "What file extension holds a floor definition in Steps?"
+        set q["a"] to ".floor"
+        set q["b"] to ".level"
+        set q["c"] to ".room"
+        set q["d"] to ".module"
+        set q["answer"] to "a"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q15
+        set q to [:]
+        set q["question"] to "Which loop repeats a fixed number of times in Steps?"
+        set q["a"] to "for i in range"
+        set q["b"] to "repeat N times"
+        set q["c"] to "loop N"
+        set q["d"] to "do N times"
+        set q["answer"] to "b"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q16
+        set q to [:]
+        set q["question"] to "How do you get the length of a list named 'items' in Steps?"
+        set q["a"] to "items.length"
+        set q["b"] to "len(items)"
+        set q["c"] to "size of items"
+        set q["d"] to "length of items"
+        set q["answer"] to "d"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q17
+        set q to [:]
+        set q["question"] to "What keyword combines two conditions where both must be true?"
+        set q["a"] to "both"
+        set q["b"] to "also"
+        set q["c"] to "and"
+        set q["d"] to "plus"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q18
+        set q to [:]
+        set q["question"] to "What keyword starts a conditional block in Steps?"
+        set q["a"] to "when"
+        set q["b"] to "check"
+        set q["c"] to "if"
+        set q["d"] to "test"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q19
+        set q to [:]
+        set q["question"] to "What does 'set x to 5 + 3' store in x?"
+        set q["a"] to "53"
+        set q["b"] to "5 + 3"
+        set q["c"] to "8"
+        set q["d"] to "error"
+        set q["answer"] to "c"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: BEG Q20
+        set q to [:]
+        set q["question"] to "Which of these is a valid Steps identifier?"
+        set q["a"] to "my-var"
+        set q["b"] to "2count"
+        set q["c"] to "my var"
+        set q["d"] to "my_var"
+        set q["answer"] to "d"
+        set q["difficulty"] to "beg"
+        add q to questions
+
+        note: ============ INTERMEDIATE QUESTIONS ============
+
+        note: INT Q1
+        set q to [:]
+        set q["question"] to "What keyword section in a step lists its parameters?"
+        set q["a"] to "params:"
+        set q["b"] to "expects:"
+        set q["c"] to "args:"
+        set q["d"] to "receives:"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q2
+        set q to [:]
+        set q["question"] to "What keyword section names the value a step sends back?"
+        set q["a"] to "gives:"
+        set q["b"] to "output:"
+        set q["c"] to "returns:"
+        set q["d"] to "result:"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q3
+        set q to [:]
+        set q["question"] to "What is the correct syntax to call a step and capture its result?"
+        set q["a"] to "result = call my_step()"
+        set q["b"] to "call my_step storing result in output"
+        set q["c"] to "run my_step -> output"
+        set q["d"] to "invoke my_step returns output"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q4
+        set q to [:]
+        set q["question"] to "Which loop iterates over every element in a list?"
+        set q["a"] to "repeat while list"
+        set q["b"] to "repeat for each item in my_list"
+        set q["c"] to "for item = 0 to length"
+        set q["d"] to "loop through my_list"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q5
+        set q to [:]
+        set q["question"] to "How do you add an item to a list named 'scores' in Steps?"
+        set q["a"] to "scores.add(item)"
+        set q["b"] to "push item to scores"
+        set q["c"] to "add item to scores"
+        set q["d"] to "append scores with item"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q6
+        set q to [:]
+        set q["question"] to "How do you access the value for key \"name\" in table 't'?"
+        set q["a"] to "t.name"
+        set q["b"] to "t->name"
+        set q["c"] to "t[\"name\"]"
+        set q["d"] to "get name from t"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q7
+        set q to [:]
+        set q["question"] to "What section of a step must contain its executable statements?"
+        set q["a"] to "run:"
+        set q["b"] to "execute:"
+        set q["c"] to "main:"
+        set q["d"] to "do:"
+        set q["answer"] to "d"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q8
+        set q to [:]
+        set q["question"] to "What keyword declares which floor a step belongs to?"
+        set q["a"] to "in:"
+        set q["b"] to "belongs to:"
+        set q["c"] to "part of:"
+        set q["d"] to "floor:"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q9
+        set q to [:]
+        set q["question"] to "Which loop runs as long as a condition remains true?"
+        set q["a"] to "repeat while condition"
+        set q["b"] to "do until condition"
+        set q["c"] to "loop when condition"
+        set q["d"] to "keep going if condition"
+        set q["answer"] to "a"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q10
+        set q to [:]
+        set q["question"] to "What is the remainder operator in Steps?"
+        set q["a"] to "rem"
+        set q["b"] to "mod"
+        set q["c"] to "%"
+        set q["d"] to "remainder"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q11
+        set q to [:]
+        set q["question"] to "How do you access the first element of a list named 'items'?"
+        set q["a"] to "items[1]"
+        set q["b"] to "items[0]"
+        set q["c"] to "first of items"
+        set q["d"] to "items.first"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q12
+        set q to [:]
+        set q["question"] to "What is the scope of a variable declared inside a step?"
+        set q["a"] to "Global — visible everywhere"
+        set q["b"] to "Local — only visible inside that step"
+        set q["c"] to "Floor — visible to all steps on same floor"
+        set q["d"] to "Building — visible to the building only"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q13
+        set q to [:]
+        set q["question"] to "What keyword section in a step allows typed variable declarations?"
+        set q["a"] to "vars:"
+        set q["b"] to "types:"
+        set q["c"] to "declare:"
+        set q["d"] to "define:"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q14
+        set q to [:]
+        set q["question"] to "What is a riser in Steps?"
+        set q["a"] to "A public step available to all floors"
+        set q["b"] to "A private helper function inside a step"
+        set q["c"] to "Another name for a floor"
+        set q["d"] to "A special loop construct"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q15
+        set q to [:]
+        set q["question"] to "How do you call a step named 'calc' passing args a and b?"
+        set q["a"] to "call calc(a, b)"
+        set q["b"] to "run calc a b"
+        set q["c"] to "call calc with a, b"
+        set q["d"] to "invoke calc passing a, b"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q16
+        set q to [:]
+        set q["question"] to "What operator checks if one value is larger than another?"
+        set q["a"] to ">"
+        set q["b"] to "is bigger than"
+        set q["c"] to "is greater than"
+        set q["d"] to "above"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q17
+        set q to [:]
+        set q["question"] to "What built-in operation returns the type name of a value as text?"
+        set q["a"] to "typeof x"
+        set q["b"] to "type of x"
+        set q["c"] to "x.type"
+        set q["d"] to "kind of x"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q18
+        set q to [:]
+        set q["question"] to "What is the result of: 10 % 3 in Steps?"
+        set q["a"] to "3"
+        set q["b"] to "0"
+        set q["c"] to "1"
+        set q["d"] to "3.33"
+        set q["answer"] to "c"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q19
+        set q to [:]
+        set q["question"] to "How do you check if value 5 is in a list named 'nums'?"
+        set q["a"] to "nums.contains(5)"
+        set q["b"] to "5 is in nums"
+        set q["c"] to "find 5 in nums"
+        set q["d"] to "exists 5 in nums"
+        set q["answer"] to "b"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: INT Q20
+        set q to [:]
+        set q["question"] to "What keyword tells Steps to send a value back from a step?"
+        set q["a"] to "send"
+        set q["b"] to "give"
+        set q["c"] to "output"
+        set q["d"] to "return"
+        set q["answer"] to "d"
+        set q["difficulty"] to "int"
+        add q to questions
+
+        note: ============ PROFESSIONAL QUESTIONS ============
+
+        note: PRO Q1
+        set q to [:]
+        set q["question"] to "What keyword block wraps code that might fail in Steps?"
+        set q["a"] to "try:"
+        set q["b"] to "attempt:"
+        set q["c"] to "guard:"
+        set q["d"] to "safe:"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q2
+        set q to [:]
+        set q["question"] to "What special variable holds the error description in 'if unsuccessful:'?"
+        set q["a"] to "error_message"
+        set q["b"] to "exception"
+        set q["c"] to "problem_message"
+        set q["d"] to "fail_reason"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q3
+        set q to [:]
+        set q["question"] to "Which stdlib function picks a random integer between min and max (inclusive)?"
+        set q["a"] to "rand_int"
+        set q["b"] to "random"
+        set q["c"] to "random_int"
+        set q["d"] to "pick_number"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q4
+        set q to [:]
+        set q["question"] to "Which stdlib function picks a random element from a list?"
+        set q["a"] to "random_pick"
+        set q["b"] to "pick_from"
+        set q["c"] to "sample"
+        set q["d"] to "random_choice"
+        set q["answer"] to "d"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q5
+        set q to [:]
+        set q["question"] to "What does the 'indicate' statement do differently than 'display'?"
+        set q["a"] to "It displays in red"
+        set q["b"] to "It outputs without adding a newline"
+        set q["c"] to "It writes to a file instead"
+        set q["d"] to "It shows a popup dialog"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q6
+        set q to [:]
+        set q["question"] to "What statement clears the terminal screen in Steps?"
+        set q["a"] to "clear screen"
+        set q["b"] to "cls"
+        set q["c"] to "clear console"
+        set q["d"] to "reset terminal"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q7
+        set q to [:]
+        set q["question"] to "What section always runs after 'attempt:' whether it succeeded or not?"
+        set q["a"] to "always:"
+        set q["b"] to "finally:"
+        set q["c"] to "then continue:"
+        set q["d"] to "cleanup:"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q8
+        set q to [:]
+        set q["question"] to "What does 'x as decimal(2)' do in Steps?"
+        set q["a"] to "Rounds x to 2 significant figures"
+        set q["b"] to "Formats x as text with 2 decimal places"
+        set q["c"] to "Converts x from base 10 to base 2"
+        set q["d"] to "Divides x by 2"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q9
+        set q to [:]
+        set q["question"] to "What keyword prevents a declared variable from changing type?"
+        set q["a"] to "const"
+        set q["b"] to "locked"
+        set q["c"] to "fixed"
+        set q["d"] to "immutable"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q10
+        set q to [:]
+        set q["question"] to "Where can a riser be called from in Steps?"
+        set q["a"] to "From any step on the same floor"
+        set q["b"] to "From the building only"
+        set q["c"] to "Only from its own parent step"
+        set q["d"] to "From any step in the project"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q11
+        set q to [:]
+        set q["question"] to "Which stdlib function reads the entire contents of a text file?"
+        set q["a"] to "load_file"
+        set q["b"] to "read_file"
+        set q["c"] to "open_file"
+        set q["d"] to "file_read"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q12
+        set q to [:]
+        set q["question"] to "Which built-in checks if a text value starts with a given prefix?"
+        set q["a"] to "text begins with"
+        set q["b"] to "text starts with"
+        set q["c"] to "starts_with text"
+        set q["d"] to "prefix of text"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q13
+        set q to [:]
+        set q["question"] to "What does 'split by' return in Steps?"
+        set q["a"] to "A number (the position of the separator)"
+        set q["b"] to "A table of key-value pairs"
+        set q["c"] to "A list of text segments"
+        set q["d"] to "A boolean (true if the separator exists)"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q14
+        set q to [:]
+        set q["question"] to "How do you compute the square root of a number n using stdlib?"
+        set q["a"] to "call sqrt with n storing result in r"
+        set q["b"] to "set r to sqrt(n)"
+        set q["c"] to "call squareroot with n storing result in r"
+        set q["d"] to "set r to n ^ 0.5"
+        set q["answer"] to "a"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q15
+        set q to [:]
+        set q["question"] to "What happens if a project floor has the same name as a stdlib floor?"
+        set q["a"] to "An error is raised"
+        set q["b"] to "Both are merged together"
+        set q["c"] to "The stdlib version always wins"
+        set q["d"] to "The project floor takes precedence"
+        set q["answer"] to "d"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q16
+        set q to [:]
+        set q["question"] to "Which stdlib function converts a list of characters back from text?"
+        set q["a"] to "to_chars"
+        set q["b"] to "chars_of"
+        set q["c"] to "characters"
+        set q["d"] to "split_chars"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q17
+        set q to [:]
+        set q["question"] to "What does 'set iteration limit to 50' do in Steps?"
+        set q["a"] to "Sets the max number of steps the program can call"
+        set q["b"] to "Limits the program to 50 lines of code"
+        set q["c"] to "Sets the maximum number of loop iterations allowed"
+        set q["d"] to "Pauses the program for 50 milliseconds"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q18
+        set q to [:]
+        set q["question"] to "Which native stdlib function returns the sum of a numeric list?"
+        set q["a"] to "sum_list"
+        set q["b"] to "list_total"
+        set q["c"] to "add_all"
+        set q["d"] to "list_sum"
+        set q["answer"] to "d"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q19
+        set q to [:]
+        set q["question"] to "What does 'call file_exists with path storing result in ok' return?"
+        set q["a"] to "The file contents as text"
+        set q["b"] to "A boolean — true if the file exists"
+        set q["c"] to "The file size as a number"
+        set q["d"] to "A table of file metadata"
+        set q["answer"] to "b"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        note: PRO Q20
+        set q to [:]
+        set q["question"] to "Which stdlib function replaces all occurrences of a substring?"
+        set q["a"] to "substitute"
+        set q["b"] to "swap"
+        set q["c"] to "replace"
+        set q["d"] to "change"
+        set q["answer"] to "c"
+        set q["difficulty"] to "pro"
+        add q to questions
+
+        return questions

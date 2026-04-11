@@ -1,0 +1,9 @@
+step: save_students
+    belongs to: data
+    expects: filename, students
+
+    note: Save students list to CSV file
+
+    do:
+        call write_csv with filename, students
+        display "Saved " added to (length of students) as text added to " student(s) to " added to filename

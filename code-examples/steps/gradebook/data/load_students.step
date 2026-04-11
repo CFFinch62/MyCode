@@ -1,0 +1,16 @@
+step: load_students
+    belongs to: data
+    expects: filename
+    returns: students
+
+    note: Load students from CSV file, or return empty list if not found
+
+    do:
+        call file_exists with filename storing result in has_file
+        
+        if has_file
+            call read_csv with filename storing result in students
+        otherwise
+            set students to []
+        
+        return students

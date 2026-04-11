@@ -1,0 +1,31 @@
+step: calc_from_markup_and_cost
+    belongs to: calculations
+    expects: nothing
+    returns: results as table
+
+    declare:
+        markup as number fixed
+        cost as number fixed
+        price as number
+        profit as number
+        margin as number
+        results as table
+
+    do:
+        call get_number_input with "Enter Markup: " storing result in markup
+        call get_number_input with "Enter Cost: " storing result in cost
+
+        set profit to cost * (markup / 100)
+        set price to cost + profit
+        set margin to (profit / price) * 100
+
+        set results to ["_":""]
+        set results["price"] to price
+        set results["margin"] to margin
+        set results["profit"] to profit
+        set results["markup"] to markup
+        set results["cost"] to cost
+
+        return results
+
+

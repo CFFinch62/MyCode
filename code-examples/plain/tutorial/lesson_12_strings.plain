@@ -1,0 +1,53 @@
+rem: Lesson 12 - String Operations
+rem: Powerful text processing with built-in string functions
+
+task Main()
+    var message = "  Hello, PLAIN World!  "
+
+    rem: Trimming whitespace
+    display("Original: '" & message & "'")
+    display("Trimmed: '" & trim(message) & "'")
+
+    rem: Case conversion
+    var name = "alice smith"
+    display("Upper: " & upper(name))
+    display("Lower: " & lower("HELLO"))
+
+    rem: String length
+    display("Length of '" & name & "': " & len(name))
+
+    rem: Searching in strings
+    var sentence = "The quick brown fox jumps over the lazy dog"
+    display("Contains 'fox': " & contains(sentence, "fox"))
+    display("Starts with 'The': " & starts_with(sentence, "The"))
+    display("Ends with 'dog': " & ends_with(sentence, "dog"))
+
+    rem: Extracting substrings
+    display("First 9 chars: " & substring(sentence, 0, 9))
+
+    rem: Replacing text
+    var updated = replace(sentence, "lazy", "energetic")
+    display("Replaced: " & updated)
+
+    rem: Splitting and joining
+    var words = split(sentence, " ")
+    display("Word count: " & len(words))
+    display("First word: " & words[0])
+    display("Last word: " & words[len(words) - 1])
+
+    rem: Joining a list into a string
+    var fruits = ["apple", "banana", "cherry"]
+    var fruitStr = join(fruits, ", ")
+    display("Fruits: " & fruitStr)
+
+    rem: Practical example: simple title case
+    display("")
+    display("=== Title Case Converter ===")
+    var title = "the great gatsby"
+    var titleWords = split(title, " ")
+    var capitalized = []
+    loop word in titleWords
+        var first = upper(substring(word, 0, 1))
+        var rest = substring(word, 1, len(word))
+        append(capitalized, first & rest)
+    display("Title: " & join(capitalized, " "))

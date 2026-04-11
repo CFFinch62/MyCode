@@ -1,0 +1,92 @@
+rem: PLAIN Quiz Game - Display Module
+rem: Handles all formatted console output for the quiz game.
+
+rem: Display the main title banner at game start
+task ShowTitle()
+    display("")
+    display("════════════════════════════════════════════")
+    display("          PLAIN LANGUAGE QUIZ GAME          ")
+    display("════════════════════════════════════════════")
+    display("")
+    display("Test your PLAIN knowledge across three levels:")
+    display("  BEG  — Beginner")
+    display("  INT  — Intermediate")
+    display("  PRO  — Professional")
+    display("")
+    display("Each level: 5 random questions from a pool of 20.")
+    display("Score 5/5 to unlock the next level!")
+    display("")
+
+rem: Display a level header banner
+task ShowLevelBanner with (levelName)
+    display("")
+    display("════════════════════════════════════════════")
+    display("  " & levelName & " LEVEL")
+    display("════════════════════════════════════════════")
+
+rem: Display the final score summary for a completed level
+task ShowLevelResult with (score, levelName)
+    display("")
+    display("════════════════════════════════════════════")
+    display("              LEVEL RESULT")
+    display("════════════════════════════════════════════")
+    display("  Level : " & levelName)
+    display("  Score : " & to_string(score) & " / 5")
+    display("  Result: " & to_string(score * 20) & "%")
+    display("════════════════════════════════════════════")
+    display("")
+
+rem: Display the final championship congratulations
+task ShowVictory()
+    display("")
+    display("████████████████████████████████████████████")
+    display("   OUTSTANDING! You've mastered PLAIN!      ")
+    display("   Perfect score across all three levels!   ")
+    display("████████████████████████████████████████████")
+    display("")
+
+rem: Display the Master Level unlock announcement
+task ShowMasterLevelUnlock()
+    display("")
+    display("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★")
+    display("            MASTER LEVEL UNLOCKED!             ")
+    display("  You've conquered all three levels — now      ")
+    display("  tackle the full question bank for any level! ")
+    display("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★")
+    display("")
+
+rem: Display the Master Level menu for level selection
+task ShowMasterLevelMenu()
+    display("")
+    display("════════════════════════════════════════════")
+    display("             MASTER LEVEL MENU              ")
+    display("════════════════════════════════════════════")
+    display("  Select a level — all 20 questions await!  ")
+    display("")
+    display("    1)  BEGINNER")
+    display("    2)  INTERMEDIATE")
+    display("    3)  PROFESSIONAL")
+    display("    q)  Quit to main menu")
+    display("════════════════════════════════════════════")
+    display("")
+
+rem: Display a Master Level header banner before a run
+task ShowMasterLevelBanner with (levelName)
+    display("")
+    display("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★")
+    display("  MASTER LEVEL — " & levelName)
+    display("  All 20 questions. Prove your mastery!")
+    display("★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★")
+
+rem: Display the Master Level result (score out of 20)
+task ShowMasterLevelResult with (score, levelName)
+    var pct = (score * 100) // 20
+    display("")
+    display("════════════════════════════════════════════")
+    display("          MASTER LEVEL RESULT               ")
+    display("════════════════════════════════════════════")
+    display("  Level : " & levelName)
+    display("  Score : " & to_string(score) & " / 20")
+    display("  Result: " & to_string(pct) & "%")
+    display("════════════════════════════════════════════")
+    display("")

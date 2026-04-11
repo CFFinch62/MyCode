@@ -1,0 +1,9 @@
+rem: Calculates the Least Common Multiple of two numbers.
+
+rem: IMPORTS
+use:
+    modules:
+        gcd
+
+task LCM using (n1, n2)
+    deliver n1 * n2 / gcd.GCD(n1, n2)

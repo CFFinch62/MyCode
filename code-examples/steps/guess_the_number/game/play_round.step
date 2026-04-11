@@ -1,0 +1,33 @@
+step: play_round
+    belongs to: game
+    expects: max_number
+    returns: attempts
+
+    note: Play one round of the guessing game
+
+    do:
+        call random_int with 1, max_number storing result in secret_number
+        set attempts to 0
+        set guess to 0
+        
+        repeat while guess is not equal to secret_number
+            display "Enter your guess: "
+            
+            attempt:
+                set guess to input as number
+            if unsuccessful:
+                display "Please enter a valid number!"
+                set guess to 0
+            
+            if guess is equal to secret_number
+                set attempts to attempts + 1
+            otherwise if guess is less than secret_number
+                set attempts to attempts + 1
+                display "Too low! Try higher."
+                display ""
+            otherwise if guess is greater than secret_number
+                set attempts to attempts + 1
+                display "Too high! Try lower."
+                display ""
+        
+        return attempts

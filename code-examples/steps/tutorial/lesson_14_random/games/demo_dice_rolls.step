@@ -1,0 +1,17 @@
+step: demo_dice_rolls
+    belongs to: games
+
+    note: Demonstrate random integer generation
+
+    do:
+        display "--- Random Numbers Demo ---"
+        display ""
+        display "random_int gives a random whole number in a range."
+        display ""
+        display "Rolling 5 dice (1-6):"
+        
+        repeat 5 times
+            call random_int with 1, 6 storing result in roll
+            display "  Rolled: " added to (roll as text)
+        
+        display ""

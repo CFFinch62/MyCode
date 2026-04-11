@@ -1,0 +1,7 @@
+step: show_separator
+    belongs to: user_interaction
+    expects: nothing
+    returns: nothing
+
+    do:
+        display "──────────────────────────────────────────"

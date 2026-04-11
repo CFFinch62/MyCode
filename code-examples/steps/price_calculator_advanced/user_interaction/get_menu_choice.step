@@ -1,0 +1,19 @@
+step: get_menu_choice
+    belongs to: user_interaction
+    expects: nothing
+    returns: choice as number
+
+    declare:
+        choice_text as text
+        choice as number
+
+    do:
+        display "Enter choice (1-5): "
+        set choice_text to input
+
+        attempt:
+            set choice to choice_text as number
+        if unsuccessful:
+            set choice to 0
+
+        return choice

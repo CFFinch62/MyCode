@@ -1,0 +1,45 @@
+note: Sorts an array using bubble sort algorithm.
+
+    Args:
+    arr: Array to sort
+    d: True for ascending order, False for descending
+
+    Returns:
+    Sorted array
+task BubbleSort using (arr, d)
+    var sorted = false
+    loop not sorted
+        sorted = true
+        loop i from 0 to length(arr) - 2
+            if d
+                if arr[i] > arr[i + 1]
+                    rem: MANUAL FIX: tuple unpacking
+                    rem: arr[i], arr[i + 1] = [arr[i + 1], arr[i]]
+                    sorted = false
+            else if arr[i] < arr[i + 1]
+                rem: MANUAL FIX: tuple unpacking
+                rem: arr[i + 1], arr[i] = [arr[i], arr[i + 1]]
+                sorted = false
+    deliver arr
+
+note: Gets a specific row from a 2D array.
+
+    Args:
+    r: Row index
+    a: 2D array
+
+    Returns:
+    The specified row
+task Get2dRow using (r, a)
+    deliver /* UNSUPPORTED: ListComp */
+
+note: Gets a specific column from a 2D array.
+
+    Args:
+    c: Column index
+    a: 2D array
+
+    Returns:
+    The specified column
+task Get2dCol using (c, a)
+    deliver /* UNSUPPORTED: ListComp */

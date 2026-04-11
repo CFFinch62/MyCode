@@ -1,0 +1,94 @@
+building: test_progress_bar
+    note: Test the three new features:
+    note: 1. indicate (display without newline)
+    note: 2. clear console
+    note: 3. set iteration limit to
+
+    note: Test 1 - indicate statement (display without newline)
+    display "Test 1: Using 'indicate' to display without newline"
+    display "=========================================="
+    display ""
+
+    indicate "Loading"
+    indicate "."
+    indicate "."
+    indicate "."
+    display " Done!"
+    display ""
+
+    note: Test 2 - Progress bar with indicate
+    display "Test 2: Progress bar using 'indicate'"
+    display "=========================================="
+    display ""
+
+    set i to 0
+    repeat while i is less than or equal to 100
+        call progress_bar with i, 100, 40 storing result in bar
+        set label to "Progress: " added to bar added to " " added to (i as text) added to "%"
+        indicate "\r" added to label
+        set i to i + 10
+
+    display ""
+    display "Complete!"
+    display ""
+
+    note: Test 3 - Clear console
+    display "Test 3: Clear console (will clear in 2 seconds)"
+    display "=========================================="
+    display ""
+    display "This text will be cleared..."
+    display "Press Ctrl+C if you don't want to wait"
+
+    note: Simple delay loop
+    set delay to 0
+    repeat while delay is less than 2000000
+        set delay to delay + 1
+
+    clear console
+
+    display "Console cleared!"
+    display ""
+
+    note: Test 4 - Set iteration limit
+    display "Test 4: Set iteration limit"
+    display "=========================================="
+    display ""
+
+    display "Default iteration limit: 10,000,000"
+    display "Setting iteration limit to 50..."
+    set iteration limit to 50
+
+    set counter to 0
+    attempt:
+        repeat while counter is less than 100
+            set counter to counter + 1
+    if unsuccessful:
+        display "Loop stopped at iteration " added to (counter as text)
+        display "This is expected because we set the limit to 50"
+    then continue:
+        display ""
+
+    display ""
+    display "Resetting iteration limit to 10,000,000"
+    set iteration limit to 10000000
+    display ""
+
+    note: Test 5 - All features together for a nice progress bar
+    display "Test 5: Complete progress bar demo"
+    display "=========================================="
+    display ""
+
+    set total to 50
+    set current to 0
+
+    repeat while current is less than or equal to total
+        call progress_bar with current, total, 50 storing result in bar
+        set percent to (current * 100) / total
+        set percent_int to percent as number
+        set label to "Processing: " added to bar added to " " added to (percent_int as text) added to "%"
+        indicate "\r" added to label
+        set current to current + 1
+
+    display ""
+    display "✓ All tests complete!"
+

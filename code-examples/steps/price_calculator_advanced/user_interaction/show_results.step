@@ -1,0 +1,30 @@
+step: show_results
+    belongs to: user_interaction
+    expects: price as number, margin as number, profit as number, markup as number, cost as number
+    returns: nothing
+
+    declare:
+        price_text as text
+        margin_text as text
+        profit_text as text
+        markup_text as text
+        cost_text as text
+
+    do:
+        set price_text to price as text
+        set margin_text to margin as text
+        set profit_text to profit as text
+        set markup_text to markup as text
+        set cost_text to cost as text
+
+        display ""
+        display "┌──────────────────────────────────────────┐"
+        display "│            CALCULATED RESULTS            │"
+        display "├──────────────────────────────────────────┤"
+        display "│             Price: $" added to price_text
+        display "│            Margin: %" added to margin_text
+        display "│            Profit: $" added to profit_text
+        display "│            Markup: %" added to markup_text
+        display "│              Cost: $" added to cost_text
+        display "└──────────────────────────────────────────┘"
+        display ""

@@ -1,0 +1,13 @@
+step: show_welcome
+    belongs to: conosle_output
+    expects: nothing
+    returns: nothing
+    
+    do:
+        display "================================"
+        display "   CONTACT MANAGER v1.0"
+        display "================================"
+        display ""
+        display "Manage your contacts with ease!"
+        display ""
+

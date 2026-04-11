@@ -1,0 +1,21 @@
+step: show_todos
+    belongs to: todos
+    expects: todos
+
+    note: Display all todos with their status
+
+    do:
+        if length of todos is equal to 0
+            display "No todos yet! Add some with option 2."
+        otherwise
+            display "Your Todos:"
+            display "------------"
+            set index to 1
+            repeat for each todo in todos
+                set status to "[ ]"
+                if todo["done"] equals "true"
+                    set status to "[x]"
+                display (index as text) added to ". " added to status added to " " added to todo["task"]
+                set index to index + 1
+            display "------------"
+        display ""

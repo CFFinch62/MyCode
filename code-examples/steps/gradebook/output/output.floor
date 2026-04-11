@@ -1,0 +1,4 @@
+floor: output
+    step: show_menu
+    step: show_students
+    step: show_average

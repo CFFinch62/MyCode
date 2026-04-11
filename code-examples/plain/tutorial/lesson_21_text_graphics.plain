@@ -1,0 +1,269 @@
+rem: Lesson 21 - Text Graphics and CLI Enhancement
+rem: Learn how to create professional-looking terminal interfaces
+
+task Main()
+    display("=== Lesson 21: Text Graphics and CLI Enhancement ===")
+    display("")
+    display("This lesson demonstrates PLAIN's text graphics capabilities.")
+    display("Press Enter to see each demonstration...")
+    var dummy = get("")
+    
+    rem: Demo 1: Clear screen and positioning
+    Demo1_Positioning()
+    var dummy = get("")
+    
+    rem: Demo 2: Colors
+    Demo2_Colors()
+    var dummy = get("")
+    
+    rem: Demo 3: Lines
+    Demo3_Lines()
+    var dummy = get("")
+    
+    rem: Demo 4: Boxes
+    Demo4_Boxes()
+    var dummy = get("")
+    
+    rem: Demo 5: Dashboard
+    Demo5_Dashboard()
+    var dummy = get("")
+    
+    rem: Demo 6: Progress bar
+    Demo6_ProgressBar()
+    
+    rem: Final message
+    clear()
+    text_color("green")
+    display("=== End of Lesson 21 ===")
+    text_color("default")
+    display("")
+    display("You now know how to create professional CLI interfaces!")
+    display("Try building your own dashboards, menus, and displays.")
+
+rem: Demo 1: Text positioning
+task Demo1_Positioning()
+    clear()
+    text_color("cyan")
+    text_at(1, 1, "Demo 1: Text Positioning")
+    text_color("default")
+    
+    text_at(5, 3, "text_at(x, y, text) positions the cursor and prints text")
+    text_at(5, 5, "Coordinates are 1-based:")
+    text_at(7, 6, "• (1, 1) is the top-left corner")
+    text_at(7, 7, "• x is the column (left-right)")
+    text_at(7, 8, "• y is the row (top-bottom)")
+    
+    text_at(5, 10, "Examples:")
+    text_at(10, 12, "This is at column 10, row 12")
+    text_at(20, 13, "This is at column 20, row 13")
+    text_at(30, 14, "This is at column 30, row 14")
+    
+    text_at(1, 20, "Press Enter to continue...")
+
+rem: Demo 2: Colors
+task Demo2_Colors()
+    clear()
+    text_color("cyan")
+    text_at(1, 1, "Demo 2: Text Colors")
+    text_color("default")
+    
+    text_at(5, 3, "text_color(foreground [, background]) sets colors")
+    text_at(5, 5, "Available colors:")
+    
+    var row = 7
+    text_color("black", "white")
+    text_at(7, row, " black ")
+    row += 1
+    
+    text_color("red")
+    text_at(7, row, "red")
+    row += 1
+    
+    text_color("green")
+    text_at(7, row, "green")
+    row += 1
+    
+    text_color("yellow")
+    text_at(7, row, "yellow")
+    row += 1
+    
+    text_color("blue")
+    text_at(7, row, "blue")
+    row += 1
+    
+    text_color("magenta")
+    text_at(7, row, "magenta")
+    row += 1
+    
+    text_color("cyan")
+    text_at(7, row, "cyan")
+    row += 1
+    
+    text_color("white")
+    text_at(7, row, "white")
+    
+    text_color("default")
+    text_at(5, 16, "With backgrounds:")
+    text_color("white", "red")
+    text_at(7, 17, " White on Red ")
+    text_color("black", "yellow")
+    text_at(25, 17, " Black on Yellow ")
+    text_color("white", "blue")
+    text_at(45, 17, " White on Blue ")
+    
+    text_color("default")
+    text_at(1, 20, "Press Enter to continue...")
+
+rem: Demo 3: Lines
+task Demo3_Lines()
+    clear()
+    text_color("cyan")
+    text_at(1, 1, "Demo 3: Drawing Lines")
+    text_color("default")
+    
+    text_at(5, 3, "draw_line(x, y, length, direction [, char])")
+    
+    text_at(5, 5, "Horizontal line (default '-'):")
+    text_color("green")
+    draw_line(5, 6, 40, "h")
+    
+    text_color("default")
+    text_at(5, 8, "Vertical line (default '|'):")
+    text_color("green")
+    draw_line(5, 9, 5, "v")
+    
+    text_color("default")
+    text_at(10, 8, "Custom characters:")
+    text_color("yellow")
+    draw_line(10, 9, 30, "h", "=")
+    draw_line(42, 9, 5, "v", "*")
+    
+    text_color("default")
+    text_at(1, 20, "Press Enter to continue...")
+
+rem: Demo 4: Boxes
+task Demo4_Boxes()
+    clear()
+    text_color("cyan")
+    text_at(1, 1, "Demo 4: Drawing Boxes")
+    text_color("default")
+    
+    text_at(5, 3, "draw_box(x, y, width, height [, title])")
+    
+    text_at(5, 5, "Simple box:")
+    text_color("blue")
+    draw_box(5, 6, 30, 5)
+    
+    text_color("default")
+    text_at(40, 5, "Box with title:")
+    text_color("green")
+    draw_box(40, 6, 30, 5, "Status")
+    
+    text_color("default")
+    text_at(5, 13, "Box with content:")
+    text_color("magenta")
+    draw_box(5, 14, 40, 6, "Information Panel")
+    text_color("default")
+    text_at(7, 16, "You can put any content inside")
+    text_at(7, 17, "the box using text_at()")
+    
+    text_color("default")
+    text_at(1, 22, "Press Enter to continue...")
+
+rem: Demo 5: Dashboard example
+task Demo5_Dashboard()
+    clear()
+
+    rem: Header
+    text_color("cyan")
+    draw_box(1, 1, 70, 3, "System Monitor v1.0")
+    text_color("default")
+
+    rem: CPU Panel
+    text_color("green")
+    draw_box(2, 5, 33, 6, "CPU")
+    text_color("default")
+    text_at(4, 7, "Usage: 45%")
+    text_at(4, 8, "Temp:  68°C")
+    text_at(4, 9, "Speed: 3.2 GHz")
+
+    rem: Memory Panel
+    text_color("blue")
+    draw_box(37, 5, 33, 6, "Memory")
+    text_color("default")
+    text_at(39, 7, "Used:  8.2 GB")
+    text_at(39, 8, "Free:  7.8 GB")
+    text_at(39, 9, "Total: 16 GB")
+
+    rem: Network Panel
+    text_color("magenta")
+    draw_box(2, 12, 33, 6, "Network")
+    text_color("default")
+    text_at(4, 14, "Status: ")
+    text_color("green")
+    text_at(12, 14, "Connected")
+    text_color("default")
+    text_at(4, 15, "IP: 192.168.1.100")
+    text_at(4, 16, "Speed: 1000 Mbps")
+
+    rem: Disk Panel
+    text_color("yellow")
+    draw_box(37, 12, 33, 6, "Disk")
+    text_color("default")
+    text_at(39, 14, "Used:  250 GB")
+    text_at(39, 15, "Free:  250 GB")
+    text_at(39, 16, "Total: 500 GB")
+
+    rem: Status bar
+    text_color("white", "blue")
+    text_at(1, 20, " System Status: NORMAL                                              ")
+    text_color("default")
+
+    text_at(1, 22, "Press Enter to continue...")
+
+rem: Demo 6: Progress bar animation
+task Demo6_ProgressBar()
+    clear()
+    text_color("cyan")
+    text_at(1, 1, "Demo 6: Progress Bar Animation")
+    text_color("default")
+
+    text_at(5, 3, "Combining text graphics with loops creates dynamic displays:")
+
+    rem: Animate a progress bar
+    loop percent from 0 to 100 step 5
+        ShowProgress(10, 6, 50, percent)
+        sleep(100)
+
+    text_at(5, 10, "Animation complete!")
+    text_at(5, 12, "You can use this technique for:")
+    text_at(7, 13, "• File download/upload progress")
+    text_at(7, 14, "• Data processing status")
+    text_at(7, 15, "• Real-time sensor displays")
+    text_at(7, 16, "• Loading animations")
+
+    text_at(1, 20, "Press Enter to finish...")
+    var dummy = get("")
+
+rem: Helper task to show a progress bar
+task ShowProgress with (x, y, width, percent)
+    text_at(x, y, "Progress: [")
+
+    var filled = round(width * percent / 100)
+    var empty = width - filled
+
+    rem: Draw filled portion
+    text_color("green")
+    if filled > 0
+        draw_line(x + 11, y, filled, "h", "█")
+
+    rem: Draw empty portion
+    text_color("default")
+    if empty > 0
+        draw_line(x + 11 + filled, y, empty, "h", "░")
+
+    rem: Show percentage
+    text_color("cyan")
+    text_at(x + 11 + width + 2, y, v"] {percent}%  ")
+    text_color("default")
+

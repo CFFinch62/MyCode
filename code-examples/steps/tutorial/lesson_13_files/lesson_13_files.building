@@ -1,0 +1,37 @@
+building: lesson_13_files
+    note: Learn how to read and write files in Steps!
+    
+    display "========================================"
+    display "   Lesson 13: Working with Files"
+    display "========================================"
+    display ""
+    
+    display "--- Why Files? ---"
+    display ""
+    display "Files let your programs save data that persists after the"
+    display "program ends. You can:"
+    display "  - Save high scores"
+    display "  - Keep user settings"
+    display "  - Store lists of data"
+    display "  - Read data from other sources"
+    display ""
+    
+    note: Demonstrate text file operations
+    call demo_text_files
+    
+    note: Demonstrate CSV file operations
+    call demo_csv_files
+    
+    display "========================================"
+    display "   Key Takeaways"
+    display "========================================"
+    display ""
+    display "1. write_file: Save text to a file (overwrites)"
+    display "2. append_file: Add text to the end of a file"
+    display "3. read_file: Read entire file as text"
+    display "4. file_exists: Check if a file is there"
+    display "5. write_csv / read_csv: For structured data"
+    display ""
+    display "Great job completing the files lesson!"
+    
+    exit

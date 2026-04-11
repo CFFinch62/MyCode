@@ -1,0 +1,34 @@
+note:
+    ####################################
+	Project Euler Probelm # ?
+ 	####################################
+   
+	####################################
+	
+rem: IMPORTS
+
+rem: GLOBALS
+
+rem: HELPERS
+
+rem: MAIN PROGRAM
+task Main()
+    var begin = time()
+    
+	var answer
+    
+	display("###################################")
+	display("PROJECT EULER PROBLEM")
+	display("###################################")
+	display()
+	display("")
+	display("")
+	display()  
+	display("") 
+    display(answer)
+	display("###################################")
+    
+	var end = time()
+	display(v"Prosessing time: {(end - begin) / 1000} seconds")
+
+rem: EXPECTED ANSWER: 

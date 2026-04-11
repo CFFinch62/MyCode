@@ -1,0 +1,32 @@
+step: problem_02
+    belongs to: solutions
+    expects: nothing
+    returns: nothing
+      
+    declare:
+        max as number
+        answer as number
+        
+    do:
+        set max to 4000000
+        
+        call time storing result in start
+
+        display "calling fib_even_sum..."
+        call fib_even_sum with max storing result in answer
+
+        display("###################################")
+        display("PROJECT EULER PROBLEM 2")
+        display("###################################") 
+        display("")
+        display("Find sum of even Fibonacci sequence")
+        display("values not to exceed 4,000,000")
+        display("")  
+        display("Sum is: " added to answer)
+        display("###################################")
+ 
+        call time storing result in finish
+        set elapsed to (finish - start)
+        display("Prosessing time: " added to elapsed as text added to " seconds.")
+        
+rem: EXPECTED ANSWER: 4613732

@@ -1,0 +1,20 @@
+rem: Concatenate two numbers a and b, returning a*10^(digits in b) + b.
+task ConcatenateNumbers using (a, b)
+    deliver to_int(to_string(a) & to_string(b))
+
+rem: Check if two primes form a prime pair.
+task CheckPrimePair using (a, b, is_prime_func)
+    deliver IsPrimeFunc(ConcatenateNumbers(a, b)) and IsPrimeFunc(ConcatenateNumbers(b, a))
+
+rem: Find all pairs of primes below limit that have the special property.
+task FindPrimePairs using (primes, limit, is_prime_func)
+    var pairs = []
+    loop i from 0 to length(primes) - 1
+        if primes[i] >= limit
+            exit
+        loop j from i + 1 to length(primes) - 1
+            if primes[j] >= limit
+                exit
+            if CheckPrimePair(primes[i], primes[j], is_prime_func)
+                append(pairs, [primes[i], primes[j]])
+    deliver pairs

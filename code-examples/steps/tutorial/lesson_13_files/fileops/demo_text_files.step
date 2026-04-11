@@ -1,0 +1,45 @@
+step: demo_text_files
+    belongs to: fileops
+
+    note: Demonstrate reading and writing text files
+
+    do:
+        display "--- Text Files Demo ---"
+        display ""
+        display "Creating a text file..."
+        
+        set message to "Hello from Steps!"
+        set filename to "my_first_file.txt"
+        
+        call write_file with filename, message
+        display "Wrote to " added to filename
+        display ""
+        
+        display "Reading it back..."
+        call read_file with filename storing result in content
+        display "Contents: " added to content
+        display ""
+        
+        display "Appending more content..."
+        set more_text to "\nThis line was appended!"
+        call append_file with filename, more_text
+        
+        call read_file with filename storing result in updated_content
+        display "Updated contents:"
+        display updated_content
+        display ""
+        
+        display "Checking if files exist..."
+        call file_exists with filename storing result in exists
+        if exists
+            display filename added to " exists!"
+        otherwise
+            display filename added to " does not exist."
+        
+        call file_exists with "nonexistent.txt" storing result in exists2
+        if exists2
+            display "nonexistent.txt exists!"
+        otherwise
+            display "nonexistent.txt does not exist (as expected)."
+        
+        display ""

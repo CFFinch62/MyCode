@@ -1,0 +1,116 @@
+rem: import Counter to find the duplicates
+
+task FaceToNum using (card_face)
+    var nums = {"1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
+    deliver nums[card_face]
+
+task NumToFace using (num)
+    var faces = {14: "A", 13: "K", 12: "Q", 11: "J", 10: "T", 9: "9", 8: "8", 7: "7", 6: "6", 5: "5", 4: "4", 3: "3", 2: "2", 1: "1"}
+    deliver faces[num]
+
+task RankToName using (rank)
+    var names = {10: "    Royal Flush;", 9: " Straight Flush:", 8: " Four of a Kind:", 7: "     Full House:", 6: "          Flush:", 5: "       Straight:", 4: "Three of a Kind:", 3: "       Two Pair:", 2: "           Pair:"}
+    deliver names[rank]
+
+task HighCard using (card_faces)
+    var face_values = []
+    loop card_face in card_faces
+        append(face_values, FaceToNum(card_face))
+    deliver max(face_values)
+
+task ConvertToLists using (hand)
+    var cards = split(hand, " ")
+    var card_faces = []
+    var card_suits = []
+    loop c in cards
+        append(card_faces, c[0])
+        append(card_suits, c[1])
+    deliver [card_faces, card_suits]
+
+task NumberOfPairs using (faces)
+    var count = Counter(faces) - Counter(Set(faces))
+    var pairs = 0
+    loop i in count
+        if count[i] == 1
+            pairs = pairs + 1
+    if pairs
+        deliver pairs + 1
+    deliver 0
+
+task ThreeOfAKind using (faces)
+    var count = Counter(faces) - Counter(Set(faces))
+    loop i in count
+        if count[i] == 2
+            deliver 4
+    deliver 0
+
+task Straight using (faces)
+    var hc = HighCard(faces)
+    if contains(faces, NumToFace(hc - 1))
+        if contains(faces, NumToFace(hc - 2))
+            if contains(faces, NumToFace(hc - 3))
+                if contains(faces, NumToFace(hc - 4))
+                    deliver 5
+    deliver 0
+
+task Flush using (faces)
+    if length(Set(faces)) == 1
+        deliver 6
+    deliver 0
+
+task FullHouse using (faces)
+    if ThreeOfAKind(faces)
+        if NumberOfPairs(faces) == 2
+            deliver 7
+    deliver 0
+
+task FourOfAKind using (faces)
+    var dup = Counter(faces) - Counter(Set(faces))
+    loop i in dup
+        if dup[i] == 3
+            deliver 8
+    deliver 0
+
+task StraightFlush using (faces, suits)
+    if Straight(faces) and Flush(suits)
+        deliver 9
+    deliver 0
+
+task RoyalFlush using (faces, suits)
+    if Set(["T", "J", "Q", "K", "A"]) == Set(faces)
+        if length(Set(suits)) == 1
+            deliver 10
+    deliver 0
+
+task PairedNumber using (faces)
+    var repeated = keys(Counter(faces) - Counter(Set(faces)))
+    var highest = 0
+    loop i in repeated
+        if FaceToNum(i) > highest
+            highest = FaceToNum(i)
+    deliver highest
+
+task ScoreHand using (faces, suits)
+    var score = 0
+    var flag = false
+    if NumberOfPairs(faces)
+        score = NumberOfPairs(faces)
+        flag = true
+    if ThreeOfAKind(faces)
+        score = ThreeOfAKind(faces)
+        flag = true
+    if Straight(faces)
+        score = Straight(faces)
+    if Flush(suits)
+        score = Flush(suits)
+    if FullHouse(faces)
+        score = FullHouse(faces)
+        flag = true
+    if FourOfAKind(faces)
+        score = FourOfAKind(faces)
+        flag = true
+    if StraightFlush(faces, suits)
+        score = StraightFlush(faces, suits)
+    if RoyalFlush(faces, suits)
+        score = RoyalFlush(faces, suits)
+    deliver [score, flag]

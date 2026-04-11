@@ -1,0 +1,29 @@
+{
+    "name": "mycode-forge-language",
+    "version": "1.0.0",
+    "displayName": "FORGE Language Support",
+    "description": "Syntax highlighting for FORGE programming language (.fg files)",
+    "author": "Chuck Finch",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:forge",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "forge",
+                    "aliases": [
+                        "FORGE",
+                        "Forge",
+                        "forge"
+                    ],
+                    "extensions": [
+                        ".fg"
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,55 @@
+building: gradebook
+    note: A gradebook application demonstrating tables, calculations, and file I/O!
+    
+    display "========================================"
+    display "        Steps Gradebook"
+    display "========================================"
+    display ""
+    
+    note: Set up the data file
+    set filename to "grades.csv"
+    
+    note: Load existing students
+    call load_students with filename storing result in students
+    
+    if length of students is greater than 0
+        display "Loaded " added to (length of students) as text added to " student(s)."
+    otherwise
+        display "Starting with a fresh gradebook."
+    
+    display ""
+    
+    note: Main menu loop
+    set running to true
+    
+    repeat while running
+        call show_menu
+        
+        display "Enter choice (1-5): "
+        set choice to input
+        display ""
+        
+        if choice equals "1"
+            call show_students with students
+        
+        otherwise if choice equals "2"
+            call add_student with students storing result in students
+        
+        otherwise if choice equals "3"
+            call add_grade with students storing result in students
+        
+        otherwise if choice equals "4"
+            call calculate_average with students storing result in stats
+            call show_average with stats["average"], stats["count"]
+        
+        otherwise if choice equals "5"
+            call save_students with filename, students
+            display ""
+            display "Goodbye!"
+            set running to false
+        
+        otherwise
+            display "Please enter 1, 2, 3, 4, or 5."
+            display ""
+    
+    exit

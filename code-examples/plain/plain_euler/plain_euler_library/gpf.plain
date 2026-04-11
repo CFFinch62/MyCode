@@ -1,0 +1,14 @@
+rem: Trial division - divide n down as factors are found.
+rem: Any factor found this way must be prime since all smaller
+rem: factors have already been divided out. No IsPrime needed.
+task GPF using (n)
+    var largest = 1
+    var factor = 2
+    loop factor * factor <= n
+        loop n % factor == 0
+            largest = factor
+            n = n // factor
+        factor = factor + 1
+    if n > 1
+        largest = n
+    deliver largest

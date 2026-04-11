@@ -1,0 +1,19 @@
+note: Euler's Totient Function - counts the positive integers up to n that are relatively prime to n.
+
+    Args:
+    n: Number to calculate totient for
+
+    Returns:
+    The number of integers less than n that are coprime with n
+task Phi using (n)
+    var result = n
+    var p = 2
+    loop p * p <= n
+        if n % p == 0
+            loop n % p == 0
+                n = to_int(n / p)
+            result = result - to_int(result / p)
+        p = p + 1
+    if n > 1
+        result = result - to_int(result / n)
+    deliver result

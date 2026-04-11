@@ -1,0 +1,57 @@
+rem: Lesson 10 - Functions and Return Values
+rem: Tasks that compute and deliver results using 'using' and 'deliver'
+
+task Main()
+    rem: Calling functions that return values
+    var result = Add(5, 3)
+    display(v"5 + 3 = {result}")
+
+    rem: Using function results directly
+    display("10 * 4 = " & Multiply(10, 4))
+
+    rem: Functions in expressions
+    var avg = Average(85, 92, 78)
+    display(v"Average score: {avg}")
+
+    rem: Function results in conditions
+    if IsEven(42)
+        display("42 is even")
+
+    if not IsEven(17)
+        display("17 is odd")
+
+    rem: Building with functions
+    display("")
+    display("=== Temperature Converter ===")
+    var temps = [32, 72, 212]
+    loop temp in temps
+        var celsius = FahrenheitToCelsius(temp)
+        display("  " & temp & "°F = " & celsius & "°C")
+
+    rem: Functions calling other functions
+    var biggest = MaxOfThree(15, 42, 27)
+    display(v"Max of 15, 42, 27 is: {biggest}")
+
+rem: Function with 'using' - must deliver a value
+task Add using (a, b)
+    deliver a + b
+
+task Multiply using (a, b)
+    deliver a * b
+
+task Average using (a, b, c)
+    deliver (a + b + c) / 3.0
+
+task IsEven using (n)
+    deliver n % 2 == 0
+
+task FahrenheitToCelsius using (f)
+    deliver round((f - 32) * 5 / 9)
+
+task MaxOfThree using (a, b, c)
+    var biggest = a
+    if b > biggest
+        biggest = b
+    if c > biggest
+        biggest = c
+    deliver biggest

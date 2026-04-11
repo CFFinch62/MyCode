@@ -1,0 +1,64 @@
+building: lesson_02_variables
+    note: Lesson 2 - Variables and Data Types
+    note: Learn about the five data types in Steps
+    
+    display "=== Numbers ==="
+    set age to 25
+    set price to 19.99
+    set temperature to -5.5
+    
+    display "Age: " added to (age as text)
+    display "Price: $" added to (price as text)
+    display "Temperature: " added to (temperature as text) added to "°C"
+    
+    display ""
+    display "=== Math Operations ==="
+    set sum to 10 + 5
+    set difference to 10 - 5
+    set product to 10 * 5
+    set quotient to 10 / 5
+    
+    display "10 + 5 = " added to (sum as text)
+    display "10 - 5 = " added to (difference as text)
+    display "10 * 5 = " added to (product as text)
+    display "10 / 5 = " added to (quotient as text)
+    
+    display ""
+    display "=== Text ==="
+    set first_name to "Alice"
+    set last_name to "Smith"
+    set full_name to first_name added to " " added to last_name
+    
+    display "First name: " added to first_name
+    display "Last name: " added to last_name
+    display "Full name: " added to full_name
+    
+    display ""
+    display "=== Booleans ==="
+    set is_student to true
+    set is_graduated to false
+    
+    display "Is student: " added to (is_student as text)
+    display "Is graduated: " added to (is_graduated as text)
+    
+    display ""
+    display "=== Lists ==="
+    set numbers to [1, 2, 3, 4, 5]
+    set colors to ["red", "green", "blue"]
+    set mixed to [42, "hello", true]
+    
+    display "Numbers: " added to (numbers as text)
+    display "Colors: " added to (colors as text)
+    display "Mixed: " added to (mixed as text)
+    
+    display ""
+    display "=== Tables ==="
+    set person to ["name": "Bob", "age": 30, "city": "Boston"]
+    
+    display "Person: " added to (person as text)
+    display "Name: " added to person["name"]
+    display "Age: " added to (person["age"] as text)
+    display "City: " added to person["city"]
+    
+    exit
+

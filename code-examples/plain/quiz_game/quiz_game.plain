@@ -1,0 +1,116 @@
+rem: PLAIN Quiz Game - Main Entry Point
+rem: Coordinates the quiz flow across three levels: BEG, INT, PRO.
+rem:
+rem: Project structure:
+rem:   quiz_game.plain  - Entry point and game flow (this file)
+rem:   questions.plain  - The bank of 60 quiz questions (20 per level)
+rem:   quiz.plain       - Question selection, asking, and level runner
+rem:   display.plain    - All formatted console output
+
+use:
+    assemblies:
+        helpers
+    modules:
+        helpers.console
+        helpers.play_quiz
+        helpers.console
+    tasks:
+        helpers.questions.BuildQuestions
+        helpers.play_quiz.RunLevel
+        helpers.play_quiz.RunMasterLevel
+        helpers.console.ShowTitle
+        helpers.console.ShowLevelBanner
+        helpers.console.ShowLevelResult
+        helpers.console.ShowVictory
+        helpers.console.ShowMasterLevelUnlock
+        helpers.console.ShowMasterLevelMenu
+        helpers.console.ShowMasterLevelBanner
+        helpers.console.ShowMasterLevelResult
+
+task Main()
+    ShowTitle()
+    get("Press ENTER to begin...")
+
+    rem: Build the full question bank (60 questions across all levels)
+    var allQuestions = BuildQuestions()
+
+    rem: ======== BEGINNER LEVEL ========
+    ShowLevelBanner("BEGINNER")
+    var begScore = RunLevel(allQuestions, "beg")
+    ShowLevelResult(begScore, "BEGINNER")
+
+    if begScore < 5
+        display("Study up and come back — you've got this!")
+        display("")
+    else
+        display("PERFECT! You've unlocked the INTERMEDIATE level!")
+        display("")
+        get("Press ENTER to continue to INTERMEDIATE...")
+
+        rem: ======== INTERMEDIATE LEVEL ========
+        ShowLevelBanner("INTERMEDIATE")
+        var intScore = RunLevel(allQuestions, "int")
+        ShowLevelResult(intScore, "INTERMEDIATE")
+
+        if intScore < 5
+            display("Review intermediate topics and try again!")
+            display("")
+        else
+            display("PERFECT! You've unlocked the PROFESSIONAL level!")
+            display("")
+            get("Press ENTER to continue to PROFESSIONAL...")
+
+            rem: ======== PROFESSIONAL LEVEL ========
+            ShowLevelBanner("PROFESSIONAL")
+            var proScore = RunLevel(allQuestions, "pro")
+            ShowLevelResult(proScore, "PROFESSIONAL")
+
+            if proScore < 5
+                display("So close! Review the advanced docs and try again!")
+                display("")
+            else
+                ShowVictory()
+
+                rem: ======== MASTER LEVEL ========
+                ShowMasterLevelUnlock()
+                get("Press ENTER to enter the Master Level...")
+
+                var masterPlaying = true
+                loop masterPlaying
+                    ShowMasterLevelMenu()
+                    var selection = get("Your choice (1/2/3/q): ")
+                    selection = lower(trim(selection))
+
+                    var masterLevelCode = ""
+                    var masterLevelName = ""
+
+                choose selection    
+                    choice "1"
+                        var masterLevelCode = "beg"
+                        var masterLevelName = "BEGINNER"
+                    choice "2"
+                        var masterLevelCode = "int"
+                        var masterLevelName = "INTERMEDIATE"
+                    choice "3"
+                        var masterLevelCode = "pro"
+                        var masterLevelName = "PROFESSIONAL"
+                    choice "q"
+                        masterPlaying = false
+                    default
+                        display("Invalid choice — please enter 1, 2, 3, or q.")
+
+                if masterLevelCode != ""
+                    ShowMasterLevelBanner(masterLevelName)
+                    var masterScore = RunMasterLevel(allQuestions, masterLevelCode)
+                    ShowMasterLevelResult(masterScore, masterLevelName)
+                
+                    var again = get("Play another Master Level? (y/n): ")
+                    again = lower(trim(again))
+                    if again != "y"
+                        masterPlaying = false
+                
+                    var masterLevelCode = ""
+                    var masterLevelName = ""
+
+    display("Thanks for playing the PLAIN Quiz Game!")
+    display("")

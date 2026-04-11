@@ -1,0 +1,21 @@
+step: reverse
+    belongs to: strings
+    expects: string
+    returns: result
+    
+    declare:
+        result as text
+        index as number
+        len as number
+    
+    do:
+        set result to ""
+        set len to length of string
+        set index to len - 1
+        
+        repeat while index is greater than or equal to 0
+            set result to result added to string[index]
+            set index to index - 1
+        
+        return result
+

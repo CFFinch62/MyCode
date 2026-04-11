@@ -1,0 +1,31 @@
+note: Simple STEPS program to test the analyzer
+
+building: TestProgram
+
+floor: Main
+    step: Initialize
+        set counter to 0
+        set max to 10
+        display "Starting program"
+    
+    step: CountLoop
+        repeat 10 times
+            set counter to counter + 1
+            display counter
+    
+    step: NestedLoop
+        repeat 5 times
+            repeat 3 times
+                display "Nested iteration"
+    
+    step: ProcessList
+        set numbers to [1, 2, 3, 4, 5]
+        repeat for each item in numbers
+            call ProcessItem
+            storing result in processed
+    
+    riser: ProcessItem
+        belongs to: Main
+        set result to item * 2
+        display result
+

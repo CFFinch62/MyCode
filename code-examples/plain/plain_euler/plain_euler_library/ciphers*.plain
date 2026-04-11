@@ -1,0 +1,87 @@
+note: Decodes a message using the Caesar cipher.
+
+    Args:
+    message: Message to decode
+    offset: Number of positions to shift
+
+    Returns:
+    Decoded message
+task CaesarCipherDecoder using (message, offset)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", ".", "!", "?"]
+    var decoded_message = ""
+    loop char in message
+        if contains(punctuation, char)
+            decoded_message = decoded_message + char
+        else
+            decoded_message = decoded_message + alphabet[find(alphabet, char) + offset % length(alphabet)]
+    deliver decoded_message
+
+note: Encodes a message using the Caesar cipher.
+
+    Args:
+    message: Message to encode
+    offset: Number of positions to shift
+
+    Returns:
+    Encoded message
+task CaesarCipherEncoder using (message, offset)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", ".", "!", "?"]
+    var coded_message = ""
+    loop char in message
+        if contains(punctuation, char)
+            coded_message = coded_message + char
+        else
+            coded_message = coded_message + alphabet[find(alphabet, char) + offset % length(alphabet)]
+    deliver coded_message
+
+note: Decodes a message using the Vigenère cipher.
+
+    Args:
+    message: Message to decode
+    key: Key to use for decoding
+
+    Returns:
+    Decoded message
+task VigenereCipherDecoder using (message, key)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", "'", ".", "!", "?"]
+    var decoded_message = ""
+    var ki = 0
+    loop i from 0 to length(message) - 1
+        if ki >= length(key)
+            ki = 0
+        if contains(punctuation, message[i])
+            decoded_message = decoded_message + message[i]
+        else
+            var offset = find(alphabet, key[ki])
+            var location = find(alphabet, message[i]) - offset % 26
+            decoded_message = decoded_message + alphabet[location]
+            ki = ki + 1
+    deliver decoded_message
+
+note: Encodes a message using the Vigenère cipher.
+
+    Args:
+    message: Message to encode
+    key: Key to use for encoding
+
+    Returns:
+    Encoded message
+task VigenereCipherEncoder using (message, key)
+    var alphabet = "abcdefghijklmnopqrstuvwxyz"
+    var punctuation = [" ", ",", "'", ".", "!", "?"]
+    var encoded_message = ""
+    var ki = 0
+    loop i from 0 to length(message) - 1
+        if ki >= length(key)
+            ki = 0
+        if contains(punctuation, message[i])
+            encoded_message = encoded_message + message[i]
+        else
+            var offset = find(alphabet, key[ki])
+            var location = find(alphabet, message[i]) + offset % 26
+            encoded_message = encoded_message + alphabet[location]
+            ki = ki + 1
+    deliver encoded_message
