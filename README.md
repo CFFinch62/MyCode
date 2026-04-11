@@ -6,11 +6,11 @@ A modern, cross-platform code editor inspired by Elementary Code, built with Ele
 
 In its most recent iteration a syntax plugins and a 'runner' plugin has been added so My Code can be used as a full IDE for the Fragillidae Software suite of programming languages:
 
-BEAM - https://github.com/CFFinch62/Beam
-STEPS - https://github.com/CFFinch62/STEPS
-PLAIN - https://github.com/CFFinch62/PLAIN
-FORGE - https://github.com/CFFinch62/FORGE
-EZ (we are an open source contributer) - https://github.com/CFFinch62/EZ
+- BEAM - https://github.com/CFFinch62/Beam
+- STEPS - https://github.com/CFFinch62/STEPS
+- PLAIN - https://github.com/CFFinch62/PLAIN
+- FORGE - https://github.com/CFFinch62/FORGE
+- EZ (we are an open source contributer) - https://github.com/CFFinch62/EZ
 
 ## Features
 
