@@ -1,9 +1,11 @@
-' ============================================================
-' BEAM Two Windows
-' Opens two independent windows side by side.
-' Each window has its own counter and controls.
-' Both must be closed to exit the program.
-' ============================================================
+// ============================================================
+// BEAM Two Windows
+// Opens two independent windows side by side.
+// Each window has its own counter and controls.
+// "Send" copies your counter value into the other window.
+// Either window can be closed independently; the program
+// exits when both are closed.
+// ============================================================
 
 win1 = beam_open(340, 280, "Window One")
 win2 = beam_open(340, 280, "Window Two")
@@ -13,10 +15,10 @@ count2 = 0
 msg1$  = "Click the buttons below."
 msg2$  = "Click the buttons below."
 
-' Run until both windows are closed
+// Run until both windows are closed
 while beam_running(win1) or beam_running(win2)
 
-  ' --- Window 1 ---
+  // --- Window 1 ---
   if beam_running(win1) then
     beam_begin(win1)
 
@@ -44,6 +46,7 @@ while beam_running(win1) or beam_running(win2)
       beam_spacing(8)
 
       if beam_button("Send to Win 2", 140, 28) then
+        count2 = count1
         msg2$ = "Win 1 sent: " + str$(count1)
       end if
 
@@ -56,7 +59,7 @@ while beam_running(win1) or beam_running(win2)
     beam_end(win1)
   end if
 
-  ' --- Window 2 ---
+  // --- Window 2 ---
   if beam_running(win2) then
     beam_begin(win2)
 
@@ -84,6 +87,7 @@ while beam_running(win1) or beam_running(win2)
       beam_spacing(8)
 
       if beam_button("Send to Win 1", 140, 28) then
+        count1 = count2
         msg1$ = "Win 2 sent: " + str$(count2)
       end if
 

@@ -1,4 +1,4 @@
-' BEAM Input Form Example
+// BEAM Input Form Example
 win = beam_open(500, 300, "User Info")
 name$ = ""
 result$ = ""

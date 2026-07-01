@@ -1,4 +1,4 @@
-' BEAM Two-Column Layout
+// BEAM Two-Column Layout
 win = beam_open(600, 400, "Settings")
 vol = 50
 dark_mode = 0

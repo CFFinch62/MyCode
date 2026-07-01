@@ -1,17 +1,17 @@
-' ============================================================
-' BEAM Progress Bar Demo
-' Demonstrates an animated progress bar that fills over time.
-' Start / Stop control the animation.  Reset clears the bar.
-' Speed slider controls how fast the bar advances each frame.
-' ============================================================
+// ============================================================
+// BEAM Progress Bar Demo
+// Demonstrates an animated progress bar that fills over time.
+// Start / Stop control the animation.  Reset clears the bar.
+// Speed slider controls how fast the bar advances each frame.
+// ============================================================
 
 win = beam_open(500, 280, "Progress Demo")
 
-running   = 0      ' 1 = animation active
-value     = 0      ' current progress (0-100)
+running   = 0
+value     = 0
 maxval    = 100
-speed     = 2      ' units advanced per ~16 ms frame
-last_t    = 0      ' last timestamp used for delta timing
+speed     = 2
+last_t    = 0
 elapsed$  = "0 ms"
 
 while beam_running(win)
@@ -19,13 +19,13 @@ while beam_running(win)
 
     beam_group_begin("Animated Progress Bar")
 
-      ' Progress bar display
+      // Progress bar display
       beam_spacing(8)
       beam_progress(value, maxval, 440, 30)
       beam_label(str$(value) + " / " + str$(maxval))
       beam_spacing(8)
 
-      ' Control buttons
+      // Control buttons
       beam_row(32, 4)
         if running then
           if beam_button("Stop", 80, 28) then
@@ -56,7 +56,7 @@ while beam_running(win)
       beam_separator()
       beam_spacing(6)
 
-      ' Speed control
+      // Speed control
       beam_label("Speed (units / frame):")
       speed = beam_slider(speed, 1, 20, 1, 440)
       beam_label("Speed: " + str$(speed))
@@ -65,7 +65,7 @@ while beam_running(win)
 
   beam_end(win)
 
-  ' Advance the bar outside the frame to avoid stalling Nuklear
+  // Advance the bar outside the frame to avoid stalling Nuklear
   if running then
     now = beam_time()
     if now - last_t >= 16 then

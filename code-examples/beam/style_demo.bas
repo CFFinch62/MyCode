@@ -1,10 +1,10 @@
-' ============================================================
-' BEAM Style Demo
-' Shows all three built-in Nuklear themes: dark, white, amber.
-' Demonstrates representative widgets under each theme so
-' you can compare the look and feel before choosing one for
-' your own application.
-' ============================================================
+// ============================================================
+// BEAM Style Demo
+// Shows all three built-in Nuklear themes: dark, white, amber.
+// Demonstrates representative widgets under each theme so
+// you can compare the look and feel before choosing one for
+// your own application.
+// ============================================================
 
 win = beam_open(540, 480, "Style Demo")
 
@@ -20,7 +20,7 @@ input_buf$  = "sample text"
 while beam_running(win)
   beam_begin(win)
 
-    ' --- Theme selector ---
+    // --- Theme selector ---
     beam_group_begin("Choose Theme")
       beam_row(32, 3)
         if beam_button("Dark", 100, 28) then
@@ -41,7 +41,7 @@ while beam_running(win)
 
     beam_spacing(8)
 
-    ' --- Widget preview ---
+    // --- Widget preview ---
     beam_group_begin("Widget Preview")
 
       beam_label("Label text looks like this.")

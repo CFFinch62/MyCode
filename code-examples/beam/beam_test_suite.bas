@@ -1,11 +1,11 @@
-' ============================================================
-' BEAM Test Suite - Phase 4
-' Exercises every command in the BEAM vocabulary (Section 3).
-' Navigate with the Next / Prev buttons to step through tests.
-'
-' NOTE: yabasic does not allow inline if-then inside a block
-' if-end if, so every if is written in multi-line form here.
-' ============================================================
+// ============================================================
+// BEAM Test Suite - Phase 4
+// Exercises every command in the BEAM vocabulary (Section 3).
+// Navigate with the Next / Prev buttons to step through tests.
+//
+// NOTE: yabasic does not allow inline if-then inside a block
+// if-end if, so every if is written in multi-line form here.
+// ============================================================
 
 win = beam_open(640, 520, "BEAM Test Suite")
 

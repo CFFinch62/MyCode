@@ -1,4 +1,4 @@
-' BEAM Hello World
+// BEAM Hello World
 win = beam_open(400, 200, "Hello BEAM")
 
 while beam_running(win)
