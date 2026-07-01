@@ -9,6 +9,7 @@ import { SearchBar } from './search/SearchBar';
 import { TabManager } from './editor/TabManager';
 import { PreferencesDialog } from './preferences/PreferencesDialog';
 import { MarkdownPreview } from './preview/MarkdownPreview';
+import { HtmlPreview } from './preview/HtmlPreview';
 import { Terminal } from './terminal/Terminal';
 import { GitStatusBar } from './git/GitStatusBar';
 import { GutterDecorations } from './git/GutterDecorations';
@@ -26,6 +27,7 @@ export class App {
     private tabManager!: TabManager;
     private preferencesDialog!: PreferencesDialog;
     private markdownPreview!: MarkdownPreview;
+    private htmlPreview!: HtmlPreview;
     private terminal!: Terminal;
     private gitStatusBar!: GitStatusBar;
     private gutterDecorations!: GutterDecorations;
@@ -56,6 +58,8 @@ export class App {
         this.preferencesDialog = new PreferencesDialog(this.applySettings.bind(this));
         this.markdownPreview = new MarkdownPreview();
         this.markdownPreview.setEditor(this.editorManager.getEditor());
+        this.htmlPreview = new HtmlPreview();
+        this.htmlPreview.setEditor(this.editorManager.getEditor());
         this.terminal = new Terminal();
         this.gitStatusBar = new GitStatusBar();
         this.gutterDecorations = new GutterDecorations();
@@ -209,11 +213,42 @@ export class App {
     }
 
     private togglePreview(): void {
-        this.markdownPreview.toggle();
-        // Update preview with current content if now visible
-        if (this.markdownPreview.isPreviewVisible()) {
-            this.markdownPreview.onContentChanged(this.editorManager.getContent());
+        const currentTab = this.tabManager.getCurrentTab();
+        const filePath = currentTab?.filePath || null;
+        const ext = filePath ? (filePath.match(/\.[^./\\]+$/) || [''])[0].toLowerCase() : '';
+
+        if (ext === '.md') {
+            // Hide HTML preview if it's showing
+            if (this.htmlPreview.isPreviewVisible()) {
+                this.htmlPreview.hide();
+            }
+            this.markdownPreview.toggle();
+            if (this.markdownPreview.isPreviewVisible()) {
+                this.markdownPreview.onContentChanged(this.editorManager.getContent());
+            }
+        } else if (ext === '.html' || ext === '.htm') {
+            // Hide Markdown preview if it's showing
+            if (this.markdownPreview.isPreviewVisible()) {
+                this.markdownPreview.hide();
+            }
+            this.htmlPreview.toggle(filePath);
+            if (this.htmlPreview.isPreviewVisible() && filePath) {
+                this.htmlPreview.onContentChanged(this.editorManager.getContent(), filePath);
+            }
         }
+        // For other file types, do nothing
+    }
+
+    /**
+     * Show/hide the preview toggle button based on the active file extension.
+     */
+    private updatePreviewButtonVisibility(filePath?: string | null): void {
+        const btn = document.getElementById('btn-toggle-preview');
+        if (!btn) return;
+
+        const ext = filePath ? (filePath.match(/\.[^./\\]+$/) || [''])[0].toLowerCase() : '';
+        const isPreviewable = ext === '.md' || ext === '.html' || ext === '.htm';
+        btn.style.display = isPreviewable ? '' : 'none';
     }
 
     private selectAll(): void {
@@ -312,6 +347,16 @@ export class App {
         document.getElementById('btn-open-folder')?.addEventListener('click', () => this.openFolder());
         document.getElementById('btn-add-folder')?.addEventListener('click', () => this.openFolder());
         document.getElementById('btn-new-tab')?.addEventListener('click', () => this.newTab());
+        document.getElementById('btn-toggle-preview')?.addEventListener('click', () => this.togglePreview());
+
+        // Update preview button when switching tabs
+        document.getElementById('tabs')?.addEventListener('click', () => {
+            // Use microtask to run after TabManager.activateTab finishes
+            Promise.resolve().then(() => {
+                const tab = this.tabManager.getCurrentTab();
+                this.updatePreviewButtonVisibility(tab?.filePath);
+            });
+        });
 
         // Sidebar tab switching
         this.setupSidebarTabs();
@@ -379,10 +424,17 @@ export class App {
             this.sidebar.refreshFolder(data.folderPath);
         });
 
-        // Update markdown preview and trigger plugin hooks on editor content change
+        // Update previews and trigger plugin hooks on editor content change
         document.addEventListener('editor-content-changed', () => {
             if (this.markdownPreview.isPreviewVisible()) {
                 this.markdownPreview.onContentChanged(this.editorManager.getContent());
+            }
+            if (this.htmlPreview.isPreviewVisible()) {
+                const currentTab = this.tabManager.getCurrentTab();
+                this.htmlPreview.onContentChanged(
+                    this.editorManager.getContent(),
+                    currentTab?.filePath || undefined
+                );
             }
 
             // Trigger content change hook for plugins
@@ -400,6 +452,10 @@ export class App {
             if (this.markdownPreview.isPreviewVisible()) {
                 this.markdownPreview.hide();
             }
+            if (this.htmlPreview.isPreviewVisible()) {
+                this.htmlPreview.hide();
+            }
+            this.updatePreviewButtonVisibility(null);
             this.showWelcomeView();
         });
     }
@@ -562,6 +618,7 @@ export class App {
         const existingTab = this.tabManager.findTabByPath(filePath);
         if (existingTab) {
             this.tabManager.activateTab(existingTab.id);
+            this.updatePreviewButtonVisibility(filePath);
             return;
         }
 
@@ -570,6 +627,9 @@ export class App {
         if (result.success && result.content !== undefined) {
             this.tabManager.createTab(filePath, result.content);
             this.editorManager.focus();
+
+            // Update preview button visibility
+            this.updatePreviewButtonVisibility(filePath);
 
             // Trigger plugin hooks
             triggerHook('workspace:fileOpen', {
@@ -775,9 +835,12 @@ export class App {
 
             this.tabManager.closeTab(currentTab.id);
             if (this.tabManager.getTabCount() === 0) {
-                // Close markdown preview when no tabs open
+                // Close previews when no tabs open
                 if (this.markdownPreview.isPreviewVisible()) {
                     this.markdownPreview.hide();
+                }
+                if (this.htmlPreview.isPreviewVisible()) {
+                    this.htmlPreview.hide();
                 }
                 this.showWelcomeView();
             }

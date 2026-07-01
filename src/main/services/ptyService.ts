@@ -72,6 +72,20 @@ class PtyService {
         return '/bin/sh'; // last-resort fallback
     }
 
+    /**
+     * Validate that a cwd path exists. Falls back to homedir if not.
+     */
+    private resolveCwd(cwd?: string): string {
+        if (cwd) {
+            try {
+                if (fs.existsSync(cwd) && fs.statSync(cwd).isDirectory()) {
+                    return cwd;
+                }
+            } catch (_) { /* fall through */ }
+        }
+        return os.homedir();
+    }
+
     private createTerminal(cwd?: string, cols?: number, rows?: number): string {
         const id = `terminal-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -92,7 +106,7 @@ class PtyService {
             name: 'xterm-256color',
             cols: cols || 80,
             rows: rows || 24,
-            cwd: cwd || os.homedir(),
+            cwd: this.resolveCwd(cwd),
             env,
         });
 
@@ -128,7 +142,7 @@ class PtyService {
             name: 'xterm-256color',
             cols: cols || 80,
             rows: rows || 24,
-            cwd: cwd || os.homedir(),
+            cwd: this.resolveCwd(cwd),
             env,
         });
 

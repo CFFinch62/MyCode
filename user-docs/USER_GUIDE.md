@@ -13,10 +13,11 @@ A comprehensive guide to using MyCode, a modern cross-platform code editor.
 7. [Integrated Terminal](#integrated-terminal)
 8. [Git Integration](#git-integration)
 9. [Markdown Preview](#markdown-preview)
-10. [Plugins](#plugins)
-11. [Build Commands](#build-commands)
-12. [Preferences](#preferences)
-13. [Keyboard Shortcuts](#keyboard-shortcuts)
+10. [HTML Preview](#html-preview)
+11. [Plugins](#plugins)
+12. [Build Commands](#build-commands)
+13. [Preferences](#preferences)
+14. [Keyboard Shortcuts](#keyboard-shortcuts)
 
 ---
 
@@ -308,6 +309,30 @@ For `.md` files:
 - **Side-by-Side** - Editor and preview shown together
 - **Scroll Sync** - Scrolling syncs between editor and preview
 - **Theme Aware** - Preview matches your editor theme
+
+---
+
+## HTML Preview
+
+### Opening HTML Preview
+
+For `.html` and `.htm` files:
+- Press `Ctrl+Shift+P` to toggle the HTML preview
+- Or use View → Toggle Preview
+
+### Features
+
+- **Live Preview** — Updates as you type
+- **Side-by-Side** — Editor and preview shown together
+- **Scroll Sync** — Scrolling syncs between editor and preview
+- **Relative Path Resolution** — CSS files, images, and other assets referenced with relative paths are resolved correctly
+- **JavaScript Support** — Scripts in your HTML run inside a sandboxed iframe
+
+### Tips
+
+- The preview uses a sandboxed iframe for security
+- A `<base>` tag is automatically injected so relative paths (e.g. `<link href="style.css">`, `<img src="logo.png">`) resolve from the file's directory
+- The same `Ctrl+Shift+P` shortcut works for both Markdown and HTML — it auto-detects the file type
 
 ---
 

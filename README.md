@@ -56,6 +56,11 @@ Additional languages (Python, Go, C, etc.) can be configured directly from the *
 - **Scroll synchronization** between editor and preview
 - **Theme-aware** styling
 
+### HTML Preview
+- **Live preview** of HTML files in a sandboxed iframe
+- **Relative path resolution** for CSS, images, and assets
+- **Real-time updates** as you type (`Ctrl+Shift+P`)
+
 ### Plugin System
 - **Extensible architecture** with Plugin API
 - **Built-in plugins**: Symbol Outline, Diff Viewer, JSON Formatter, Language Runner

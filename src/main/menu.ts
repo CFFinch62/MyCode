@@ -130,7 +130,7 @@ export function createMenu(mainWindow: BrowserWindow): Menu {
                     click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_TOGGLE_SIDEBAR),
                 },
                 {
-                    label: 'Toggle Markdown Preview',
+                    label: 'Toggle Markdown/HTML Preview',
                     accelerator: 'CmdOrCtrl+Shift+M',
                     click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_TOGGLE_PREVIEW),
                 },

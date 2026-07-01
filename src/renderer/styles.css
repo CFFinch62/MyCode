@@ -1129,6 +1129,33 @@ body {
   font-weight: 600;
 }
 
+/* ===== HTML Preview ===== */
+.html-preview {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.html-preview.hidden {
+  display: none;
+}
+
+.html-preview-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.html-preview-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
 
 /* ===== Integrated Terminal ===== */
 .terminal-panel {
