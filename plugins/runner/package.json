@@ -1,8 +1,8 @@
 {
     "name": "mycode-runner",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "displayName": "Language Runner",
-    "description": "Run BEAM, EZ, Forge, Plain, and Steps programs using bundled runtimes — Fragillidae Software",
+    "description": "Compile and run programs in any language — configurable via Preferences → Runner",
     "author": "Chuck Finch",
     "license": "MIT",
     "mycode": {
@@ -13,6 +13,11 @@
         "main": "main.js",
         "contributes": {
             "commands": [
+                {
+                    "id": "runner.compile",
+                    "title": "Compile",
+                    "category": "Runner"
+                },
                 {
                     "id": "runner.run",
                     "title": "Run Program",

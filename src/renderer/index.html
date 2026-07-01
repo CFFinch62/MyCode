@@ -146,6 +146,7 @@
         <button class="tab-btn" data-tab="editor">Editor</button>
         <button class="tab-btn" data-tab="fonts">Fonts</button>
         <button class="tab-btn" data-tab="search">Search</button>
+        <button class="tab-btn" data-tab="runner">Runner</button>
       </div>
 
       <div class="modal-content">
@@ -286,6 +287,21 @@
               <option value="mixed">Smart (when search has uppercase)</option>
               <option value="always">Always</option>
             </select>
+          </div>
+        </div>
+
+        <!-- Runner Tab -->
+        <div id="tab-runner" class="tab-panel">
+          <div class="setting-group">
+            <h3>Build Commands</h3>
+            <p style="color: var(--text-secondary); font-size: 12px; margin-bottom: 12px;">
+              Configure compile and run commands per file extension. Use placeholders:
+              <code>%f</code> (file path), <code>%e</code> (name without ext), <code>%d</code> (directory), <code>%b</code> (basename).
+            </p>
+            <div id="runner-config-list" style="margin-bottom: 12px;">
+              <!-- Runner entries populated dynamically -->
+            </div>
+            <button id="runner-add-btn" class="text-btn" style="font-size: 12px;">+ Add Language</button>
           </div>
         </div>
       </div>

@@ -4,13 +4,15 @@
 
 A modern, cross-platform code editor inspired by Elementary Code, built with Electron and Monaco Editor. Features a powerful plugin system for extensibility.
 
-In its most recent iteration a syntax plugins and a 'runner' plugin has been added so My Code can be used as a full IDE for the Fragillidae Software suite of programming languages:
+MyCode includes a configurable **Language Runner** that supports compile and run commands for any language. It ships with built-in support for the Fragillidae Software suite of teaching languages:
 
 - BEAM - https://github.com/CFFinch62/Beam
 - STEPS - https://github.com/CFFinch62/STEPS
 - PLAIN - https://github.com/CFFinch62/PLAIN
 - FORGE - https://github.com/CFFinch62/FORGE
 - EZ (we are an open source contributer) - https://github.com/CFFinch62/EZ
+
+Additional languages (Python, Go, C, etc.) can be configured directly from the **Preferences → Runner** tab — no source code editing required.
 
 ## Features
 
@@ -56,15 +58,24 @@ In its most recent iteration a syntax plugins and a 'runner' plugin has been add
 
 ### Plugin System
 - **Extensible architecture** with Plugin API
-- **Built-in plugins**: Symbol Outline, Diff Viewer, JSON Formatter
+- **Built-in plugins**: Symbol Outline, Diff Viewer, JSON Formatter, Language Runner
 - **Plugin Manager** UI for enabling/disabling plugins
 - **Hook system** for formatters, linters, and event handlers
 - **UI extensions** - sidebar panels, status bar items, notifications
 
+### Build Commands (Language Runner)
+- **Compile & Run** any language with configurable commands
+- **Conditional buttons** - Compile/Run buttons appear only when configured for the active file
+- **Bundled runtimes** for teaching languages (BEAM, EZ, Forge, Plain, Steps)
+- **System commands** for standard languages (Python, Go, C, etc.) from PATH
+- **Geany-style placeholders** - `%f` (file), `%e` (name), `%d` (directory), `%b` (basename)
+- **Configurable from Preferences** → Runner tab — no source code editing needed
+
 ### Preferences
-- **Comprehensive settings** dialog
+- **Comprehensive settings** dialog with tabbed interface
 - **Editor customization** - font, theme, tab size, word wrap
 - **Behavior settings** - auto-save, format-on-save, smart features
+- **Runner configuration** - per-extension compile and run commands
 
 ## Tech Stack
 

@@ -14,8 +14,9 @@ A comprehensive guide to using MyCode, a modern cross-platform code editor.
 8. [Git Integration](#git-integration)
 9. [Markdown Preview](#markdown-preview)
 10. [Plugins](#plugins)
-11. [Preferences](#preferences)
-12. [Keyboard Shortcuts](#keyboard-shortcuts)
+11. [Build Commands](#build-commands)
+12. [Preferences](#preferences)
+13. [Keyboard Shortcuts](#keyboard-shortcuts)
 
 ---
 
@@ -354,6 +355,87 @@ See the [Plugin Development Guide](./PLUGIN_DEVELOPMENT_GUIDE.md) for creating p
 
 ---
 
+## Build Commands
+
+MyCode includes a configurable **Language Runner** that lets you compile and run programs in any language directly from the editor.
+
+### How It Works
+
+The runner uses per-extension configurations that map file types to compile and/or run commands. Three buttons appear in the status bar — **Compile**, **Run**, and **Stop** — but only when the active file has those commands configured.
+
+### Built-in Language Support
+
+MyCode ships with pre-configured runners for the Fragillidae teaching languages:
+
+| Extension | Language | Run Command |
+|-----------|----------|-------------|
+| `.bas`, `.yab` | BEAM | `beam %f` |
+| `.ez` | EZ | `ez %f` |
+| `.fg` | Forge | `forge run %f` |
+| `.plain` | Plain | `plain %f` |
+| `.building` | Steps | `steps run %d` |
+| `.floor`, `.step` | Steps | `steps run-step %f` |
+
+These use **bundled runtimes** included with MyCode in the `runtimes/` folder.
+
+### Adding Other Languages
+
+You can add support for any language via **Preferences → Runner**. Common examples:
+
+| Language | Type | Compile | Run |
+|----------|------|---------|-----|
+| Python | System | *(none)* | `python3 %f` |
+| Go | System | *(none)* | `go run %f` |
+| C | System | `gcc %f -o %e` | `./%e` |
+| Rust | System | `rustc %f` | `./%e` |
+| Java | System | `javac %f` | `java %e` |
+| Node.js | System | *(none)* | `node %f` |
+
+### Placeholders
+
+Commands support Geany-style placeholders that are substituted at runtime:
+
+| Placeholder | Description | Example (for `/home/chuck/code/hello.py`) |
+|-------------|-------------|-------------------------------------------|
+| `%f` | Full file path | `/home/chuck/code/hello.py` |
+| `%e` | Filename without extension | `hello` |
+| `%d` | Directory | `/home/chuck/code` |
+| `%b` | Basename with extension | `hello.py` |
+
+### Runtime Types
+
+- **Bundled** — The command’s executable is resolved from MyCode’s `runtimes/` folder. Used for teaching languages.
+- **System** — The command’s executable is used as-is from your system’s PATH. Used for standard languages like Python, Go, gcc, etc.
+
+### Configuring Runners
+
+1. Open **Preferences** (`Ctrl+,`)
+2. Click the **Runner** tab
+3. Click **+ Add Language**
+4. Fill in:
+   - **Extension** — e.g. `.py`
+   - **Label** — e.g. `Python`
+   - **Type** — `System` or `Bundled`
+   - **Compile command** — optional (e.g. `gcc %f -o %e`)
+   - **Run command** — e.g. `python3 %f`
+5. Click **Add**, then **Save**
+
+Existing entries can be edited (✏️) or deleted (🗑) from the same tab.
+
+### Using the Runner
+
+Once configured, open a file of that type and:
+
+- Click **🔨 Compile** in the status bar (if compile is configured)
+- Click **▶ Run** in the status bar (if run is configured)
+- Click **■ Stop** to terminate a running process
+
+Output appears in the **Program Output** panel at the bottom of the editor. This panel supports full interactive terminal I/O, so programs that read from stdin work correctly.
+
+> **Tip:** You can always use the integrated terminal (`` Ctrl+` ``) for ad-hoc compilation or execution — the runner buttons are just a convenience for single-click workflows.
+
+---
+
 ## Preferences
 
 Access preferences via Edit → Preferences or `Ctrl+,`.
@@ -387,6 +469,10 @@ Access preferences via Edit → Preferences or `Ctrl+,`.
 |---------|---------|-------------|
 | **Cyclic Search** | Off | Wrap around to start when reaching end |
 | **Case Sensitivity** | Mixed | Never, Mixed (auto-detect), or Always |
+
+### Runner Settings
+
+The **Runner** tab lets you manage compile and run commands for each file extension. See [Build Commands](#build-commands) for details.
 
 ---
 

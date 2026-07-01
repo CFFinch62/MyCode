@@ -8,6 +8,7 @@ import * as path from 'path';
 import { FileService } from './services/fileService';
 import { SettingsService } from './services/settingsService';
 import { GitService } from './services/gitService';
+import { RunnerConfigService } from './services/runnerConfigService';
 import { createMenu } from './menu';
 import { setupIpcHandlers } from './ipc';
 import { Settings } from '../shared/types';
@@ -21,6 +22,7 @@ let gitService: GitService;
 let pluginManager: PluginManager;
 let pluginLoader: PluginLoader;
 let pluginIPC: PluginIPC;
+let runnerConfigService: RunnerConfigService;
 
 async function createWindow(): Promise<void> {
     // Initialize services
@@ -28,6 +30,8 @@ async function createWindow(): Promise<void> {
     await settingsService.load();
     fileService = new FileService();
     gitService = new GitService();
+    runnerConfigService = new RunnerConfigService();
+    await runnerConfigService.load();
 
     // Initialize plugin system
     pluginManager = new PluginManager();
@@ -115,7 +119,7 @@ async function createWindow(): Promise<void> {
     Menu.setApplicationMenu(menu);
 
     // Setup IPC handlers
-    setupIpcHandlers(mainWindow, fileService, settingsService, gitService);
+    setupIpcHandlers(mainWindow, fileService, settingsService, gitService, runnerConfigService);
 
     // Open DevTools in development
     if (process.env.NODE_ENV === 'development') {

@@ -107,6 +107,11 @@ export const IPC_CHANNELS = {
     PLUGIN_EVENT: 'plugin:event',
     PLUGIN_READY: 'plugin:ready',
     PLUGIN_ERROR: 'plugin:error',
+
+    // Runner configuration
+    RUNNER_CONFIG_GET_ALL: 'runner:config-get-all',
+    RUNNER_CONFIG_SET: 'runner:config-set',
+    RUNNER_CONFIG_DELETE: 'runner:config-delete',
 } as const;
 
 export type IpcChannel = typeof IPC_CHANNELS[keyof typeof IPC_CHANNELS];

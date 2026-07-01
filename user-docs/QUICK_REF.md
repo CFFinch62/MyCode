@@ -5,6 +5,7 @@
 ## Project Status: Complete ✅
 
 All 9 phases implemented: Core, Editor, Sidebar, Git, Search, Symbol Outline, Terminal, Plugin System, Markdown Preview
+Configurable Language Runner with Build Commands (v2.0) for any language via Preferences → Runner.
 
 ## Quick Commands
 ```bash
@@ -25,7 +26,7 @@ src/
 │   ├── ipc.ts         # IPC handlers
 │   ├── preload.ts     # Context bridge
 │   ├── plugins/       # Plugin system backend
-│   └── services/      # File, settings, git, terminal
+│   └── services/      # File, settings, git, terminal, runner config
 ├── renderer/          # Browser/UI (web)
 │   ├── App.ts         # Main controller
 │   ├── editor/        # Monaco wrapper + tabs
@@ -49,6 +50,7 @@ src/
 | Sidebar/tree       | `src/renderer/sidebar/Sidebar.ts`            |
 | File operations    | `src/main/services/fileService.ts`           |
 | Settings           | `src/main/services/settingsService.ts`       |
+| Runner Config      | `src/main/services/runnerConfigService.ts`   |
 | Git operations     | `src/main/services/gitService.ts`            |
 | Terminal           | `src/renderer/terminal/Terminal.ts`          |
 | Plugin API         | `src/renderer/plugins/PluginContext.ts`      |

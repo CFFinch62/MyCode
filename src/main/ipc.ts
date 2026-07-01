@@ -8,12 +8,14 @@ import { IPC_CHANNELS } from '../shared/ipc-channels';
 import { FileService } from './services/fileService';
 import { SettingsService } from './services/settingsService';
 import { GitService } from './services/gitService';
+import { RunnerConfigService } from './services/runnerConfigService';
 
 export function setupIpcHandlers(
     mainWindow: BrowserWindow,
     fileService: FileService,
     settingsService: SettingsService,
-    gitService: GitService
+    gitService: GitService,
+    runnerConfigService: RunnerConfigService
 ): void {
 
     // File operations
@@ -242,6 +244,23 @@ export function setupIpcHandlers(
 
     ipcMain.handle(IPC_CHANNELS.GIT_CHECKOUT, async (_event, repoPath: string, branchName: string) => {
         return await gitService.checkout(repoPath, branchName);
+    });
+
+    // Runner configuration
+    ipcMain.handle(IPC_CHANNELS.RUNNER_CONFIG_GET_ALL, () => {
+        return runnerConfigService.getAll();
+    });
+
+    ipcMain.handle(IPC_CHANNELS.RUNNER_CONFIG_SET, async (_event, ext: string, entry: any) => {
+        runnerConfigService.set(ext, entry);
+        await runnerConfigService.save();
+        return true;
+    });
+
+    ipcMain.handle(IPC_CHANNELS.RUNNER_CONFIG_DELETE, async (_event, ext: string) => {
+        runnerConfigService.delete(ext);
+        await runnerConfigService.save();
+        return true;
     });
 }
 

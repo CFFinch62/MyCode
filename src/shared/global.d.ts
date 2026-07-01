@@ -99,6 +99,11 @@ declare global {
                 reportError: (pluginId: string, error: string) => void;
                 onEvent: (callback: (pluginId: string, event: string, data: any) => void) => void;
             };
+            runnerConfig: {
+                getAll: () => Promise<Record<string, { label: string; type: 'bundled' | 'system'; compile?: string; run?: string }>>;
+                set: (ext: string, entry: { label: string; type: 'bundled' | 'system'; compile?: string; run?: string }) => Promise<boolean>;
+                delete: (ext: string) => Promise<boolean>;
+            };
         };
     }
 }

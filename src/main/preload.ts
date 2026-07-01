@@ -128,6 +128,13 @@ contextBridge.exposeInMainWorld('mycode', {
             ipcRenderer.on(IPC_CHANNELS.PLUGIN_EVENT, (_event, pluginId, eventName, data) => callback(pluginId, eventName, data));
         },
     },
+
+    // Runner configuration
+    runnerConfig: {
+        getAll: () => ipcRenderer.invoke(IPC_CHANNELS.RUNNER_CONFIG_GET_ALL),
+        set: (ext: string, entry: any) => ipcRenderer.invoke(IPC_CHANNELS.RUNNER_CONFIG_SET, ext, entry),
+        delete: (ext: string) => ipcRenderer.invoke(IPC_CHANNELS.RUNNER_CONFIG_DELETE, ext),
+    },
 });
 
 // Type definitions for the exposed API
@@ -225,6 +232,11 @@ declare global {
                 reportReady: (pluginId: string) => void;
                 reportError: (pluginId: string, error: string) => void;
                 onEvent: (callback: (pluginId: string, event: string, data: any) => void) => void;
+            };
+            runnerConfig: {
+                getAll: () => Promise<Record<string, { label: string; type: 'bundled' | 'system'; compile?: string; run?: string }>>;
+                set: (ext: string, entry: { label: string; type: 'bundled' | 'system'; compile?: string; run?: string }) => Promise<boolean>;
+                delete: (ext: string) => Promise<boolean>;
             };
         };
     }
