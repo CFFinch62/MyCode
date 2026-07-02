@@ -3,8 +3,10 @@
  * Manages user preferences with a tabbed modal interface
  */
 
-import { Settings } from '../../shared/types';
-import { getThemeType } from '../editor/themes';
+import { Settings, CustomThemeColors } from '../../shared/types';
+import { getThemeType, registerCustomUserTheme, DEFAULT_CUSTOM_THEME } from '../editor/themes';
+
+declare const monaco: typeof import('monaco-editor');
 
 export class PreferencesDialog {
     private overlay: HTMLElement;
@@ -52,7 +54,18 @@ export class PreferencesDialog {
         // Theme dropdown - apply preview on change
         document.getElementById('pref-editorTheme')?.addEventListener('change', () => {
             this.applyThemePreview();
+            this.updateCustomEditorVisibility();
         });
+
+        // Custom theme color pickers - live preview on any change
+        const colorIds = ['custom-base', 'custom-background', 'custom-foreground', 'custom-comment',
+            'custom-keyword', 'custom-string', 'custom-number', 'custom-type',
+            'custom-function', 'custom-variable', 'custom-operator'];
+        for (const id of colorIds) {
+            document.getElementById(id)?.addEventListener('input', () => {
+                this.applyCustomThemePreview();
+            });
+        }
 
         // Follow system checkbox - apply preview on change
         document.getElementById('pref-followSystemStyle')?.addEventListener('change', () => {
@@ -83,6 +96,7 @@ export class PreferencesDialog {
         this.settings = await window.mycode.settings.getAll();
         this.populateForm();
         this.updateThemeDropdownState();
+        this.updateCustomEditorVisibility();
 
         // Load runner configs
         try {
@@ -106,6 +120,9 @@ export class PreferencesDialog {
         // Theme settings
         this.setCheckbox('pref-followSystemStyle', this.settings.followSystemStyle);
         this.setSelect('pref-editorTheme', this.settings.editorTheme || 'vs-dark');
+
+        // Custom theme colors
+        this.populateCustomThemeEditor();
 
         // Editor settings
         this.setCheckbox('pref-autosave', this.settings.autosave);
@@ -175,7 +192,7 @@ export class PreferencesDialog {
         const themeType = getThemeType(editorTheme);
         const preferDarkStyle = themeType === 'dark';
 
-        return {
+        const result: Partial<Settings> = {
             // Theme
             editorTheme,
             followSystemStyle,
@@ -205,6 +222,13 @@ export class PreferencesDialog {
             regexSearch: this.getCheckbox('pref-regexSearch'),
             caseSensitiveSearch: this.getSelect('pref-caseSensitiveSearch') as Settings['caseSensitiveSearch'],
         };
+
+        // Include custom theme colors if custom theme is selected
+        if (editorTheme === 'custom-user') {
+            result.customTheme = this.collectCustomThemeColors();
+        }
+
+        return result;
     }
 
     private async save(): Promise<void> {
@@ -238,12 +262,98 @@ export class PreferencesDialog {
         const editorTheme = this.getSelect('pref-editorTheme') || 'vs-dark';
 
         this.applyCssTheme(editorTheme, followSystem);
+
+        // Live-preview: also switch the Monaco editor theme immediately
+        if (followSystem) {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+        } else {
+            // For custom theme, register it first before switching
+            if (editorTheme === 'custom-user') {
+                this.applyCustomThemePreview();
+            } else {
+                monaco.editor.setTheme(editorTheme);
+            }
+        }
     }
 
     private restoreOriginalTheme(): void {
         const theme = this.settings.editorTheme || 'vs-dark';
         const followSystem = this.settings.followSystemStyle ?? true;
         this.applyCssTheme(theme, followSystem);
+
+        // Revert the Monaco editor theme as well
+        if (followSystem) {
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs');
+        } else {
+            // Re-register custom theme with saved colors before switching back
+            if (theme === 'custom-user' && this.settings.customTheme) {
+                registerCustomUserTheme(this.settings.customTheme);
+            }
+            monaco.editor.setTheme(theme);
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Custom Theme Editor
+    // -----------------------------------------------------------------------
+
+    private updateCustomEditorVisibility(): void {
+        const editorTheme = this.getSelect('pref-editorTheme');
+        const panel = document.getElementById('custom-theme-editor');
+        if (panel) {
+            panel.classList.toggle('hidden', editorTheme !== 'custom-user');
+        }
+    }
+
+    private populateCustomThemeEditor(): void {
+        const colors = this.settings.customTheme || DEFAULT_CUSTOM_THEME;
+        this.setColorInput('custom-background', colors.background);
+        this.setColorInput('custom-foreground', colors.foreground);
+        this.setColorInput('custom-comment', colors.comment);
+        this.setColorInput('custom-keyword', colors.keyword);
+        this.setColorInput('custom-string', colors.string);
+        this.setColorInput('custom-number', colors.number);
+        this.setColorInput('custom-type', colors.type);
+        this.setColorInput('custom-function', colors.function);
+        this.setColorInput('custom-variable', colors.variable);
+        this.setColorInput('custom-operator', colors.operator);
+        this.setSelect('custom-base', colors.base);
+    }
+
+    private collectCustomThemeColors(): CustomThemeColors {
+        return {
+            base: this.getSelect('custom-base') as 'vs' | 'vs-dark',
+            background: this.getColorInput('custom-background'),
+            foreground: this.getColorInput('custom-foreground'),
+            comment: this.getColorInput('custom-comment'),
+            keyword: this.getColorInput('custom-keyword'),
+            string: this.getColorInput('custom-string'),
+            number: this.getColorInput('custom-number'),
+            type: this.getColorInput('custom-type'),
+            function: this.getColorInput('custom-function'),
+            variable: this.getColorInput('custom-variable'),
+            operator: this.getColorInput('custom-operator'),
+        };
+    }
+
+    private applyCustomThemePreview(): void {
+        const colors = this.collectCustomThemeColors();
+        registerCustomUserTheme(colors);
+        monaco.editor.setTheme('custom-user');
+
+        // Also update CSS chrome for the custom theme's base
+        this.applyCssTheme('custom-user', false);
+    }
+
+    private setColorInput(id: string, value: string): void {
+        const el = document.getElementById(id) as HTMLInputElement;
+        if (el) el.value = value;
+    }
+
+    private getColorInput(id: string): string {
+        return (document.getElementById(id) as HTMLInputElement)?.value || '#000000';
     }
 
     private applyCssTheme(themeId: string, followSystem: boolean): void {

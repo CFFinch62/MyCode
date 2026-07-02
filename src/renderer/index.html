@@ -166,6 +166,9 @@
                   <option value="vs">VS Light</option>
                   <option value="github-light">GitHub Light</option>
                   <option value="solarized-light">Solarized Light</option>
+                  <option value="ayu-light">Ayu Light</option>
+                  <option value="catppuccin-latte">Catppuccin Latte</option>
+                  <option value="quiet-light">Quiet Light</option>
                 </optgroup>
                 <optgroup label="Dark Themes">
                   <option value="vs-dark">VS Dark</option>
@@ -173,11 +176,80 @@
                   <option value="dracula">Dracula</option>
                   <option value="one-dark">One Dark</option>
                   <option value="solarized-dark">Solarized Dark</option>
+                  <option value="nord">Nord</option>
+                  <option value="gruvbox-dark">Gruvbox Dark</option>
+                  <option value="tokyo-night">Tokyo Night</option>
+                  <option value="night-owl">Night Owl</option>
+                  <option value="catppuccin-mocha">Catppuccin Mocha</option>
+                  <option value="ayu-dark">Ayu Dark</option>
+                  <option value="material-dark">Material Dark</option>
+                  <option value="cobalt2">Cobalt 2</option>
+                  <option value="synthwave84">Synthwave '84</option>
+                  <option value="tomorrow-night">Tomorrow Night</option>
+                  <option value="palenight">Palenight</option>
+                  <option value="rose-pine">Rosé Pine</option>
+                  <option value="everforest-dark">Everforest Dark</option>
+                </optgroup>
+                <optgroup label="Custom">
+                  <option value="custom-user">✨ Custom</option>
                 </optgroup>
                 <optgroup label="High Contrast">
                   <option value="hc-black">High Contrast</option>
                 </optgroup>
               </select>
+            </div>
+            <!-- Custom Theme Editor (visible only when Custom is selected) -->
+            <div id="custom-theme-editor" class="custom-theme-editor hidden">
+              <h4 style="margin: 0 0 8px 0; font-size: 12px; color: var(--text-secondary);">Custom Theme Colors</h4>
+              <div class="setting-row">
+                <label>Base theme</label>
+                <select id="custom-base">
+                  <option value="vs-dark">Dark</option>
+                  <option value="vs">Light</option>
+                </select>
+              </div>
+              <div class="color-grid">
+                <div class="color-row">
+                  <label for="custom-background">Background</label>
+                  <input type="color" id="custom-background" value="#1e1e2e" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-foreground">Foreground</label>
+                  <input type="color" id="custom-foreground" value="#cdd6f4" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-comment">Comments</label>
+                  <input type="color" id="custom-comment" value="#6c7086" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-keyword">Keywords</label>
+                  <input type="color" id="custom-keyword" value="#cba6f7" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-string">Strings</label>
+                  <input type="color" id="custom-string" value="#a6e3a1" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-number">Numbers</label>
+                  <input type="color" id="custom-number" value="#fab387" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-type">Types</label>
+                  <input type="color" id="custom-type" value="#f9e2af" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-function">Functions</label>
+                  <input type="color" id="custom-function" value="#89b4fa" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-variable">Variables</label>
+                  <input type="color" id="custom-variable" value="#cdd6f4" />
+                </div>
+                <div class="color-row">
+                  <label for="custom-operator">Operators</label>
+                  <input type="color" id="custom-operator" value="#89dceb" />
+                </div>
+              </div>
             </div>
           </div>
         </div>

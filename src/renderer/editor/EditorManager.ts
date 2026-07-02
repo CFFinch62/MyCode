@@ -4,7 +4,7 @@
  */
 
 import { Settings } from '../../shared/types';
-import { registerCustomThemes, getThemeType } from './themes';
+import { registerCustomThemes, getThemeType, registerCustomUserTheme } from './themes';
 
 declare const monaco: typeof import('monaco-editor');
 
@@ -24,6 +24,11 @@ export class EditorManager {
     private initEditor(): void {
         // Register custom themes
         registerCustomThemes();
+
+        // Register user's custom theme if it exists
+        if (this.settings.customTheme) {
+            registerCustomUserTheme(this.settings.customTheme);
+        }
 
         // Determine which theme to use
         let theme: string;
@@ -447,6 +452,10 @@ export class EditorManager {
                 theme = isDark ? 'vs-dark' : 'vs';
             } else {
                 theme = this.settings.editorTheme || 'vs-dark';
+            }
+            // Re-register custom theme if colors were updated
+            if (settings.customTheme) {
+                registerCustomUserTheme(settings.customTheme);
             }
             monaco.editor.setTheme(theme);
         }

@@ -42,6 +42,22 @@ export interface Settings {
     editorTheme: string;  // Theme ID (vs, vs-dark, monokai, dracula, etc.)
     preferDarkStyle: boolean;  // Deprecated, kept for migration
     followSystemStyle: boolean;
+    customTheme?: CustomThemeColors;
+}
+
+// Custom user-defined theme colors
+export interface CustomThemeColors {
+    base: 'vs' | 'vs-dark';       // Inherit from light or dark base
+    background: string;
+    foreground: string;
+    comment: string;
+    keyword: string;
+    string: string;
+    number: string;
+    type: string;
+    function: string;
+    variable: string;
+    operator: string;
 }
 
 export interface OpenedFile {
@@ -84,6 +100,7 @@ export const DEFAULT_SETTINGS: Settings = {
     editorTheme: 'vs-dark',
     preferDarkStyle: false,
     followSystemStyle: true,
+    customTheme: undefined,
 };
 
 // Tree node for folder sidebar
