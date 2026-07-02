@@ -4,6 +4,7 @@
  */
 
 import { TreeNode, GitFileStatus } from '../../shared/types';
+import { showInputDialog } from '../dialogs/InputDialog';
 
 /** Git status for a file in the tree */
 type FileGitStatus = 'modified' | 'added' | 'untracked' | 'deleted' | 'renamed' | 'conflicted' | null;
@@ -98,7 +99,7 @@ export class Sidebar {
 
         switch (action) {
             case 'new-file': {
-                const name = prompt('Enter file name:');
+                const name = await showInputDialog({ title: 'New File', label: 'Enter file name:', confirmText: 'Create' });
                 if (name) {
                     const filePath = `${basePath}/${name}`;
                     const result = await window.mycode.folder.createFile(filePath);
@@ -112,7 +113,7 @@ export class Sidebar {
                 break;
             }
             case 'new-folder': {
-                const name = prompt('Enter folder name:');
+                const name = await showInputDialog({ title: 'New Folder', label: 'Enter folder name:', confirmText: 'Create' });
                 if (name) {
                     const folderPath = `${basePath}/${name}`;
                     const result = await window.mycode.folder.createFolder(folderPath);
@@ -126,7 +127,7 @@ export class Sidebar {
             }
             case 'rename': {
                 const oldName = this.contextTarget.name;
-                const newName = prompt('Enter new name:', oldName);
+                const newName = await showInputDialog({ title: 'Rename', label: 'Enter new name:', defaultValue: oldName, confirmText: 'Rename' });
                 if (newName && newName !== oldName) {
                     const parentPath = targetPath.substring(0, targetPath.lastIndexOf('/'));
                     const newPath = `${parentPath}/${newName}`;

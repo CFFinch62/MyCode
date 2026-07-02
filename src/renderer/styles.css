@@ -826,6 +826,34 @@ body {
   border-color: var(--accent-hover);
 }
 
+/* ===== Input Dialog ===== */
+.input-dialog {
+  min-width: 400px;
+}
+
+.input-dialog-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.input-dialog-field {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.input-dialog-field:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
 /* ===== Custom Theme Editor ===== */
 .custom-theme-editor {
   margin-top: 12px;

@@ -4,6 +4,7 @@
  */
 
 import { GitStatus, GitBranchInfo } from '../../shared/types';
+import { showInputDialog } from '../dialogs/InputDialog';
 
 export class GitStatusBar {
     private container: HTMLElement;
@@ -381,7 +382,7 @@ export class GitStatusBar {
 
         this.hideBranchDropdown();
 
-        const branchName = prompt('Enter new branch name:');
+        const branchName = await showInputDialog({ title: 'New Branch', label: 'Enter new branch name:', confirmText: 'Create' });
         if (!branchName || !branchName.trim()) return;
 
         const cleanName = branchName.trim().replace(/\s+/g, '-');
