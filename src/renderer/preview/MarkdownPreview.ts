@@ -50,6 +50,7 @@ export class MarkdownPreview {
 
         this.previewPanel!.classList.remove('hidden');
         this.container.classList.add('split-view');
+        document.getElementById('preview-resizer')?.classList.remove('hidden');
         this.isVisible = true;
 
         // Setup scroll synchronization
@@ -70,6 +71,7 @@ export class MarkdownPreview {
 
         this.previewPanel?.classList.add('hidden');
         this.container.classList.remove('split-view');
+        document.getElementById('preview-resizer')?.classList.add('hidden');
         this.isVisible = false;
     }
 

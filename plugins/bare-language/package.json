@@ -1,27 +1,26 @@
 {
-    "name": "mycode-beam-language",
+    "name": "mycode-bare-language",
     "version": "1.0.0",
-    "displayName": "BEAM Language Support",
-    "description": "Syntax highlighting, Run, and Stop for BEAM (.yab) programs — Fragillidae Software",
+    "displayName": "BARE Language Support",
+    "description": "Syntax highlighting for BARE (.bare) programs",
     "author": "Chuck Finch",
     "license": "MIT",
     "mycode": {
         "activationEvents": [
-            "onLanguage:beam",
+            "onLanguage:bare",
             "onStartup"
         ],
         "renderer": "renderer.js",
         "contributes": {
             "languages": [
                 {
-                    "id": "beam",
+                    "id": "bare",
                     "aliases": [
-                        "BEAM",
-                        "Beam",
-                        "yabasic"
+                        "BARE",
+                        "Bare"
                     ],
                     "extensions": [
-                        ".yab"
+                        ".bare"
                     ]
                 }
             ]

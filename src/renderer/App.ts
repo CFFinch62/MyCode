@@ -10,6 +10,7 @@ import { TabManager } from './editor/TabManager';
 import { PreferencesDialog } from './preferences/PreferencesDialog';
 import { MarkdownPreview } from './preview/MarkdownPreview';
 import { HtmlPreview } from './preview/HtmlPreview';
+import { CsvPreview } from './preview/CsvPreview';
 import { Terminal } from './terminal/Terminal';
 import { GitStatusBar } from './git/GitStatusBar';
 import { GutterDecorations } from './git/GutterDecorations';
@@ -28,6 +29,7 @@ export class App {
     private preferencesDialog!: PreferencesDialog;
     private markdownPreview!: MarkdownPreview;
     private htmlPreview!: HtmlPreview;
+    private csvPreview!: CsvPreview;
     private terminal!: Terminal;
     private gitStatusBar!: GitStatusBar;
     private gutterDecorations!: GutterDecorations;
@@ -60,6 +62,8 @@ export class App {
         this.markdownPreview.setEditor(this.editorManager.getEditor());
         this.htmlPreview = new HtmlPreview();
         this.htmlPreview.setEditor(this.editorManager.getEditor());
+        this.csvPreview = new CsvPreview();
+        this.csvPreview.setEditor(this.editorManager.getEditor());
         this.terminal = new Terminal();
         this.gitStatusBar = new GitStatusBar();
         this.gutterDecorations = new GutterDecorations();
@@ -218,22 +222,40 @@ export class App {
         const ext = filePath ? (filePath.match(/\.[^./\\]+$/) || [''])[0].toLowerCase() : '';
 
         if (ext === '.md') {
-            // Hide HTML preview if it's showing
+            // Hide other previews if they're showing
             if (this.htmlPreview.isPreviewVisible()) {
                 this.htmlPreview.hide();
+            }
+            if (this.csvPreview.isPreviewVisible()) {
+                this.csvPreview.hide();
             }
             this.markdownPreview.toggle();
             if (this.markdownPreview.isPreviewVisible()) {
                 this.markdownPreview.onContentChanged(this.editorManager.getContent());
             }
         } else if (ext === '.html' || ext === '.htm') {
-            // Hide Markdown preview if it's showing
+            // Hide other previews if they're showing
             if (this.markdownPreview.isPreviewVisible()) {
                 this.markdownPreview.hide();
+            }
+            if (this.csvPreview.isPreviewVisible()) {
+                this.csvPreview.hide();
             }
             this.htmlPreview.toggle(filePath);
             if (this.htmlPreview.isPreviewVisible() && filePath) {
                 this.htmlPreview.onContentChanged(this.editorManager.getContent(), filePath);
+            }
+        } else if (ext === '.csv' || ext === '.tsv') {
+            // Hide other previews if they're showing
+            if (this.markdownPreview.isPreviewVisible()) {
+                this.markdownPreview.hide();
+            }
+            if (this.htmlPreview.isPreviewVisible()) {
+                this.htmlPreview.hide();
+            }
+            this.csvPreview.toggle();
+            if (this.csvPreview.isPreviewVisible()) {
+                this.csvPreview.onContentChanged(this.editorManager.getContent());
             }
         }
         // For other file types, do nothing
@@ -247,7 +269,7 @@ export class App {
         if (!btn) return;
 
         const ext = filePath ? (filePath.match(/\.[^./\\]+$/) || [''])[0].toLowerCase() : '';
-        const isPreviewable = ext === '.md' || ext === '.html' || ext === '.htm';
+        const isPreviewable = ext === '.md' || ext === '.html' || ext === '.htm' || ext === '.csv' || ext === '.tsv';
         btn.style.display = isPreviewable ? '' : 'none';
     }
 
@@ -382,6 +404,36 @@ export class App {
             });
         }
 
+        // Preview panel resizer (drag to resize the editor/preview split)
+        const previewResizer = document.getElementById('preview-resizer');
+        if (previewResizer) {
+            let isResizingPreview = false;
+            previewResizer.addEventListener('mousedown', (e) => {
+                isResizingPreview = true;
+                document.body.style.cursor = 'col-resize';
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizingPreview) return;
+                const editorArea = document.getElementById('editor-area');
+                const editorContainer = document.getElementById('editor-container');
+                if (!editorArea || !editorContainer) return;
+                const areaRect = editorArea.getBoundingClientRect();
+                const minPane = 200;
+                const newWidth = Math.max(
+                    minPane,
+                    Math.min(e.clientX - areaRect.left, areaRect.width - minPane)
+                );
+                editorContainer.style.width = `${newWidth}px`;
+            });
+            document.addEventListener('mouseup', () => {
+                if (isResizingPreview) {
+                    isResizingPreview = false;
+                    document.body.style.cursor = '';
+                }
+            });
+        }
+
         // Bottom panel close button
         const bottomPanelArea = document.getElementById('bottom-panel-area');
         document.getElementById('bottom-panel-close')?.addEventListener('click', () => {
@@ -436,6 +488,9 @@ export class App {
                     currentTab?.filePath || undefined
                 );
             }
+            if (this.csvPreview.isPreviewVisible()) {
+                this.csvPreview.onContentChanged(this.editorManager.getContent());
+            }
 
             // Trigger content change hook for plugins
             const currentTab = this.tabManager.getCurrentTab();
@@ -454,6 +509,9 @@ export class App {
             }
             if (this.htmlPreview.isPreviewVisible()) {
                 this.htmlPreview.hide();
+            }
+            if (this.csvPreview.isPreviewVisible()) {
+                this.csvPreview.hide();
             }
             this.updatePreviewButtonVisibility(null);
             this.showWelcomeView();

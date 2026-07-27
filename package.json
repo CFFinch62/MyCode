@@ -1,6 +1,6 @@
 {
   "name": "mycode",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A modern, cross-platform code editor inspired by Elementary Code",
   "main": "dist/main/main/main.js",
   "author": {
@@ -93,6 +93,7 @@
     "asarUnpack": [
       "node_modules/node-pty/**/*"
     ],
+    "npmRebuild": false,
     "win": {
       "target": [
         "nsis",

@@ -15,7 +15,7 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             # Node.js and npm
-            nodejs_20
+            nodejs_22
             
             # For native node modules if needed
             python3

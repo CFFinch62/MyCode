@@ -130,7 +130,7 @@ export function createMenu(mainWindow: BrowserWindow): Menu {
                     click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_TOGGLE_SIDEBAR),
                 },
                 {
-                    label: 'Toggle Markdown/HTML Preview',
+                    label: 'Toggle Preview (CSV/HTML/MD)',
                     accelerator: 'CmdOrCtrl+Shift+M',
                     click: () => mainWindow.webContents.send(IPC_CHANNELS.MENU_TOGGLE_PREVIEW),
                 },
@@ -190,7 +190,7 @@ export function createMenu(mainWindow: BrowserWindow): Menu {
                             type: 'info',
                             title: 'About MyCode',
                             message: 'MyCode',
-                            detail: 'A modern, cross-platform code editor\ninspired by Elementary Code.\n\nVersion 0.1.0\n\n© 2026 Chuck Finch - Fragillidae Software',
+                            detail: `A modern, cross-platform code editor\ninspired by Elementary Code.\n\nVersion ${app.getVersion()}\n\n© 2026 Chuck Finch - Fragillidae Software`,
                         });
                     },
                 },

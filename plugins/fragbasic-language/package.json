@@ -1,27 +1,27 @@
 {
-    "name": "mycode-beam-language",
+    "name": "mycode-fragbasic-language",
     "version": "1.0.0",
-    "displayName": "BEAM Language Support",
-    "description": "Syntax highlighting, Run, and Stop for BEAM (.yab) programs — Fragillidae Software",
+    "displayName": "FragBASIC Language Support",
+    "description": "Syntax highlighting for FragBASIC (.bas) programs — a QBasic-compatible BASIC dialect",
     "author": "Chuck Finch",
     "license": "MIT",
     "mycode": {
         "activationEvents": [
-            "onLanguage:beam",
+            "onLanguage:fragbasic",
             "onStartup"
         ],
         "renderer": "renderer.js",
         "contributes": {
             "languages": [
                 {
-                    "id": "beam",
+                    "id": "fragbasic",
                     "aliases": [
-                        "BEAM",
-                        "Beam",
-                        "yabasic"
+                        "FragBASIC",
+                        "Fragbasic",
+                        "QBasic"
                     ],
                     "extensions": [
-                        ".yab"
+                        ".bas"
                     ]
                 }
             ]

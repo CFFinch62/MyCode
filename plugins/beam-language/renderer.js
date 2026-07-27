@@ -70,7 +70,7 @@
             // -----------------------------------------------------------
             monaco.languages.register({
                 id: 'beam',
-                extensions: ['.bas', '.yab'],
+                extensions: ['.yab'],
                 aliases: ['BEAM', 'Beam', 'yabasic'],
             });
 

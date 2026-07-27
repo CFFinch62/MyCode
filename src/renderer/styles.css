@@ -16,6 +16,18 @@
   --danger-color: #c62828;
   --success-color: #2e7d32;
 
+  /* CSV preview column colors (light) */
+  --csv-col-0: hsl(0, 65%, 91%);
+  --csv-col-1: hsl(36, 65%, 88%);
+  --csv-col-2: hsl(72, 55%, 88%);
+  --csv-col-3: hsl(108, 45%, 88%);
+  --csv-col-4: hsl(144, 45%, 88%);
+  --csv-col-5: hsl(180, 45%, 88%);
+  --csv-col-6: hsl(216, 55%, 90%);
+  --csv-col-7: hsl(252, 45%, 91%);
+  --csv-col-8: hsl(288, 45%, 91%);
+  --csv-col-9: hsl(324, 55%, 91%);
+
   /* Dimensions */
   --sidebar-width: 250px;
   --tab-height: 36px;
@@ -35,6 +47,18 @@
     --border-color: #404040;
     --accent-color: #0e639c;
     --accent-hover: #1177bb;
+
+    /* CSV preview column colors (dark) */
+    --csv-col-0: hsl(0, 35%, 24%);
+    --csv-col-1: hsl(36, 35%, 22%);
+    --csv-col-2: hsl(72, 30%, 20%);
+    --csv-col-3: hsl(108, 25%, 20%);
+    --csv-col-4: hsl(144, 25%, 20%);
+    --csv-col-5: hsl(180, 25%, 20%);
+    --csv-col-6: hsl(216, 30%, 24%);
+    --csv-col-7: hsl(252, 28%, 26%);
+    --csv-col-8: hsl(288, 25%, 24%);
+    --csv-col-9: hsl(324, 30%, 26%);
   }
 }
 
@@ -49,6 +73,18 @@
   --border-color: #dddddd;
   --accent-color: #3689e6;
   --accent-hover: #2a75c3;
+
+  /* CSV preview column colors (light) */
+  --csv-col-0: hsl(0, 65%, 91%);
+  --csv-col-1: hsl(36, 65%, 88%);
+  --csv-col-2: hsl(72, 55%, 88%);
+  --csv-col-3: hsl(108, 45%, 88%);
+  --csv-col-4: hsl(144, 45%, 88%);
+  --csv-col-5: hsl(180, 45%, 88%);
+  --csv-col-6: hsl(216, 55%, 90%);
+  --csv-col-7: hsl(252, 45%, 91%);
+  --csv-col-8: hsl(288, 45%, 91%);
+  --csv-col-9: hsl(324, 55%, 91%);
 }
 
 /* Forced dark theme */
@@ -62,6 +98,18 @@
   --border-color: #404040;
   --accent-color: #0e639c;
   --accent-hover: #1177bb;
+
+  /* CSV preview column colors (dark) */
+  --csv-col-0: hsl(0, 35%, 24%);
+  --csv-col-1: hsl(36, 35%, 22%);
+  --csv-col-2: hsl(72, 30%, 20%);
+  --csv-col-3: hsl(108, 25%, 20%);
+  --csv-col-4: hsl(144, 25%, 20%);
+  --csv-col-5: hsl(180, 25%, 20%);
+  --csv-col-6: hsl(216, 30%, 24%);
+  --csv-col-7: hsl(252, 28%, 26%);
+  --csv-col-8: hsl(288, 25%, 24%);
+  --csv-col-9: hsl(324, 30%, 26%);
 }
 
 * {
@@ -298,6 +346,10 @@ body {
 
 .resizer:hover {
   background: var(--accent-color);
+}
+
+#preview-resizer.hidden {
+  display: none;
 }
 
 /* ===== Main Content ===== */
@@ -1053,12 +1105,13 @@ body {
 }
 
 #editor-area.split-view #editor-container {
+  flex: 0 0 auto;
   width: 50%;
-  flex-shrink: 0;
 }
 
 .markdown-preview {
-  width: 50%;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
@@ -1209,7 +1262,8 @@ body {
 
 /* ===== HTML Preview ===== */
 .html-preview {
-  width: 50%;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   background: var(--bg-primary);
@@ -1232,6 +1286,76 @@ body {
   height: 100%;
   border: none;
   background: #ffffff;
+}
+
+/* ===== CSV Preview ===== */
+.csv-preview {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.csv-preview.hidden {
+  display: none;
+}
+
+.csv-preview-content {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+.csv-grid {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  font-family: ui-monospace, 'Consolas', 'Menlo', monospace;
+  font-size: 12.5px;
+}
+
+.csv-grid th,
+.csv-grid td {
+  border: 1px solid var(--border-color);
+  padding: 4px 10px;
+  text-align: left;
+  white-space: pre;
+}
+
+.csv-grid thead th {
+  position: sticky;
+  top: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
+  z-index: 1;
+}
+
+.csv-grid .csv-col-0 { background: var(--csv-col-0); }
+.csv-grid .csv-col-1 { background: var(--csv-col-1); }
+.csv-grid .csv-col-2 { background: var(--csv-col-2); }
+.csv-grid .csv-col-3 { background: var(--csv-col-3); }
+.csv-grid .csv-col-4 { background: var(--csv-col-4); }
+.csv-grid .csv-col-5 { background: var(--csv-col-5); }
+.csv-grid .csv-col-6 { background: var(--csv-col-6); }
+.csv-grid .csv-col-7 { background: var(--csv-col-7); }
+.csv-grid .csv-col-8 { background: var(--csv-col-8); }
+.csv-grid .csv-col-9 { background: var(--csv-col-9); }
+
+.csv-preview-empty {
+  padding: 20px;
+  color: var(--text-secondary);
+}
+
+.csv-preview-footer {
+  padding: 6px 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
 }
 
 
