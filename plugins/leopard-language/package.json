@@ -1,0 +1,28 @@
+{
+    "name": "mycode-leopard-language",
+    "version": "1.0.0",
+    "displayName": "Leopard Language Support",
+    "description": "Syntax highlighting for Leopard (.lep) programs",
+    "author": "Chuck Finch",
+    "license": "MIT",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:leopard",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "leopard",
+                    "aliases": [
+                        "Leopard"
+                    ],
+                    "extensions": [
+                        ".lep"
+                    ]
+                }
+            ]
+        }
+    }
+}
