@@ -1,0 +1,28 @@
+{
+    "name": "mycode-quick-language",
+    "version": "1.0.0",
+    "displayName": "Quick Language Support",
+    "description": "Syntax highlighting for Quick (.qk) programs",
+    "author": "Chuck Finch",
+    "license": "MIT",
+    "mycode": {
+        "activationEvents": [
+            "onLanguage:quick",
+            "onStartup"
+        ],
+        "renderer": "renderer.js",
+        "contributes": {
+            "languages": [
+                {
+                    "id": "quick",
+                    "aliases": [
+                        "Quick"
+                    ],
+                    "extensions": [
+                        ".qk"
+                    ]
+                }
+            ]
+        }
+    }
+}

@@ -45,6 +45,7 @@ const DEFAULT_RUNNERS: Record<string, RunnerEntry> = {
     '.floor':    { label: 'Steps', type: 'bundled', run: 'steps run-step %f' },
     '.step':     { label: 'Steps', type: 'bundled', run: 'steps run-step %f' },
     '.lep':      { label: 'Leopard', type: 'system', run: 'leopard run %f' },
+    '.qk':       { label: 'Quick',   type: 'system', run: 'quick %f' },
 };
 
 export class RunnerConfigService {
