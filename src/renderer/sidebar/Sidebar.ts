@@ -177,6 +177,14 @@ export class Sidebar {
                 const oldChild = oldNode.children.find(c => c.path === newChild.path);
                 if (oldChild) {
                     newChild.isExpanded = oldChild.isExpanded;
+                    // Re-reading a folder only fetches one level deep, so subfolders
+                    // come back as unloaded stubs (children: []). If the subfolder was
+                    // already expanded with loaded contents, keep that data instead of
+                    // the stub, otherwise the tree appears to collapse.
+                    if (oldChild.isExpanded && oldChild.children && oldChild.children.length > 0 &&
+                        newChild.children && newChild.children.length === 0) {
+                        newChild.children = oldChild.children;
+                    }
                     this.preserveExpandedState(oldChild, newChild);
                 }
             }

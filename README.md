@@ -4,14 +4,17 @@
 
 A modern, cross-platform code editor inspired by Elementary Code, built with Electron and Monaco Editor. Features a powerful plugin system for extensibility.
 
-MyCode includes a configurable **Language Runner** that supports compile and run commands for any language. It ships with built-in support for the Fragillidae Software suite of teaching languages:
+MyCode includes a configurable **Language Runner** that supports compile and run commands for any language. It ships with built-in support for all the Fragillidae Software suite of teaching languages:
 
-- BEAM - https://github.com/CFFinch62/Beam
-- STEPS - https://github.com/CFFinch62/STEPS
-- PLAIN - https://github.com/CFFinch62/PLAIN
+- BARE - https://github.com/CFFinch62/BARE
+- BEAM - https://github.com/CFFinch62/BEAM
 - FORGE - https://github.com/CFFinch62/FORGE
-- EZ (we are an open source contributer) - https://github.com/CFFinch62/EZ
-
+- FragBASIC - https://github.com/CFFinch62/FragBASIC
+- LEOPARD - https://github.com/CFFinch62/LEOPARD
+- PLAIN - https://github.com/CFFinch62/PLAIN
+- QUICK - https://github.com/CFFinch62/QUICK
+- STEPS - https://github.com/CFFinch62/STEPS
+ 
 Additional languages (Python, Go, C, etc.) can be configured directly from the **Preferences → Runner** tab — no source code editing required.
 
 ## Features
